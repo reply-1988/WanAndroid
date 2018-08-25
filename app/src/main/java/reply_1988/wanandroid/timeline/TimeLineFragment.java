@@ -1,6 +1,7 @@
 package reply_1988.wanandroid.timeline;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
@@ -14,14 +15,17 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import reply_1988.wanandroid.R;
+import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
 import reply_1988.wanandroid.data.engine.ArticleEngine;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
 import reply_1988.wanandroid.data.source.remote.ArticlesInternetSource;
+import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 
 public class TimeLineFragment extends Fragment implements TimeLineContract.View{
 
     // TODO: Customize parameter argument names
     private static final String ARG_COLUMN_COUNT = "column-count";
+    public static final String ARTICLE_URL = "articleUrl";
     // TODO: Customize parameters
     private int mColumnCount = 1;
     private TimeLineContract.Presenter mPresenter;
@@ -81,12 +85,21 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
     }
 
     @Override
-    public void showArticles(List<ArticleDetailData> detailDataList) {
+    public void showArticles(final List<ArticleDetailData> detailDataList) {
         if (mAdapter != null) {
             Log.d("测试", "没有设置");
         } else {
             mAdapter = new TimerLineAdapter(detailDataList);
-            RecyclerView recyclerView = (RecyclerView) mView;
+            mAdapter.setOnArticleClickedListener(new OnArticleClickedListener() {
+                @Override
+                public void onClick(int position) {
+                    Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
+                    String articleUrl = detailDataList.get(position).getLink();
+                    intent.putExtra(ARTICLE_URL, articleUrl);
+                    startActivity(intent);
+                }
+            });
+            RecyclerView recyclerView = (RecyclerView) mView.findViewById(R.id.list);
             recyclerView.setAdapter(mAdapter);
             Log.d("测试", "设置了Adapter");
         }
