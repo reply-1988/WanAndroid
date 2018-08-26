@@ -7,7 +7,7 @@ import reply_1988.wanandroid.data.model.ArticleDetailData;
 
 public interface ArticleDataSource {
 
-    Observable<List<ArticleDetailData>> getArticles(int page);
+    Observable<List<ArticleDetailData>> getArticles(int page, boolean loadMore);
 
     Observable<List<ArticleDetailData>> getQueryArticles(String query, int page);
 }

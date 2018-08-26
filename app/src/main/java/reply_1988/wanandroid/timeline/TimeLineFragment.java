@@ -3,14 +3,19 @@ package reply_1988.wanandroid.timeline;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
-import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import com.scwang.smartrefresh.layout.api.RefreshLayout;
+import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
+import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
 import java.util.List;
 
@@ -23,14 +28,15 @@ import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 
 public class TimeLineFragment extends Fragment implements TimeLineContract.View{
 
-    // TODO: Customize parameter argument names
+
     private static final String ARG_COLUMN_COUNT = "column-count";
     public static final String ARTICLE_URL = "articleUrl";
-    // TODO: Customize parameters
+
     private int mColumnCount = 1;
     private TimeLineContract.Presenter mPresenter;
     private TimerLineAdapter mAdapter;
     private View mView;
+    private int page = 0;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
@@ -39,8 +45,7 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
     public TimeLineFragment() {
     }
 
-    // TODO: Customize parameter initialization
-    @SuppressWarnings("unused")
+
     public static TimeLineFragment newInstance(int columnCount) {
         TimeLineFragment fragment = new TimeLineFragment();
         Bundle args = new Bundle();
@@ -61,35 +66,26 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
 
     @Override
     public void onResume() {
-        Log.d("测试", "使用了get方法");
+
         super.onResume();
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         mView = inflater.inflate(R.layout.timeline_item_list, container, false);
 
-        // Set the adapter
-        if (mView instanceof RecyclerView) {
-            Context context = mView.getContext();
-            RecyclerView recyclerView = (RecyclerView) mView;
-            if (mColumnCount <= 1) {
-                recyclerView.setLayoutManager(new LinearLayoutManager(context));
-            } else {
-                recyclerView.setLayoutManager(new GridLayoutManager(context, mColumnCount));
-            }
-        }
-        mPresenter.getArticles(0);
+        mPresenter.getArticles(0, false);
         return mView;
     }
 
     @Override
     public void showArticles(final List<ArticleDetailData> detailDataList) {
         if (mAdapter != null) {
-            Log.d("测试", "没有设置");
+            mAdapter.updateAdapter(detailDataList);
         } else {
             mAdapter = new TimerLineAdapter(detailDataList);
+            //设置item被点击
             mAdapter.setOnArticleClickedListener(new OnArticleClickedListener() {
                 @Override
                 public void onClick(int position) {
@@ -99,11 +95,38 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
                     startActivity(intent);
                 }
             });
-            RecyclerView recyclerView = (RecyclerView) mView.findViewById(R.id.list);
+            final RecyclerView recyclerView = mView.findViewById(R.id.list);
+
             recyclerView.setAdapter(mAdapter);
-            Log.d("测试", "设置了Adapter");
+            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            //设置refreshLayout
+            RefreshLayout refreshLayout = mView.findViewById(R.id.refreshLayout);
+            refreshLayout.setEnableAutoLoadMore(false);
+            refreshLayout.setOnRefreshListener(new OnRefreshListener() {
+                @Override
+                public void onRefresh(@NonNull RefreshLayout refreshLayout) {
+                    page = 0;
+                    mPresenter.getArticles(page, false);
+
+                    refreshLayout.finishRefresh();
+                }
+            });
+
+            refreshLayout.setOnLoadMoreListener(new OnLoadMoreListener() {
+                @Override
+                public void onLoadMore(@NonNull RefreshLayout refreshLayout) {
+
+                    page++;
+                    Log.d("当前的页数", String.valueOf(page));
+                    mPresenter.getArticles(page, true);
+
+                    refreshLayout.finishLoadMore();
+                }
+            });
         }
     }
+
 
     @Override
     public void setPresenter(TimeLineContract.Presenter presenter) {

@@ -13,7 +13,7 @@ public interface TimeLineContract {
 
     interface Presenter extends BasePresenter {
 
-        void getArticles(int page);
+        void getArticles(int page, boolean loadMore);
     }
 
     interface View extends BaseView<Presenter> {

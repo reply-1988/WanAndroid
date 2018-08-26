@@ -32,7 +32,7 @@ public class ArticlesInternetSource implements ArticleDataSource {
     }
 
     @Override
-    public Observable<List<ArticleDetailData>> getArticles(int page) {
+    public Observable<List<ArticleDetailData>> getArticles(int page, boolean loadMore) {
         return RetrofitClient.getInstance()
                 .create(WanAndroidService.class)
                 .getArticles(page)

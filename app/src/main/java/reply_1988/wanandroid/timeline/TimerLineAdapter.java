@@ -90,4 +90,12 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
     public void setOnCategoryClickedListener(OnCategoryClickedListener onCategoryClickedListener) {
         mOnCategoryClickedListener = onCategoryClickedListener;
     }
+
+    public void updateAdapter(List<ArticleDetailData> detailDataList) {
+
+        mValues.clear();
+        mValues.addAll(detailDataList);
+        notifyDataSetChanged();
+        notifyItemRemoved(mValues.size());
+    }
 }

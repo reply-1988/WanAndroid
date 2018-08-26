@@ -27,16 +27,15 @@ public class TimerLinerPresenter implements TimeLineContract.Presenter {
     }
 
     @Override
-    public void getArticles(int page) {
-        Log.d("测试", "huoqule了信息");
-        Disposable disposable = mEngine.getArticles(page)
+    public void getArticles(int page, boolean loadMore) {
+
+        Disposable disposable = mEngine.getArticles(page, loadMore)
                 .subscribeOn(io.reactivex.schedulers.Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 //使用subscribeOn返回当前订阅的观察者
                 .subscribeWith(new DisposableObserver<List<ArticleDetailData>>() {
                     @Override
                     public void onNext(List<ArticleDetailData> articleDetailData) {
-                        Log.d("测试", "使用了onNext方法");
                         mView.showArticles(articleDetailData);
                     }
 
