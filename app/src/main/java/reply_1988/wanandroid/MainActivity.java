@@ -21,8 +21,13 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import reply_1988.wanandroid.data.engine.LoginEngine;
+import reply_1988.wanandroid.data.source.local.LoginLocalSource;
+import reply_1988.wanandroid.data.source.remote.LoginRemoteSource;
 import reply_1988.wanandroid.login.LoginActivity;
+import reply_1988.wanandroid.login.LoginPresenter;
 import reply_1988.wanandroid.timeline.TimeLineFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -34,6 +39,13 @@ public class MainActivity extends AppCompatActivity
     public TabLayout mTabLayout;
     public ViewPager mViewPager;
 
+    private LoginPresenter mLoginPresenter;
+    private LoginEngine mLoginEngine;
+    private LoginRemoteSource mRemoteSource;
+    private LoginLocalSource mLocalSource;
+    private LoginActivity mLoginActivity;
+
+    private SharedPreferences mPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,17 +84,12 @@ public class MainActivity extends AppCompatActivity
         //获取headView中的文字
         TextView textView = headView.findViewById(R.id.textView);
 
-
-
         //获取保存登录信息的SharedPreferences对象
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (sharedPreferences.getInt("userID", -1) != -1) {
-            String username = sharedPreferences.getString("username", null);
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (mPreferences.getInt("userID", -1) != -1) {
+            String username = mPreferences.getString("username", "登录");
             textView.setText(username);
         }
-
-
-
     }
 
     @Override
@@ -175,4 +182,6 @@ public class MainActivity extends AppCompatActivity
             return returnString;
         }
     }
+
+
 }

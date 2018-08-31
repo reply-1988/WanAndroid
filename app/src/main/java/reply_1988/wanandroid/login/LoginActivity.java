@@ -213,6 +213,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         Toast.makeText(this, errorMsg, Toast.LENGTH_SHORT).show();
     }
 
+    //将用户帐号密码保存到SharedPreferences中
     @Override
     public void saveUserMsg(LoginDetailData detailData) {
 
@@ -224,6 +225,17 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         sp.edit().putString("username", username).apply();
         sp.edit().putString("password", password).apply();
         sp.edit().putBoolean("skipLoginPage", true).apply();
+
+    }
+
+    //从SharedPreferences中获取保存的数据
+    @Override
+    public void resumeUserMsg() {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
+        userID = sp.getInt("userID", 0);
+        username = sp.getString("username", "");
+        password = sp.getString("password", "");
+        skipLoginPage = sp.getBoolean("skipLoginPage",false);
 
     }
 
@@ -239,14 +251,6 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         mSuccess = success;
     }
 
-    @Override
-    public void resumeUserMsg() {
-        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(this);
-        userID = sp.getInt("userID", 0);
-        username = sp.getString("username", "");
-        password = sp.getString("password", "");
-        skipLoginPage = sp.getBoolean("skipLoginPage",false);
 
-    }
 }
 

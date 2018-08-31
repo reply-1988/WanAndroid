@@ -10,8 +10,6 @@ public interface LoginContract {
 
         void login(String username, String password, String type);
 
-        boolean tryCookieLogin();
-
     }
 
     interface View extends BaseView<Presenter>{

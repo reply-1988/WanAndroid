@@ -37,35 +37,6 @@ public class LoginPresenter implements LoginContract.Presenter {
         getLoginData(username, password, type);
     }
 
-    @Override
-    public boolean tryCookieLogin() {
-
-        Disposable disposable = mLoginEngine.getRemoteLoginData("", "", "login")
-                .subscribeOn(Schedulers.io())
-                .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<LoginData>() {
-
-                    @Override
-                    public void onNext(LoginData loginData) {
-                        if (loginData.getErrorCode() != 0) {
-                            mView.getRequestResult(true);
-                        }
-                    }
-
-                    @Override
-                    public void onError(Throwable e) {
-
-                    }
-
-                    @Override
-                    public void onComplete() {
-
-                    }
-                });
-        mCompositeDisposable.add(disposable);
-        return true;
-    }
-
     private void getLoginData(String username, String password, String type) {
 
         Disposable disposable = mLoginEngine.getRemoteLoginData(username, password, type)
