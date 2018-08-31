@@ -4,6 +4,7 @@ import io.reactivex.Observable;
 
 import reply_1988.wanandroid.data.model.ArticlesData;
 import reply_1988.wanandroid.data.model.HotKey;
+import reply_1988.wanandroid.data.model.LoginData;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -30,5 +31,20 @@ public interface WanAndroidService {
     @FormUrlEncoded
     @POST(Url.Search + "{page}/json")
     Observable<ArticlesData> getSearchArticles(@Path("page") int page, @Field("k") String SearchContent);
+
+    //登录
+    //http://www.wanandroid.com/user/login
+    //方法：POST参数：username，password
+    @FormUrlEncoded
+    @POST(Url.Login)
+    Observable<LoginData> getLoginData(@Field("username") String username, @Field("password") String password);
+
+    //注册
+    //http://www.wanandroid.com/user/register
+    //方法：POST username,password,repassword
+    @FormUrlEncoded
+    @POST(Url.register)
+    Observable<LoginData> getRegisterData(@Field("username") String username, @Field("password") String password, @Field("repassword") String repassword);
+
 
 }

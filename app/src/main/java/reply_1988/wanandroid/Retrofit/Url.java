@@ -14,4 +14,15 @@ public class Url {
     //搜索
     public static final String Search = "article/query/";
 
+    //登录
+    public static final String Login = "user/login";
+
+    //注册
+    public static final String register = "user/register";
+
+    //退出
+    public static final String Logout = "user/logout/json";
+
+
+
 }

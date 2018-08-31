@@ -1,6 +1,9 @@
 package reply_1988.wanandroid;
 
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -15,7 +18,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.TextView;
 
+import reply_1988.wanandroid.login.LoginActivity;
 import reply_1988.wanandroid.timeline.TimeLineFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -26,6 +33,7 @@ public class MainActivity extends AppCompatActivity
     public NavigationView mNavigationView;
     public TabLayout mTabLayout;
     public ViewPager mViewPager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -49,6 +57,31 @@ public class MainActivity extends AppCompatActivity
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(viewPagerAdapter);
         mTabLayout.setupWithViewPager(mViewPager);
+
+        //获取navigationView的headView
+        View headView = mNavigationView.getHeaderView(0);
+        //获取headView中的图片
+        ImageView imageView = headView.findViewById(R.id.imageView);
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(MainActivity.this, LoginActivity.class);
+                startActivity(intent);
+            }
+        });
+        //获取headView中的文字
+        TextView textView = headView.findViewById(R.id.textView);
+
+
+
+        //获取保存登录信息的SharedPreferences对象
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (sharedPreferences.getInt("userID", -1) != -1) {
+            String username = sharedPreferences.getString("username", null);
+            textView.setText(username);
+        }
+
+
 
     }
 
@@ -91,6 +124,8 @@ public class MainActivity extends AppCompatActivity
 
         if (id == R.id.nav_camera) {
             // Handle the camera action
+            Intent intent = new Intent(this, LoginActivity.class);
+            startActivity(intent);
         } else if (id == R.id.nav_gallery) {
 
         } else if (id == R.id.nav_slideshow) {
