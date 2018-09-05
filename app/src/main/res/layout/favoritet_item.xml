@@ -37,7 +37,6 @@
                 android:drawableStart="@drawable/author"
                 android:gravity="center_vertical"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
-                android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -53,7 +52,8 @@
                 android:layout_marginTop="4dp"
                 android:background="@drawable/button_my_style"
                 android:textAlignment="center"
-                android:textColor="@android:color/black"
+                android:textAllCaps="false"
+                android:textColor="@color/colorAccent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
@@ -62,63 +62,63 @@
 
         </android.support.constraint.ConstraintLayout>
 
-        <LinearLayout
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/linearLayout2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/layout_background"
-            android:orientation="vertical">
+            android:background="@color/layout_background">
 
             <TextView
                 android:id="@+id/text_view_title"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/activity_horizontal_margin"
-                android:layout_marginRight="@dimen/activity_horizontal_margin"
-                android:layout_marginTop="@dimen/activity_margin_half"
+                android:textColor="@color/black"
                 android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="20dp"
+                android:layout_marginEnd="20dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
                 tools:text="@string/appbar_scrolling_view_behavior" />
 
-            <android.support.constraint.ConstraintLayout
-                android:id="@+id/linearLayout"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+        </android.support.constraint.ConstraintLayout>
 
-                <android.support.v7.widget.AppCompatTextView
-                    android:id="@+id/text_view_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp"
+        <android.support.constraint.ConstraintLayout
+            android:id="@+id/linearLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp">
 
-                    android:layout_marginStart="8dp"
-                    android:drawablePadding="8dp"
-                    android:drawableStart="@drawable/ic_clock_black_24dp"
-                    android:drawableTint="@android:color/black"
-                    android:gravity="center_vertical"
-                    android:text="2018-5-1"
-                    android:textColor="@android:color/black"
-                    android:textSize="18sp"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintStart_toStartOf="parent" />
+            <android.support.v7.widget.AppCompatTextView
+                android:id="@+id/text_view_time"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
 
-                <ImageButton
-                    android:id="@+id/imageButton"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:background="#00000000"
-                    android:src="@drawable/ic_uncollect"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginStart="8dp"
+                android:drawablePadding="8dp"
+                android:drawableStart="@drawable/ic_clock_black_24dp"
+                android:drawableTint="@android:color/black"
+                android:gravity="center_vertical"
+                android:text="2018-5-1"
+                android:textColor="@android:color/black"
+                android:textSize="18sp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent" />
 
-                    app:layout_constraintTop_toTopOf="@+id/text_view_time"
-                    tools:clickable="true" />
+            <ImageButton
+                android:id="@+id/imageButton"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="#00000000"
+                android:src="@drawable/ic_uncollect"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
 
-
-            </android.support.constraint.ConstraintLayout>
-
+                app:layout_constraintTop_toTopOf="@+id/text_view_time"
+                tools:clickable="true" />
 
 
-
-        </LinearLayout>
-
+        </android.support.constraint.ConstraintLayout>
     </LinearLayout>
 </android.support.v7.widget.CardView>

@@ -2,7 +2,7 @@
 <resources>
     <color name="colorPrimary">#009688</color>
     <color name="colorPrimaryDark">#00796B</color>
-    <color name="colorAccent">#448AFF</color>
+    <color name="colorAccent">#19499a</color>
     <color name="colorPrimaryText">#212121</color>
     <color name="colorSecondaryText">#757575</color>
     <color name="colorDivider">#BDBDBD</color>
@@ -16,7 +16,7 @@
     <color name="colorNavItemUnselected">#a5a5a5</color>
 
     <color name="cyan_500">#00BCD4</color>
-    <color name="green_500">#4CAF50</color>
+    <color name="green_500">#4cda51</color>
     <color name="light_blue_500">#03A9F4</color>
     <color name="orange_500">#FF9800</color>
     <color name="lime_500">#CDDC39</color>
