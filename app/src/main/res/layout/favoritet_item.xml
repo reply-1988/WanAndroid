@@ -22,9 +22,9 @@
         android:orientation="vertical">
 
         <android.support.constraint.ConstraintLayout
+            android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:id="@+id/relativeLayout">
+            android:layout_height="wrap_content">
 
             <android.support.v7.widget.AppCompatTextView
                 android:id="@+id/text_view_author"
@@ -34,8 +34,8 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:drawablePadding="8dp"
-                android:gravity="center_vertical"
                 android:drawableStart="@drawable/author"
+                android:gravity="center_vertical"
                 android:textAppearance="@style/TextAppearance.AppCompat.Body1"
                 android:textStyle="bold"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -75,21 +75,47 @@
                 android:layout_marginLeft="@dimen/activity_horizontal_margin"
                 android:layout_marginRight="@dimen/activity_horizontal_margin"
                 android:layout_marginTop="@dimen/activity_margin_half"
-                android:textSize="18sp"
+                android:textSize="20sp"
                 tools:text="@string/appbar_scrolling_view_behavior" />
 
-            <android.support.v7.widget.AppCompatTextView
-                android:id="@+id/text_view_time"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center|end"
-                android:layout_marginEnd="@dimen/activity_horizontal_margin"
-                android:drawablePadding="8dp"
-                android:drawableStart="@drawable/ic_clock_black_24dp"
-                android:drawableTint="@android:color/white"
-                android:gravity="center_vertical"
-                android:text="2018-5-1"
-                android:textColor="@android:color/black" />
+            <android.support.constraint.ConstraintLayout
+                android:id="@+id/linearLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.AppCompatTextView
+                    android:id="@+id/text_view_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+
+                    android:layout_marginStart="8dp"
+                    android:drawablePadding="8dp"
+                    android:drawableStart="@drawable/ic_clock_black_24dp"
+                    android:drawableTint="@android:color/black"
+                    android:gravity="center_vertical"
+                    android:text="2018-5-1"
+                    android:textColor="@android:color/black"
+                    android:textSize="18sp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+                <ImageButton
+                    android:id="@+id/imageButton"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="#00000000"
+                    android:src="@drawable/ic_uncollect"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+
+                    app:layout_constraintTop_toTopOf="@+id/text_view_time"
+                    tools:clickable="true" />
+
+
+            </android.support.constraint.ConstraintLayout>
+
+
 
 
         </LinearLayout>

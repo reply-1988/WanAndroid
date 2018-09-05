@@ -9,15 +9,15 @@ public class FavoriteData {
      * errorMsg :
      */
 
-    private Object data;
+    private FavoriteListData data;
     private int errorCode;
     private String errorMsg;
 
-    public Object getData() {
+    public FavoriteListData getData() {
         return data;
     }
 
-    public void setData(Object data) {
+    public void setData(FavoriteListData data) {
         this.data = data;
     }
 

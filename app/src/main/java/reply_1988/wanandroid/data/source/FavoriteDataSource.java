@@ -11,4 +11,6 @@ public interface FavoriteDataSource {
     void setFavoriteFromList();
 
     Observable<FavoriteData> cancelFavorite(int id);
+
+    Observable<FavoriteData> cancelFavoriteFromList(int id, int originId);
 }

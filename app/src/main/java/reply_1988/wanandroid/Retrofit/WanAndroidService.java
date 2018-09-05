@@ -52,7 +52,7 @@ public interface WanAndroidService {
     //方法：GET
     //参数： 页码：拼接在链接中，从0开始。
     @GET(Url.favorite + "{page}/json")
-    Observable<ArticlesData> getFavoriteArticles(@Path("page") int page);
+    Observable<FavoriteData> getFavoriteArticles(@Path("page") int page);
 
     //进行收藏文章的操作
     //http://www.wanandroid.com/lg/collect/1165/json
@@ -67,4 +67,10 @@ public interface WanAndroidService {
     @POST(Url.cancelFavorite + "{id}/json")
     Observable<FavoriteData> cancelFavorite(@Path("id") int id);
 
+    //进行取消收藏的操作
+    //http://www.wanandroid.com/lg/uncollect/2805/json
+    //方法：POST 参数：id:拼接在链接上 originId:列表页下发，无则为-1
+    @FormUrlEncoded
+    @POST(Url.cancelFavoriteFromList + "{id}/json")
+    Observable<FavoriteData> cancelFavoriteFromList(@Path("id") int id, @Field("originId") int originId);
 }

@@ -4,6 +4,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
+import reply_1988.wanandroid.data.model.FavoriteDetailData;
 
 public interface ArticleDataSource {
 
@@ -11,7 +12,7 @@ public interface ArticleDataSource {
 
     Observable<List<ArticleDetailData>> getQueryArticles(String query, int page);
 
-    Observable<List<ArticleDetailData>> getFavoriteArticles(boolean refresh, int page);
+    Observable<List<FavoriteDetailData>> getFavoriteArticles(boolean refresh, int page);
 
     Observable<List<ArticleDetailData>> getReadLaterArticles();
 

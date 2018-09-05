@@ -26,4 +26,11 @@ public class FavoriteRemoteSource implements FavoriteDataSource{
                 .create(WanAndroidService.class)
                 .cancelFavorite(id);
     }
+
+    @Override
+    public Observable<FavoriteData> cancelFavoriteFromList(int id, int originId) {
+        return RetrofitClient.getInstance()
+                .create(WanAndroidService.class)
+                .cancelFavoriteFromList(id, originId);
+    }
 }

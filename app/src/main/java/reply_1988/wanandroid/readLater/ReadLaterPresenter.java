@@ -10,6 +10,7 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.observers.DisposableObserver;
 import reply_1988.wanandroid.data.engine.ArticleEngine;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
+import reply_1988.wanandroid.data.model.FavoriteDetailData;
 
 public class ReadLaterPresenter implements ReadLaterContract.Presenter {
 
@@ -31,9 +32,9 @@ public class ReadLaterPresenter implements ReadLaterContract.Presenter {
                 .subscribeOn(io.reactivex.schedulers.Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
                 //使用subscribeOn返回当前订阅的观察者
-                .subscribeWith(new DisposableObserver<List<ArticleDetailData>>() {
+                .subscribeWith(new DisposableObserver<List<FavoriteDetailData>>() {
                     @Override
-                    public void onNext(List<ArticleDetailData> articleDetailData) {
+                    public void onNext(List<FavoriteDetailData> articleDetailData) {
                         mView.showArticles(articleDetailData);
                     }
 

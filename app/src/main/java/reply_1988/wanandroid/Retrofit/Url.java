@@ -32,4 +32,7 @@ public class Url {
     //取消收藏
     public static final String cancelFavorite = "lg/uncollect_originId/";
 
+    //从收藏列表取消收藏
+    public static final String cancelFavoriteFromList = "lg/uncollect/";
+
 }

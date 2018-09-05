@@ -24,9 +24,16 @@ public class FavoriteEngine implements FavoriteDataSource {
 
     }
 
+    //从首页里取消收藏
     @Override
     public Observable<FavoriteData> cancelFavorite(int id) {
 
         return mFavoriteRemoteSource.cancelFavorite(id);
+    }
+
+    //从收藏列表里取消收藏
+    @Override
+    public Observable<FavoriteData> cancelFavoriteFromList(int id, int originId) {
+        return mFavoriteRemoteSource.cancelFavoriteFromList(id, originId);
     }
 }

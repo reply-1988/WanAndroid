@@ -14,6 +14,8 @@ import reply_1988.wanandroid.Retrofit.RetrofitClient;
 import reply_1988.wanandroid.Retrofit.WanAndroidService;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
 import reply_1988.wanandroid.data.model.ArticlesData;
+import reply_1988.wanandroid.data.model.FavoriteData;
+import reply_1988.wanandroid.data.model.FavoriteDetailData;
 import reply_1988.wanandroid.data.source.ArticleDataSource;
 
 public class ArticlesInternetSource implements ArticleDataSource {
@@ -86,23 +88,23 @@ public class ArticlesInternetSource implements ArticleDataSource {
     }
 
     @Override
-    public Observable<List<ArticleDetailData>> getFavoriteArticles(boolean refresh, int page) {
+    public Observable<List<FavoriteDetailData>> getFavoriteArticles(boolean refresh, int page) {
 
         return RetrofitClient.getInstance()
                 .create(WanAndroidService.class)
                 .getFavoriteArticles(page)
                 //获取成功返回的数据，其ErrorCode值为0
-                .filter(new Predicate<ArticlesData>() {
+                .filter(new Predicate<FavoriteData>() {
                     @Override
-                    public boolean test(ArticlesData articlesData) throws Exception {
+                    public boolean test(FavoriteData articlesData) throws Exception {
                         return articlesData.getErrorCode() == 0;
                     }
                 })
                 //将Articles中的Article作为List取出来
-                .concatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
+                .concatMap(new Function<FavoriteData, ObservableSource<List<FavoriteDetailData>>>() {
                     @Override
-                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) throws Exception {
-                        Log.d("测试", "返回收藏的数据");
+                    public ObservableSource<List<FavoriteDetailData>> apply(FavoriteData articlesData) throws Exception {
+
                         return Observable.fromIterable(articlesData.getData().getDatas()).toList().toObservable();
                     }
                 });

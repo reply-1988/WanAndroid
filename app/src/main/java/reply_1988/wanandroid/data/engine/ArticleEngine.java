@@ -11,6 +11,7 @@ import io.reactivex.Observable;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
+import reply_1988.wanandroid.data.model.FavoriteDetailData;
 import reply_1988.wanandroid.data.source.ArticleDataSource;
 
 public class ArticleEngine implements ArticleDataSource{
@@ -21,7 +22,7 @@ public class ArticleEngine implements ArticleDataSource{
 
     private Map<Integer, ArticleDetailData> TimeLineArticlesCache;
 
-    private Map<Integer, ArticleDetailData> favoriteArticlesCache;
+    private Map<Integer, FavoriteDetailData> favoriteArticlesCache;
 
     private ArticleEngine(ArticleDataSource articlesInternetSource){
 
@@ -109,17 +110,17 @@ public class ArticleEngine implements ArticleDataSource{
     }
 
     @Override
-    public Observable<List<ArticleDetailData>> getFavoriteArticles(boolean loadMore, int page) {
+    public Observable<List<FavoriteDetailData>> getFavoriteArticles(boolean loadMore, int page) {
 
 
         //如果需要加载更多，同时也有缓存旧的数据
         if (loadMore && TimeLineArticlesCache != null) {
             //获取缓存的数据，将其转换为Observable
-            Observable<List<ArticleDetailData>> listBefore = Observable
+            Observable<List<FavoriteDetailData>> listBefore = Observable
                     .fromIterable(new ArrayList<>(favoriteArticlesCache.values()))
-                    .toSortedList(new Comparator<ArticleDetailData>() {
+                    .toSortedList(new Comparator<FavoriteDetailData>() {
                         @Override
-                        public int compare(ArticleDetailData o1, ArticleDetailData o2) {
+                        public int compare(FavoriteDetailData o1, FavoriteDetailData o2) {
                             if (o1.getPublishTime() > o2.getPublishTime()){
                                 return -1;
                             }else {
@@ -128,28 +129,28 @@ public class ArticleEngine implements ArticleDataSource{
                         }
                     }).toObservable();
             //获取最新的一组数据
-            Observable<List<ArticleDetailData>> listAfter = mArticleDataSource.getFavoriteArticles(loadMore, page);
+            Observable<List<FavoriteDetailData>> listAfter = mArticleDataSource.getFavoriteArticles(loadMore, page);
             return  Observable
                     .concat(listBefore, listAfter)
                     //此处将其转换成集合，是为了利用集合中不能够存在相同元素，从而将可能产生的重复数据剔除
                     //但是也可以使用Observable的其他操作符将相同的剔除
-                    .collect(new Callable<List<ArticleDetailData>>() {
+                    .collect(new Callable<List<FavoriteDetailData>>() {
                         @Override
-                        public List<ArticleDetailData> call() throws Exception {
+                        public List<FavoriteDetailData> call() throws Exception {
                             return new ArrayList<>();
                         }
-                    }, new BiConsumer<List<ArticleDetailData>, List<ArticleDetailData>>() {
+                    }, new BiConsumer<List<FavoriteDetailData>, List<FavoriteDetailData>>() {
                         @Override
-                        public void accept(List<ArticleDetailData> detailDataList, List<ArticleDetailData> detailDataList2) throws Exception {
+                        public void accept(List<FavoriteDetailData> detailDataList, List<FavoriteDetailData> detailDataList2) throws Exception {
                             detailDataList.addAll(detailDataList2);
                             addToFavoriteCache(detailDataList2, false);
                         }
                     }).toObservable();
         }
         return mArticleDataSource.getFavoriteArticles(loadMore, page)
-                .doOnNext(new Consumer<List<ArticleDetailData>>() {
+                .doOnNext(new Consumer<List<FavoriteDetailData>>() {
                     @Override
-                    public void accept(List<ArticleDetailData> detailDataList) throws Exception {
+                    public void accept(List<FavoriteDetailData> detailDataList) throws Exception {
                         addToFavoriteCache(detailDataList, true);
                     }
                 });
@@ -178,7 +179,7 @@ public class ArticleEngine implements ArticleDataSource{
 
     }
 
-    private void addToFavoriteCache(List<ArticleDetailData> detailDataList, boolean clearCache) {
+    private void addToFavoriteCache(List<FavoriteDetailData> detailDataList, boolean clearCache) {
 
         if (favoriteArticlesCache == null) {
             favoriteArticlesCache = new LinkedHashMap<>();
@@ -188,7 +189,7 @@ public class ArticleEngine implements ArticleDataSource{
             favoriteArticlesCache.clear();
         }
 
-        for (ArticleDetailData detailData: detailDataList) {
+        for (FavoriteDetailData detailData: detailDataList) {
             favoriteArticlesCache.put(detailData.getId(), detailData);
         }
     }

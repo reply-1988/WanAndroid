@@ -16,16 +16,17 @@ import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
 import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
 import reply_1988.wanandroid.data.engine.ArticleEngine;
-import reply_1988.wanandroid.data.model.ArticleDetailData;
+import reply_1988.wanandroid.data.model.FavoriteDetailData;
 import reply_1988.wanandroid.data.source.remote.ArticlesInternetSource;
 
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
+import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
+import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
 
 public class FavoriteFragment extends Fragment implements FavoriteContract.View  {
 
@@ -90,7 +91,7 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
     }
 
     @Override
-    public void showArticles(final List<ArticleDetailData> detailDataList) {
+    public void showArticles(final List<FavoriteDetailData> detailDataList) {
         if (mAdapter != null) {
             mAdapter.updateAdapter(detailDataList);
         } else {
@@ -106,6 +107,30 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
                 }
             });
 
+            //收藏
+            mAdapter.setOnCollectClickedListener(new OnCollectClickedListener() {
+                @Override
+                public void onClick(int position) {
+
+                    int originId = detailDataList.get(position).getOriginId();
+                    mPresenter.setFavorite(originId);
+                    Log.d("修改图标", "修改11");
+                    detailDataList.get(position).setCollect(true);
+                    mAdapter.notifyItemChanged(position);
+                }
+            });
+            //取消收藏
+            mAdapter.setOnCancelCollectClickedListener(new OnCancelCollectClickedListener() {
+                @Override
+                public void onClick(int position){
+
+                    int id = detailDataList.get(position).getId();
+                    int originId = detailDataList.get(position).getOriginId();
+                    mPresenter.cancelFavorite(id, originId);
+                    detailDataList.get(position).setCollect(false);
+                    mAdapter.notifyItemChanged(position);
+                }
+            });
 
             recyclerView.setAdapter(mAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

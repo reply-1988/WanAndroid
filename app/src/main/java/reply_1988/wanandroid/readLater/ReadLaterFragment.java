@@ -22,6 +22,7 @@ import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
 import reply_1988.wanandroid.data.engine.ArticleEngine;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
+import reply_1988.wanandroid.data.model.FavoriteDetailData;
 import reply_1988.wanandroid.data.source.remote.ArticlesInternetSource;
 import reply_1988.wanandroid.favorite.FavoriteAdapter;
 import reply_1988.wanandroid.favorite.FavoriteContract;
@@ -66,7 +67,7 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         mPresenter = new ReadLaterPresenter(this, ArticleEngine.getArticleEngine(ArticlesInternetSource.getArticlesInternetSource()));
-        mAdapter = new FavoriteAdapter(new ArrayList<ArticleDetailData>(0));
+        mAdapter = new FavoriteAdapter(new ArrayList<FavoriteDetailData>(0));
     }
 
     @Override
@@ -96,7 +97,7 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
     }
 
     @Override
-    public void showArticles(final List<ArticleDetailData> detailDataList) {
+    public void showArticles(final List<FavoriteDetailData> detailDataList) {
         if (mAdapter != null) {
             mAdapter.updateAdapter(detailDataList);
         } else {
