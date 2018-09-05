@@ -23,6 +23,13 @@ public class Url {
     //退出
     public static final String Logout = "user/logout/json";
 
+    //获取收藏列表
+    public static final String favorite = "lg/collect/list/";
 
+    //进行收藏操作
+    public static final String setFavorite = "lg/collect/";
+
+    //取消收藏
+    public static final String cancelFavorite = "lg/uncollect_originId/";
 
 }

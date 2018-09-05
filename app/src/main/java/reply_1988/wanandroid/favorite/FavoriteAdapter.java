@@ -1,6 +1,5 @@
-package reply_1988.wanandroid.timeline;
+package reply_1988.wanandroid.favorite;
 
-import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
 import android.support.v7.widget.AppCompatTextView;
@@ -9,19 +8,19 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 import android.widget.TextView;
 
 import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
+
+import reply_1988.wanandroid.dummy.DummyContent.DummyItem;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
-import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnCategoryClickedListener;
-import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
 
 import java.util.List;
 
-public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.ViewHolder> {
+
+public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHolder> {
 
     private final String ARTICLE_URL = "articleUrl";
 
@@ -29,34 +28,25 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
 
     private OnArticleClickedListener mOnArticleClickedListener;
     private OnCategoryClickedListener mOnCategoryClickedListener;
-    private OnCollectClickedListener mOnCollectClickedListener;
-    private OnCancelCollectClickedListener mOnCancelCollectClickedListener;
 
-
-
-    public TimerLineAdapter(List<ArticleDetailData> items) {
+    public FavoriteAdapter(List<ArticleDetailData> items) {
         mValues = items;
     }
 
     @Override
-    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public FavoriteAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.timeline_item, parent, false);
-        return new ViewHolder(view);
+                .inflate(R.layout.favoritet_item, parent, false);
+        return new FavoriteAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final FavoriteAdapter.ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.time.setText(holder.mItem.getNiceDate());
         holder.author.setText(holder.mItem.getAuthor());
         holder.category.setText(String.format("%s/%s", holder.mItem.getSuperChapterName(), holder.mItem.getChapterName()));
         holder.title.setText(holder.mItem.getTitle());
-        if (mValues.get(position).isCollect()) {
-            holder.collect.setImageResource(R.drawable.ic_collect);
-        } else {
-            holder.collect.setImageResource(R.drawable.ic_uncollect);
-        }
     }
 
     @Override
@@ -72,8 +62,6 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
         public AppCompatTextView author;
         public AppCompatTextView time;
         public ArticleDetailData mItem;
-        public ImageButton collect;
-
 
         public ViewHolder(View view) {
             super(view);
@@ -83,11 +71,8 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
             category = mView.findViewById(R.id.btn_category);
             author = mView.findViewById(R.id.text_view_author);
             time = mView.findViewById(R.id.text_view_time);
-            collect = mView.findViewById(R.id.imageButton);
-
             mCardView.setOnClickListener(this);
             category.setOnClickListener(this);
-            collect.setOnClickListener(this);
         }
 
         @Override
@@ -96,17 +81,6 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
             switch (v.getId()) {
                 case R.id.card_view_layout:
                     mOnArticleClickedListener.onClick(getAdapterPosition());
-                    break;
-                case R.id.imageButton:
-                    if (mValues.get(getAdapterPosition()).isCollect()) {
-                        mOnCancelCollectClickedListener.onClick(getAdapterPosition());
-
-                    } else {
-                        mOnCollectClickedListener.onClick(getAdapterPosition());
-
-                    }
-                    break;
-
             }
         }
     }
@@ -119,16 +93,6 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
         mOnCategoryClickedListener = onCategoryClickedListener;
     }
 
-    public void setOnCollectClickedListener(OnCollectClickedListener onCollectClickedListener) {
-
-        mOnCollectClickedListener = onCollectClickedListener;
-    }
-
-    public void setOnCancelCollectClickedListener(OnCancelCollectClickedListener onCancelCollectClickedListener) {
-
-        mOnCancelCollectClickedListener = onCancelCollectClickedListener;
-    }
-
     public void updateAdapter(List<ArticleDetailData> detailDataList) {
 
         mValues.clear();
@@ -136,5 +100,4 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
         notifyDataSetChanged();
         notifyItemRemoved(detailDataList.size());
     }
-
 }

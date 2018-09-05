@@ -9,6 +9,7 @@ import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+
 import android.support.v4.view.ViewPager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -16,18 +17,17 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import reply_1988.wanandroid.data.engine.LoginEngine;
-import reply_1988.wanandroid.data.source.local.LoginLocalSource;
-import reply_1988.wanandroid.data.source.remote.LoginRemoteSource;
+import reply_1988.wanandroid.favorite.FavoriteFragment;
 import reply_1988.wanandroid.login.LoginActivity;
 import reply_1988.wanandroid.login.LoginPresenter;
+import reply_1988.wanandroid.readLater.ReadLaterFragment;
 import reply_1988.wanandroid.timeline.TimeLineFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -38,12 +38,7 @@ public class MainActivity extends AppCompatActivity
     public NavigationView mNavigationView;
     public TabLayout mTabLayout;
     public ViewPager mViewPager;
-
-    private LoginPresenter mLoginPresenter;
-    private LoginEngine mLoginEngine;
-    private LoginRemoteSource mRemoteSource;
-    private LoginLocalSource mLocalSource;
-    private LoginActivity mLoginActivity;
+    private Fragment mFragment;
 
     private SharedPreferences mPreferences;
 
@@ -66,8 +61,12 @@ public class MainActivity extends AppCompatActivity
         mTabLayout = findViewById(R.id.tabLayout);
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);
         mViewPager = findViewById(R.id.view_pager);
+        Log.d("测试viewpager", String.valueOf(mViewPager.getId()));
         ViewPagerAdapter viewPagerAdapter = new ViewPagerAdapter(getSupportFragmentManager());
         mViewPager.setAdapter(viewPagerAdapter);
+
+        //设置缓存的视图数量为2
+        //mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);
 
         //获取navigationView的headView
@@ -149,13 +148,27 @@ public class MainActivity extends AppCompatActivity
     }
 
     public class ViewPagerAdapter extends FragmentPagerAdapter {
+
         public ViewPagerAdapter(FragmentManager fm) {
             super(fm);
         }
 
         @Override
         public Fragment getItem(int position) {
-            return TimeLineFragment.newInstance(1);
+
+            switch (position) {
+                case 0:
+                    mFragment = TimeLineFragment.newInstance(1);
+                    break;
+                case 1:
+                    mFragment = FavoriteFragment.newInstance(1);
+                    break;
+                case 2:
+                    mFragment = ReadLaterFragment.newInstance(1);
+                    break;
+            }
+            return mFragment;
+
         }
 
         @Override

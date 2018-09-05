@@ -1,4 +1,4 @@
-package reply_1988.wanandroid;
+package reply_1988.wanandroid.readLater;
 
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -6,24 +6,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import reply_1988.wanandroid.ReadLaterFragment.OnListFragmentInteractionListener;
+import reply_1988.wanandroid.R;
+
 import reply_1988.wanandroid.dummy.DummyContent.DummyItem;
 
 import java.util.List;
 
-/**
- * {@link RecyclerView.Adapter} that can display a {@link DummyItem} and makes a call to the
- * specified {@link OnListFragmentInteractionListener}.
- * TODO: Replace the implementation with code for your data type.
- */
+
 public class ReadLaterAdapter extends RecyclerView.Adapter<ReadLaterAdapter.ViewHolder> {
 
     private final List<DummyItem> mValues;
-    private final OnListFragmentInteractionListener mListener;
 
-    public ReadLaterAdapter(List<DummyItem> items, OnListFragmentInteractionListener listener) {
+
+    public ReadLaterAdapter(List<DummyItem> items) {
         mValues = items;
-        mListener = listener;
+
     }
 
     @Override
@@ -42,11 +39,7 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<ReadLaterAdapter.View
         holder.mView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (null != mListener) {
-                    // Notify the active callbacks interface (the activity, if the
-                    // fragment is attached to one) that an item has been selected.
-                    mListener.onListFragmentInteraction(holder.mItem);
-                }
+
             }
         });
     }

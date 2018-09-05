@@ -85,6 +85,35 @@ public class ArticlesInternetSource implements ArticleDataSource {
                 });
     }
 
+    @Override
+    public Observable<List<ArticleDetailData>> getFavoriteArticles(boolean refresh, int page) {
+
+        return RetrofitClient.getInstance()
+                .create(WanAndroidService.class)
+                .getFavoriteArticles(page)
+                //获取成功返回的数据，其ErrorCode值为0
+                .filter(new Predicate<ArticlesData>() {
+                    @Override
+                    public boolean test(ArticlesData articlesData) throws Exception {
+                        return articlesData.getErrorCode() == 0;
+                    }
+                })
+                //将Articles中的Article作为List取出来
+                .concatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
+                    @Override
+                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) throws Exception {
+                        Log.d("测试", "返回收藏的数据");
+                        return Observable.fromIterable(articlesData.getData().getDatas()).toList().toObservable();
+                    }
+                });
+    }
+
+    @Override
+    public Observable<List<ArticleDetailData>> getReadLaterArticles() {
+        return null;
+    }
+
+
     private void saveToRealm(ArticleDetailData detailData) {
 
         Realm realm = Realm.getDefaultInstance();

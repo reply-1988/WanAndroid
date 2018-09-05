@@ -10,4 +10,9 @@ public interface ArticleDataSource {
     Observable<List<ArticleDetailData>> getArticles(int page, boolean loadMore);
 
     Observable<List<ArticleDetailData>> getQueryArticles(String query, int page);
+
+    Observable<List<ArticleDetailData>> getFavoriteArticles(boolean refresh, int page);
+
+    Observable<List<ArticleDetailData>> getReadLaterArticles();
+
 }

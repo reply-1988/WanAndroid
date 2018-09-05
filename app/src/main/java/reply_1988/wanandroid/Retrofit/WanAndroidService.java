@@ -3,6 +3,7 @@ package reply_1988.wanandroid.Retrofit;
 import io.reactivex.Observable;
 
 import reply_1988.wanandroid.data.model.ArticlesData;
+import reply_1988.wanandroid.data.model.FavoriteData;
 import reply_1988.wanandroid.data.model.HotKey;
 import reply_1988.wanandroid.data.model.LoginData;
 import retrofit2.http.Field;
@@ -46,5 +47,24 @@ public interface WanAndroidService {
     @POST(Url.register)
     Observable<LoginData> getRegisterData(@Field("username") String username, @Field("password") String password, @Field("repassword") String repassword);
 
+    //获取收藏的文章
+    //http://www.wanandroid.com/lg/collect/list/0/json
+    //方法：GET
+    //参数： 页码：拼接在链接中，从0开始。
+    @GET(Url.favorite + "{page}/json")
+    Observable<ArticlesData> getFavoriteArticles(@Path("page") int page);
+
+    //进行收藏文章的操作
+    //http://www.wanandroid.com/lg/collect/1165/json
+    //方法：POST 参数： 文章id，拼接在链接中。
+    @POST(Url.setFavorite + "{id}/json")
+    Observable<FavoriteData> setFavorite(@Path("id") int id);
+
+    //进行取消收藏的操作
+    //http://www.wanandroid.com/lg/uncollect_originId/2333/json
+    //方法：POST
+    //参数：id:拼接在链接上
+    @POST(Url.cancelFavorite + "{id}/json")
+    Observable<FavoriteData> cancelFavorite(@Path("id") int id);
 
 }
