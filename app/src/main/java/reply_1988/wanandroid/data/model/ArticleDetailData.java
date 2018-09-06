@@ -74,6 +74,8 @@ public class ArticleDetailData extends RealmObject{
 
     private String title;
 
+    private boolean readLater = false;
+
     @Ignore
     private int type;
 
@@ -270,6 +272,14 @@ public class ArticleDetailData extends RealmObject{
 
     public void setTags(RealmList<ArticleDetailTagData> tags) {
         this.tags = tags;
+    }
+
+    public boolean isReadLater() {
+        return readLater;
+    }
+
+    public void setReadLater(boolean readLater) {
+        this.readLater = readLater;
     }
 
 }

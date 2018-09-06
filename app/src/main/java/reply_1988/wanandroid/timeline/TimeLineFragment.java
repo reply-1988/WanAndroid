@@ -21,6 +21,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
 import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
 import reply_1988.wanandroid.data.engine.ArticleEngine;
@@ -28,7 +29,10 @@ import reply_1988.wanandroid.data.model.ArticleDetailData;
 import reply_1988.wanandroid.data.source.remote.ArticlesInternetSource;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
+import reply_1988.wanandroid.interfaces.OnCancelReadLaterClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
+import reply_1988.wanandroid.interfaces.OnReadLaterClickedListener;
+import reply_1988.wanandroid.realm.RealmHelper;
 
 public class TimeLineFragment extends Fragment implements TimeLineContract.View{
 
@@ -136,6 +140,31 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
                     mPresenter.cancelFavorite(id);
                     detailDataList.get(position).setCollect(false);
                     mAdapter.notifyItemChanged(position);
+                }
+            });
+
+            //设置稍后阅读
+            mAdapter.setOnReadLaterClickedListener(new OnReadLaterClickedListener() {
+                @Override
+                public void onClick(int position) {
+
+                    detailDataList.get(position).setReadLater(true);
+                    mPresenter.setReadLater(detailDataList.get(position));
+                    mAdapter.notifyItemChanged(position);
+
+                }
+            });
+
+            //设置取消稍后阅读
+            mAdapter.setOnCancelReadLaterClickedListener(new OnCancelReadLaterClickedListener() {
+                @Override
+                public void onClick(int position) {
+
+                    int id = detailDataList.get(position).getId();
+                    detailDataList.get(position).setReadLater(false);
+                    mPresenter.cancelReadLater(id);
+                    mAdapter.notifyItemChanged(position);
+
                 }
             });
 

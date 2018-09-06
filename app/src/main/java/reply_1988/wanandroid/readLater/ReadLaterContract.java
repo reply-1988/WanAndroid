@@ -15,5 +15,9 @@ public interface ReadLaterContract {
 
     interface Presenter extends BasePresenter{
         void getArticles(int page, boolean loadMore);
+
+        void setFavorite(int id);
+
+        void cancelFavorite(int id);
     }
 }

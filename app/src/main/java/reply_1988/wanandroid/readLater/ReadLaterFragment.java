@@ -28,6 +28,8 @@ import reply_1988.wanandroid.favorite.FavoriteAdapter;
 import reply_1988.wanandroid.favorite.FavoriteContract;
 import reply_1988.wanandroid.favorite.FavoriteFragment;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
+import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
+import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
 
 
 public class ReadLaterFragment extends Fragment implements ReadLaterContract.View{
@@ -110,6 +112,29 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
                     String articleUrl = detailDataList.get(position).getLink();
                     intent.putExtra(ARTICLE_URL, articleUrl);
                     startActivity(intent);
+                }
+            });
+
+            //设置收藏按钮被点击
+            mAdapter.setOnCollectClickedListener(new OnCollectClickedListener() {
+                @Override
+                public void onClick(int position) {
+                    int id = detailDataList.get(position).getId();
+                    mPresenter.setFavorite(id);
+                    Log.d("修改图标", "修改11");
+                    detailDataList.get(position).setCollect(true);
+                    mAdapter.notifyItemChanged(position);
+                }
+            });
+            //收藏按钮再次点击取消
+            mAdapter.setOnCancelCollectClickedListener(new OnCancelCollectClickedListener() {
+                @Override
+                public void onClick(int position){
+
+                    int id = detailDataList.get(position).getId();
+                    mPresenter.cancelFavorite(id);
+                    detailDataList.get(position).setCollect(false);
+                    mAdapter.notifyItemChanged(position);
                 }
             });
 

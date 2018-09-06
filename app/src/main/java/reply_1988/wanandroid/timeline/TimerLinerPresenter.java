@@ -11,6 +11,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import reply_1988.wanandroid.data.engine.ArticleEngine;
 import reply_1988.wanandroid.data.engine.FavoriteEngine;
+import reply_1988.wanandroid.data.engine.ReadLaterEngine;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
 import reply_1988.wanandroid.data.model.FavoriteData;
 
@@ -22,11 +23,13 @@ public class TimerLinerPresenter implements TimeLineContract.Presenter {
     private ArticleEngine mEngine;
     private FavoriteEngine mFavoriteEngine;
     private CompositeDisposable mCompositeDisposable;
+    private ReadLaterEngine mReadLaterEngine;
 
     public TimerLinerPresenter(TimeLineContract.View view, ArticleEngine engine) {
         this.mView = view;
         this.mEngine = engine;
         this.mFavoriteEngine = new FavoriteEngine();
+        this.mReadLaterEngine = new ReadLaterEngine();
         this.mView.setPresenter(this);
         mCompositeDisposable = new CompositeDisposable();
     }
@@ -89,6 +92,56 @@ public class TimerLinerPresenter implements TimeLineContract.Presenter {
                 .subscribeWith(new DisposableObserver<FavoriteData>() {
                     @Override
                     public void onNext(FavoriteData favoriteData) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void setReadLater(ArticleDetailData detailData) {
+
+        Disposable disposable = (Disposable) mReadLaterEngine.setReadLater(detailData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver() {
+                    @Override
+                    public void onNext(Object o) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void cancelReadLater(int id) {
+
+        Disposable disposable = (Disposable) mReadLaterEngine.cancelReadLater(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver() {
+                    @Override
+                    public void onNext(Object o) {
 
                     }
 

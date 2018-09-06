@@ -18,6 +18,7 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -68,6 +69,10 @@ public class MainActivity extends AppCompatActivity
         //设置缓存的视图数量为2
         //mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);
+        mTabLayout.getTabAt(0).setCustomView(getTabView(0));
+        mTabLayout.getTabAt(1).setCustomView(getTabView(1));
+        mTabLayout.getTabAt(2).setCustomView(getTabView(2));
+
 
         //获取navigationView的headView
         View headView = mNavigationView.getHeaderView(0);
@@ -194,6 +199,28 @@ public class MainActivity extends AppCompatActivity
             }
             return returnString;
         }
+    }
+
+    private View getTabView(int position) {
+
+        View view = LayoutInflater.from(this).inflate(R.layout.tab_view, null);
+        TextView textView = view.findViewById(R.id.textView2);
+        ImageView imageView = view.findViewById(R.id.imageView2);
+        switch (position) {
+            case 0:
+                textView.setText("时间线");
+                imageView.setImageResource(R.drawable.ic_inf);
+                break;
+            case 1:
+                textView.setText("收藏");
+                imageView.setImageResource(R.drawable.ic_collect);
+                break;
+            case 2:
+                textView.setText("稍后阅读");
+                imageView.setImageResource(R.drawable.ic_readlater);
+                break;
+        }
+        return view;
     }
 
 

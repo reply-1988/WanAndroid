@@ -52,6 +52,17 @@ public class ReadLaterPresenter implements ReadLaterContract.Presenter {
     }
 
     @Override
+    public void setFavorite(int id) {
+
+
+    }
+
+    @Override
+    public void cancelFavorite(int id) {
+
+    }
+
+    @Override
     public void subscribe() {
 
     }

@@ -18,6 +18,10 @@ public interface TimeLineContract {
         void setFavorite(int id);
 
         void cancelFavorite(int id);
+
+        void setReadLater(ArticleDetailData detailData);
+
+        void cancelReadLater(int id);
     }
 
     interface View extends BaseView<Presenter> {

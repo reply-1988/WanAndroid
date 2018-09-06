@@ -16,9 +16,12 @@ import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
+import reply_1988.wanandroid.interfaces.OnCancelReadLaterClickedListener;
 import reply_1988.wanandroid.interfaces.OnCategoryClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
+import reply_1988.wanandroid.interfaces.OnReadLaterClickedListener;
 
+import java.nio.file.Path;
 import java.util.List;
 
 public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.ViewHolder> {
@@ -31,6 +34,8 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
     private OnCategoryClickedListener mOnCategoryClickedListener;
     private OnCollectClickedListener mOnCollectClickedListener;
     private OnCancelCollectClickedListener mOnCancelCollectClickedListener;
+    private OnReadLaterClickedListener mOnReadLaterClickedListener;
+    private OnCancelReadLaterClickedListener mOnCancelReadLaterClickedListener;
 
 
 
@@ -57,6 +62,11 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
         } else {
             holder.collect.setImageResource(R.drawable.ic_uncollect);
         }
+        if (mValues.get(position).isReadLater()) {
+            holder.readLater.setImageResource(R.drawable.ic_readlater);
+        } else {
+            holder.readLater.setImageResource(R.drawable.ic_unreadlater);
+        }
     }
 
     @Override
@@ -73,6 +83,7 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
         public AppCompatTextView time;
         public ArticleDetailData mItem;
         public ImageButton collect;
+        public ImageButton readLater;
 
 
         public ViewHolder(View view) {
@@ -84,10 +95,12 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
             author = mView.findViewById(R.id.text_view_author);
             time = mView.findViewById(R.id.text_view_time);
             collect = mView.findViewById(R.id.imageButton);
+            readLater = mView.findViewById(R.id.readLater);
 
             mCardView.setOnClickListener(this);
             category.setOnClickListener(this);
             collect.setOnClickListener(this);
+            readLater.setOnClickListener(this);
         }
 
         @Override
@@ -100,12 +113,17 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
                 case R.id.imageButton:
                     if (mValues.get(getAdapterPosition()).isCollect()) {
                         mOnCancelCollectClickedListener.onClick(getAdapterPosition());
-
                     } else {
                         mOnCollectClickedListener.onClick(getAdapterPosition());
-
                     }
                     break;
+                case R.id.readLater:
+                    if (mValues.get(getAdapterPosition()).isReadLater()) {
+                        mOnCancelReadLaterClickedListener.onClick(getAdapterPosition());
+                    } else {
+                        mOnReadLaterClickedListener.onClick(getAdapterPosition());
+                    }
+                    mOnReadLaterClickedListener.onClick(getAdapterPosition());
 
             }
         }
@@ -128,6 +146,17 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
 
         mOnCancelCollectClickedListener = onCancelCollectClickedListener;
     }
+
+    public void setOnReadLaterClickedListener(OnReadLaterClickedListener onReadLaterClickedListener) {
+
+        mOnReadLaterClickedListener = onReadLaterClickedListener;
+    }
+
+    public void setOnCancelReadLaterClickedListener(OnCancelReadLaterClickedListener onCancelReadLaterClickedListener) {
+
+        mOnCancelReadLaterClickedListener = onCancelReadLaterClickedListener;
+    }
+
 
     public void updateAdapter(List<ArticleDetailData> detailDataList) {
 
