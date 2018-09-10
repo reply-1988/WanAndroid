@@ -1,9 +1,7 @@
 package reply_1988.wanandroid.timeline;
 
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
@@ -12,7 +10,6 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageButton;
 
 import com.scwang.smartrefresh.layout.api.RefreshLayout;
 import com.scwang.smartrefresh.layout.listener.OnLoadMoreListener;
@@ -21,18 +18,16 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
-import io.realm.Realm;
 import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
 import reply_1988.wanandroid.data.engine.ArticleEngine;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
-import reply_1988.wanandroid.data.source.remote.ArticlesInternetSource;
+import reply_1988.wanandroid.data.source.remote.ArticlesRemoteSource;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelReadLaterClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnReadLaterClickedListener;
-import reply_1988.wanandroid.realm.RealmHelper;
 
 public class TimeLineFragment extends Fragment implements TimeLineContract.View{
 
@@ -48,14 +43,12 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
     private TimerLineAdapter mTimerLineAdapter;
     private RecyclerView mRecyclerView;
 
-
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
     public TimeLineFragment() {
     }
-
 
     public static TimeLineFragment newInstance(int columnCount) {
         TimeLineFragment fragment = new TimeLineFragment();
@@ -72,7 +65,7 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        mPresenter = new TimerLinerPresenter(this, ArticleEngine.getArticleEngine(ArticlesInternetSource.getArticlesInternetSource()));
+        mPresenter = new TimerLinerPresenter(this, ArticleEngine.getArticleEngine(ArticlesRemoteSource.getArticlesRemoteSource()));
         mTimerLineAdapter = new TimerLineAdapter(new ArrayList<ArticleDetailData>(0));
     }
 

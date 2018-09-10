@@ -123,8 +123,7 @@ public class TimerLineAdapter extends RecyclerView.Adapter<TimerLineAdapter.View
                     } else {
                         mOnReadLaterClickedListener.onClick(getAdapterPosition());
                     }
-                    mOnReadLaterClickedListener.onClick(getAdapterPosition());
-
+                    break;
             }
         }
     }

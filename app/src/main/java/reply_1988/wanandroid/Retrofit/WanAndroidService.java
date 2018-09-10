@@ -6,6 +6,7 @@ import reply_1988.wanandroid.data.model.ArticlesData;
 import reply_1988.wanandroid.data.model.FavoriteData;
 import reply_1988.wanandroid.data.model.HotKey;
 import reply_1988.wanandroid.data.model.LoginData;
+import reply_1988.wanandroid.data.model.SearchData;
 import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
@@ -31,7 +32,7 @@ public interface WanAndroidService {
     //	k ： 搜索关键词
     @FormUrlEncoded
     @POST(Url.Search + "{page}/json")
-    Observable<ArticlesData> getSearchArticles(@Path("page") int page, @Field("k") String SearchContent);
+    Observable<SearchData> getSearchArticles(@Path("page") int page, @Field("k") String SearchContent);
 
     //登录
     //http://www.wanandroid.com/user/login

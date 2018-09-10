@@ -22,7 +22,7 @@ import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
 import reply_1988.wanandroid.data.engine.ArticleEngine;
 import reply_1988.wanandroid.data.model.FavoriteDetailData;
-import reply_1988.wanandroid.data.source.remote.ArticlesInternetSource;
+import reply_1988.wanandroid.data.source.remote.ArticlesRemoteSource;
 
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
@@ -64,7 +64,7 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         if (getArguments() != null) {
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
-        mPresenter = new FavoritePresenter(this, ArticleEngine.getArticleEngine(ArticlesInternetSource.getArticlesInternetSource()));
+        mPresenter = new FavoritePresenter(this, ArticleEngine.getArticleEngine(ArticlesRemoteSource.getArticlesRemoteSource()));
     }
 
     @Override

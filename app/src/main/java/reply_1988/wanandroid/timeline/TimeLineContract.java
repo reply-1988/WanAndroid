@@ -22,6 +22,7 @@ public interface TimeLineContract {
         void setReadLater(ArticleDetailData detailData);
 
         void cancelReadLater(int id);
+
     }
 
     interface View extends BaseView<Presenter> {

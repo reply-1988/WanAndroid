@@ -1,4 +1,4 @@
-package reply_1988.wanandroid.readLater;
+package reply_1988.wanandroid.search;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -20,39 +20,41 @@ import java.util.List;
 
 import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
-import reply_1988.wanandroid.data.model.ArticleDetailData;
+import reply_1988.wanandroid.data.model.SearchDetailData;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
-import reply_1988.wanandroid.interfaces.OnCancelReadLaterClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
-import reply_1988.wanandroid.interfaces.OnReadLaterClickedListener;
 
-
-public class ReadLaterFragment extends Fragment implements ReadLaterContract.View{
-
-    private static final String ARG_COLUMN_COUNT = "column-count";
+/**
+ * A simple {@link Fragment} subclass.
+ * Activities that contain this fragment must implement the
+ * Use the {@link SearchFragment#newInstance} factory method to
+ * create an instance of this fragment.
+ */
+public class SearchFragment extends Fragment implements SearchContract.View{
+    private static final String ARG_SEARCH_CONTENT = "search_content";
     public static final String ARTICLE_URL = "articleUrl";
 
     private int mColumnCount = 1;
-    private ReadLaterContract.Presenter mPresenter;
-    private ReadLaterAdapter mAdapter;
+    private SearchContract.Presenter mPresenter;
+    private SearchAdapter mAdapter;
     private View mView;
     private int page = 0;
-
-    private RecyclerView recyclerView;
+    private String searchContent = "";
+    private SearchAdapter mSearchAdapter;
+    private RecyclerView mRecyclerView;
 
     /**
      * Mandatory empty constructor for the fragment manager to instantiate the
      * fragment (e.g. upon screen orientation changes).
      */
-    public ReadLaterFragment() {
+    public SearchFragment() {
     }
 
-
-    public static ReadLaterFragment newInstance(int columnCount) {
-        ReadLaterFragment fragment = new ReadLaterFragment();
+    public static SearchFragment newInstance(String searchContent) {
+        SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
-        args.putInt(ARG_COLUMN_COUNT, columnCount);
+        args.putString(ARG_SEARCH_CONTENT, searchContent);
         fragment.setArguments(args);
         return fragment;
     }
@@ -62,10 +64,10 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
+            searchContent = getArguments().getString(ARG_SEARCH_CONTENT);
         }
-        mPresenter = new ReadLaterPresenter(this);
-
+        mPresenter = new SearchPresenter(this);
+        mSearchAdapter = new SearchAdapter(new ArrayList<SearchDetailData>(0));
     }
 
     @Override
@@ -78,7 +80,6 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        //判断view是否从Fragment中销毁，没有则返回这个view，并将其从parentView中删除
         if (mView != null) {
             ViewGroup parent = (ViewGroup) mView.getParent();
             if (parent != null) {
@@ -86,22 +87,21 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
             }
             return mView;
         }
-        mView = inflater.inflate(R.layout.readlater_item_list, container, false);
-        recyclerView = mView.findViewById(R.id.list);
+        mView = inflater.inflate(R.layout.fragment_search, container, false);
+        mRecyclerView = mView.findViewById(R.id.list);
 
-        mPresenter.getArticles(0, false);
+        mPresenter.getQueryData(0, searchContent, false);
 
-        Log.d("测试！！！！", "onCreateView Favorite");
-        recyclerView.setAdapter(mAdapter);
+        mRecyclerView.setAdapter(mSearchAdapter);
         return mView;
     }
 
     @Override
-    public void showArticles(final List<ArticleDetailData> detailDataList) {
+    public void showArticles(final List<SearchDetailData> detailDataList) {
         if (mAdapter != null) {
             mAdapter.updateAdapter(detailDataList);
         } else {
-            mAdapter = new ReadLaterAdapter(detailDataList);
+            mAdapter = new SearchAdapter(detailDataList);
             //设置item被点击
             mAdapter.setOnArticleClickedListener(new OnArticleClickedListener() {
                 @Override
@@ -118,7 +118,7 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
                 @Override
                 public void onClick(int position) {
                     int id = detailDataList.get(position).getId();
-                    mPresenter.setFavorite(id);
+                    mPresenter.setCollect(id);
                     Log.d("修改图标", "修改11");
                     detailDataList.get(position).setCollect(true);
                     mAdapter.notifyItemChanged(position);
@@ -130,38 +130,39 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
                 public void onClick(int position){
 
                     int id = detailDataList.get(position).getId();
-                    mPresenter.cancelFavorite(id);
+                    mPresenter.cancelCollect(id);
                     detailDataList.get(position).setCollect(false);
                     mAdapter.notifyItemChanged(position);
                 }
             });
 
             //设置稍后阅读
-            mAdapter.setOnReadLaterClickedListener(new OnReadLaterClickedListener() {
-                @Override
-                public void onClick(int position) {
-
-                    detailDataList.get(position).setReadLater(true);
-                    mPresenter.setReadLater(detailDataList.get(position));
-                    mAdapter.notifyItemChanged(position);
-                }
-            });
+//            mAdapter.setOnReadLaterClickedListener(new OnReadLaterClickedListener() {
+//                @Override
+//                public void onClick(int position) {
+//
+//                    detailDataList.get(position).setReadLater(true);
+//                    mPresenter.setReadLater(detailDataList.get(position));
+//                    mAdapter.notifyItemChanged(position);
+//
+//                }
+//            });
 
             //设置取消稍后阅读
-            mAdapter.setOnCancelReadLaterClickedListener(new OnCancelReadLaterClickedListener() {
-                @Override
-                public void onClick(int position) {
+//            mAdapter.setOnCancelReadLaterClickedListener(new OnCancelReadLaterClickedListener() {
+//                @Override
+//                public void onClick(int position) {
+//
+//                    int id = detailDataList.get(position).getId();
+//                    detailDataList.get(position).setReadLater(false);
+//                    mPresenter.cancelReadLater(id);
+//                    mAdapter.notifyItemChanged(position);
+//
+//                }
+//            });
 
-                    int id = detailDataList.get(position).getId();
-                    detailDataList.get(position).setReadLater(false);
-                    mPresenter.cancelReadLater(id);
-                    mAdapter.notifyItemChanged(position);
-
-                }
-            });
-
-            recyclerView.setAdapter(mAdapter);
-            recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
             //设置refreshLayout
             RefreshLayout refreshLayout = mView.findViewById(R.id.refreshLayout);
@@ -170,8 +171,8 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
                 @Override
                 public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                     page = 0;
-                    mPresenter.getArticles(page, false);
-
+                    mPresenter.getQueryData(page, searchContent, false);
+                    //结束刷新画面
                     refreshLayout.finishRefresh();
                 }
             });
@@ -182,17 +183,21 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
 
                     page++;
                     Log.d("当前的页数", String.valueOf(page));
-                    mPresenter.getArticles(page, true);
-
+                    mPresenter.getQueryData(page, searchContent, true);
+                    //结束刷新画面
                     refreshLayout.finishLoadMore();
                 }
             });
         }
     }
 
+    @Override
+    public void setFavoriteButton() {
+
+    }
 
     @Override
-    public void setPresenter(ReadLaterContract.Presenter presenter) {
+    public void setPresenter(SearchContract.Presenter presenter) {
         this.mPresenter = presenter;
     }
 
@@ -206,5 +211,4 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
         super.onPause();
         mPresenter.unSubscribe();
     }
-
 }

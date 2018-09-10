@@ -28,7 +28,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".articleDetail.ArticleDetailActivity"></activity>
+        <activity android:name=".articleDetail.ArticleDetailActivity" />
         <activity
             android:name=".login.LoginActivity"
             android:label="@string/title_activity_login"
@@ -37,6 +37,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="reply_1988.wanandroid.MainActivity" />
         </activity>
+        <activity android:name=".search.SearchActivity"></activity>
     </application>
 
 </manifest>

@@ -16,6 +16,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.SearchView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -29,6 +30,7 @@ import reply_1988.wanandroid.favorite.FavoriteFragment;
 import reply_1988.wanandroid.login.LoginActivity;
 import reply_1988.wanandroid.login.LoginPresenter;
 import reply_1988.wanandroid.readLater.ReadLaterFragment;
+import reply_1988.wanandroid.search.SearchActivity;
 import reply_1988.wanandroid.timeline.TimeLineFragment;
 
 public class MainActivity extends AppCompatActivity
@@ -37,6 +39,7 @@ public class MainActivity extends AppCompatActivity
     public Toolbar mToolbar;
     public DrawerLayout mDrawerLayout;
     public NavigationView mNavigationView;
+    private SearchView mSearchView;
     public TabLayout mTabLayout;
     public ViewPager mViewPager;
     private Fragment mFragment;
@@ -69,6 +72,7 @@ public class MainActivity extends AppCompatActivity
         //设置缓存的视图数量为2
         //mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);
+        //为tab设置自定义view
         mTabLayout.getTabAt(0).setCustomView(getTabView(0));
         mTabLayout.getTabAt(1).setCustomView(getTabView(1));
         mTabLayout.getTabAt(2).setCustomView(getTabView(2));
@@ -109,7 +113,24 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-        return true;
+        MenuItem searchItem = menu.findItem(R.id.menu_search);
+        mSearchView = (SearchView) searchItem.getActionView();
+        mSearchView.onActionViewExpanded();
+        mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
+            @Override
+            public boolean onQueryTextSubmit(String query) {
+                Intent intent = new Intent(MainActivity.this, SearchActivity.class);
+                intent.putExtra(SearchActivity.SEARCH_CONTENT, query);
+                startActivity(intent);
+                return true;
+            }
+
+            @Override
+            public boolean onQueryTextChange(String newText) {
+                return false;
+            }
+        });
+        return super.onCreateOptionsMenu(menu);
     }
 
     @Override
@@ -122,6 +143,11 @@ public class MainActivity extends AppCompatActivity
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
             return true;
+        }
+
+        if (id == R.id.menu_search) {
+
+
         }
 
         return super.onOptionsItemSelected(item);
@@ -222,6 +248,5 @@ public class MainActivity extends AppCompatActivity
         }
         return view;
     }
-
 
 }

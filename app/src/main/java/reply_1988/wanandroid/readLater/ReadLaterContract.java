@@ -10,7 +10,7 @@ import reply_1988.wanandroid.data.model.FavoriteDetailData;
 public interface ReadLaterContract {
 
     interface View extends BaseView<Presenter>{
-        void showArticles(List<FavoriteDetailData> articleDetailDataList);
+        void showArticles(List<ArticleDetailData> articleDetailDataList);
     }
 
     interface Presenter extends BasePresenter{
@@ -19,5 +19,9 @@ public interface ReadLaterContract {
         void setFavorite(int id);
 
         void cancelFavorite(int id);
+
+        void setReadLater(ArticleDetailData detailData);
+
+        void cancelReadLater(int id);
     }
 }

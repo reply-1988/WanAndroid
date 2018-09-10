@@ -105,11 +105,6 @@ public class ArticleEngine implements ArticleDataSource{
     }
 
     @Override
-    public Observable<List<ArticleDetailData>> getQueryArticles(String query, int page) {
-        return null;
-    }
-
-    @Override
     public Observable<List<FavoriteDetailData>> getFavoriteArticles(boolean loadMore, int page) {
 
 

@@ -1,97 +1,56 @@
 package reply_1988.wanandroid.data.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
+public class SearchDetailData {
 
-import io.realm.RealmList;
-import io.realm.RealmObject;
-import io.realm.annotations.Ignore;
-import io.realm.annotations.PrimaryKey;
-
-public class ArticleDetailData extends RealmObject{
 
     /**
      * apkLink :
-     * author : Jetictors
-     * chapterId : 232
-     * chapterName : 入门及知识点
+     * author : 我是吸血鬼
+     * chapterId : 169
+     * chapterName : gradle
      * collect : false
      * courseId : 13
      * desc :
      * envelopePic :
      * fresh : false
-     * id : 3226
-     * link : http://www.cnblogs.com/Jetictors/tag/Kotlin/
-     * niceDate : 2018-08-06
+     * id : 2975
+     * link : https://www.jianshu.com/p/3191c3955194
+     * niceDate : 2018-06-03
      * origin :
      * projectLink :
-     * publishTime : 1533522956000
-     * superChapterId : 232
-     * superChapterName : Kotlin
+     * publishTime : 1527988609000
+     * superChapterId : 60
+     * superChapterName : 开发环境
      * tags : []
-     * title : Kotlin 系列文章
+     * title : Gradle<em class='highlight'>插件</em>开发指南
      * type : 0
      * userId : -1
      * visible : 1
      * zan : 0
      */
-    @Ignore
+
     private String apkLink;
-
     private String author;
-
     private int chapterId;
-
     private String chapterName;
-
     private boolean collect;
-
     private int courseId;
-
     private String desc;
-
     private String envelopePic;
-
     private boolean fresh;
-
-    @PrimaryKey
     private int id;
-
     private String link;
-
     private String niceDate;
-
-    @Ignore
     private String origin;
-
     private String projectLink;
-
     private long publishTime;
-
     private int superChapterId;
-
     private String superChapterName;
-
     private String title;
-
-    private boolean readLater = false;
-
-    @Ignore
     private int type;
-
-    @Ignore
     private int userId;
-
-    @Ignore
     private int visible;
-
-    @Ignore
     private int zan;
-
-
-    private String readLaterData;
-
-    private RealmList<ArticleDetailTagData> tags;
 
     public String getApkLink() {
         return apkLink;
@@ -230,11 +189,21 @@ public class ArticleDetailData extends RealmObject{
     }
 
     public String getTitle() {
-        return title;
+        return title.replaceAll("</?[^>]+>","")
+                .replace("&nbsp;","")
+                .replace(".","")
+                .replace("\"","‘")
+                .replace("'","‘");
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        //剔出了<html>的标签
+        String noHtml = title.replaceAll("</?[^>]+>","")
+                .replace("&nbsp;","")
+                .replace(".","")
+                .replace("\"","‘")
+                .replace("'","‘");
+        this.title = noHtml;
     }
 
     public int getType() {
@@ -267,29 +236,5 @@ public class ArticleDetailData extends RealmObject{
 
     public void setZan(int zan) {
         this.zan = zan;
-    }
-
-    public RealmList<ArticleDetailTagData> getTags() {
-        return tags;
-    }
-
-    public void setTags(RealmList<ArticleDetailTagData> tags) {
-        this.tags = tags;
-    }
-
-    public boolean isReadLater() {
-        return readLater;
-    }
-
-    public void setReadLater(boolean readLater) {
-        this.readLater = readLater;
-    }
-
-    public String getReadLaterData() {
-        return readLaterData;
-    }
-
-    public void setReadLaterData(String readLaterData) {
-        this.readLaterData = readLaterData;
     }
 }

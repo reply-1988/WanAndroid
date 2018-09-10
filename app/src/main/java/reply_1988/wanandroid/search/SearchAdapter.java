@@ -1,4 +1,4 @@
-package reply_1988.wanandroid.readLater;
+package reply_1988.wanandroid.search;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
@@ -11,25 +11,22 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import reply_1988.wanandroid.R;
+import java.util.List;
 
-import reply_1988.wanandroid.data.model.ArticleDetailData;
+import reply_1988.wanandroid.R;
+import reply_1988.wanandroid.data.model.SearchDetailData;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelReadLaterClickedListener;
 import reply_1988.wanandroid.interfaces.OnCategoryClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnReadLaterClickedListener;
-import reply_1988.wanandroid.timeline.TimerLineAdapter;
 
-import java.util.List;
-
-
-public class ReadLaterAdapter extends RecyclerView.Adapter<ReadLaterAdapter.ViewHolder> {
+public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
 
     private final String ARTICLE_URL = "articleUrl";
 
-    private final List<ArticleDetailData> mValues;
+    private final List<SearchDetailData> mValues;
 
     private OnArticleClickedListener mOnArticleClickedListener;
     private OnCategoryClickedListener mOnCategoryClickedListener;
@@ -40,34 +37,30 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<ReadLaterAdapter.View
 
 
 
-    public ReadLaterAdapter(List<ArticleDetailData> items) {
+    public SearchAdapter(List<SearchDetailData> items) {
         mValues = items;
     }
 
     @Override
-    public ReadLaterAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.readlater_item, parent, false);
-        return new ReadLaterAdapter.ViewHolder(view);
+                .inflate(R.layout.timeline_item, parent, false);
+        return new SearchAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final ReadLaterAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final SearchAdapter.ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.time.setText(holder.mItem.getNiceDate());
         holder.author.setText(holder.mItem.getAuthor());
-        holder.category.setText(String.format("%s/%s", holder.mItem.getSuperChapterName(), holder.mItem.getChapterName()));
+        holder.category.setText(String.format("%s", holder.mItem.getChapterName()));
         holder.title.setText(holder.mItem.getTitle());
         if (mValues.get(position).isCollect()) {
             holder.collect.setImageResource(R.drawable.ic_collect);
         } else {
             holder.collect.setImageResource(R.drawable.ic_uncollect);
         }
-        if (mValues.get(position).isReadLater()) {
-            holder.readLater.setImageResource(R.drawable.ic_readlater);
-        } else {
-            holder.readLater.setImageResource(R.drawable.ic_unreadlater);
-        }
+
     }
 
     @Override
@@ -82,7 +75,7 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<ReadLaterAdapter.View
         public AppCompatButton category;
         public AppCompatTextView author;
         public AppCompatTextView time;
-        public ArticleDetailData mItem;
+        public SearchDetailData mItem;
         public ImageButton collect;
         public ImageButton readLater;
 
@@ -118,14 +111,6 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<ReadLaterAdapter.View
                         mOnCollectClickedListener.onClick(getAdapterPosition());
                     }
                     break;
-                case R.id.readLater:
-                    if (mValues.get(getAdapterPosition()).isReadLater()) {
-                        mOnCancelReadLaterClickedListener.onClick(getAdapterPosition());
-                    } else {
-                        mOnReadLaterClickedListener.onClick(getAdapterPosition());
-                    }
-                    break;
-
             }
         }
     }
@@ -159,7 +144,7 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<ReadLaterAdapter.View
     }
 
 
-    public void updateAdapter(List<ArticleDetailData> detailDataList) {
+    public void updateAdapter(List<SearchDetailData> detailDataList) {
 
         mValues.clear();
         mValues.addAll(detailDataList);
