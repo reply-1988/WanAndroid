@@ -50,7 +50,7 @@ public class MainActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        mToolbar = (Toolbar) findViewById(R.id.toolbar);
+        mToolbar = (Toolbar) findViewById(R.id.toolBar);
         setSupportActionBar(mToolbar);
 
         mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity
         mTabLayout.getTabAt(0).setCustomView(getTabView(0));
         mTabLayout.getTabAt(1).setCustomView(getTabView(1));
         mTabLayout.getTabAt(2).setCustomView(getTabView(2));
-
 
         //获取navigationView的headView
         View headView = mNavigationView.getHeaderView(0);
@@ -110,12 +109,28 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        if (mSearchView != null) {
+
+            mSearchView.clearFocus();
+
+        }
+
+    }
+
+    @Override
+    protected void onPostResume() {
+        super.onPostResume();
+    }
+
+    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         MenuItem searchItem = menu.findItem(R.id.menu_search);
         mSearchView = (SearchView) searchItem.getActionView();
-        mSearchView.onActionViewExpanded();
+
         mSearchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
@@ -130,6 +145,7 @@ public class MainActivity extends AppCompatActivity
                 return false;
             }
         });
+
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -146,7 +162,6 @@ public class MainActivity extends AppCompatActivity
         }
 
         if (id == R.id.menu_search) {
-
 
         }
 

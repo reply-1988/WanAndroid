@@ -4,17 +4,20 @@ import java.util.List;
 
 import reply_1988.wanandroid.BasePresenter;
 import reply_1988.wanandroid.BaseView;
+import reply_1988.wanandroid.data.model.HotKeyDetailData;
 import reply_1988.wanandroid.data.model.SearchDetailData;
 
 public interface SearchContract {
 
     interface Presenter extends BasePresenter{
 
-        void getQueryData(int page, String searchContent, boolean b);
+        void getQueryData(int page, String searchContent, boolean loadMore);
 
         void setCollect(int id);
 
         void cancelCollect(int id);
+
+        void getHotKey();
 
 
     }
@@ -27,5 +30,17 @@ public interface SearchContract {
         void setFavoriteButton();
 
         void setPresenter(SearchContract.Presenter presenter);
+
+        void getHotKey(List<HotKeyDetailData> detailDataList);
+
+        void showTabLayout(boolean a);
+
+        void showNoData(boolean a);
+
+        void showRecycleView();
+
+        void setSearchContent(String searchContent);
+
+        void setClickListener(SearchAdapter searchAdapter, List<SearchDetailData> detailDataList);
     }
 }

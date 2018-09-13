@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName;
 
 import io.realm.RealmObject;
 
-public class HotKeyDetail {
+public class HotKeyDetailData {
 
     /**
      * id : 6

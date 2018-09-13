@@ -4,7 +4,7 @@ import io.reactivex.Observable;
 
 import reply_1988.wanandroid.data.model.ArticlesData;
 import reply_1988.wanandroid.data.model.FavoriteData;
-import reply_1988.wanandroid.data.model.HotKey;
+import reply_1988.wanandroid.data.model.HotKeyData;
 import reply_1988.wanandroid.data.model.LoginData;
 import reply_1988.wanandroid.data.model.SearchData;
 import retrofit2.http.Field;
@@ -22,7 +22,7 @@ public interface WanAndroidService {
 
     //获取搜索热词
     @GET(Url.HotKey)
-    Observable<HotKey> getHotKey();
+    Observable<HotKeyData> getHotKey();
 
     //搜索
     //搜索获得的json数据可以用ArticleData来解析
