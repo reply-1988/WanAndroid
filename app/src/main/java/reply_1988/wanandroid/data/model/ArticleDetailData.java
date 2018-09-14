@@ -3,12 +3,14 @@ package reply_1988.wanandroid.data.model;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
+
 import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
 
-public class ArticleDetailData extends RealmObject{
+public class ArticleDetailData extends RealmObject implements Serializable{
 
     /**
      * apkLink :

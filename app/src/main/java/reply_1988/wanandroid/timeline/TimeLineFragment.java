@@ -143,15 +143,14 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
             public void onClick(int position) {
 
                 Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
+                ArticleDetailData detailData = detailDataList.get(position);
                 String articleUrl = detailDataList.get(position).getLink();
                 String articleTitle = detailDataList.get(position).getTitle();
                 boolean articleCollect = detailDataList.get(position).isCollect();
                 boolean articleReadLater = detailDataList.get(position).isReadLater();
+                int articleId = detailDataList.get(position).getId();
 
-                intent.putExtra(ARTICLE_URL, articleUrl);
-                intent.putExtra(ARTICLE_TITLE, articleTitle);
-                intent.putExtra(ArticleDetailActivity.ARTICLE_COLLECT, articleCollect);
-                intent.putExtra(ArticleDetailActivity.ARTICLE_READlATER, articleReadLater);
+                intent.putExtra("data", detailData);
 
                 startActivity(intent);
             }

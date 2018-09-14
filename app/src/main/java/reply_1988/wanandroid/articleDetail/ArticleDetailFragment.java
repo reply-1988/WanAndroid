@@ -19,16 +19,26 @@ import com.github.clans.fab.FloatingActionButton;
 import com.just.agentweb.AgentWeb;
 
 import reply_1988.wanandroid.R;
+import reply_1988.wanandroid.data.model.ArticleDetailData;
+
+import static reply_1988.wanandroid.MyApplication.getContext;
 
 
-public class ArticleDetailFragment extends Fragment {
+public class ArticleDetailFragment extends Fragment implements ArticleDetailContract.View {
 
     private static final String ARTICLE_URL = "url";
     private static final String ARTICLE_TITLE = "title";
+    private static final String ARTICLE_COLLECT = "collect";
+    private static final String ARTICLE_READLATER = "readLater";
     private static final String DIALOG_TITLE = "分享";
+    private static final String ARTICLE_ID = "id";
 
     private String url;
     private String title;
+    private boolean isCollect;
+    private boolean isReadLater;
+    private int id;
+    private ArticleDetailData mArticleDetailData;
 
     private AgentWeb mAgentWeb;
     private FrameLayout webViewContainer;
@@ -38,18 +48,21 @@ public class ArticleDetailFragment extends Fragment {
     private FloatingActionButton copyUrl;
     private FloatingActionButton share;
 
-
+    private ArticleDetailContract.Presenter mPresenter;
 
     public ArticleDetailFragment() {
         // Required empty public constructor
     }
 
-
-    public static ArticleDetailFragment newInstance(String url, String title) {
+    public static ArticleDetailFragment newInstance(ArticleDetailData detailData) {
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARTICLE_URL, url);
-        args.putString(ARTICLE_TITLE, title);
+//        args.putString(ARTICLE_URL, url);
+//        args.putString(ARTICLE_TITLE, title);
+//        args.putBoolean(ARTICLE_COLLECT, collect);
+//        args.putBoolean(ARTICLE_READLATER, readLater);
+//        args.putInt(ARTICLE_ID, id);
+        args.putSerializable("data", detailData);
         fragment.setArguments(args);
         return fragment;
     }
@@ -58,9 +71,15 @@ public class ArticleDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            url = getArguments().getString(ARTICLE_URL);
-            title = getArguments().getString(ARTICLE_TITLE);
+
+            mArticleDetailData = (ArticleDetailData) getArguments().getSerializable("data");
+            url = mArticleDetailData.getLink();
+//            title = getArguments().getString(ARTICLE_TITLE);
+//            isCollect = getArguments().getBoolean(ARTICLE_COLLECT);
+//            isReadLater = getArguments().getBoolean(ARTICLE_READLATER);
+//            id = getArguments().getInt(ARTICLE_ID);
         }
+        setPresenter(new ArticleDetailPresenter(this));
     }
 
     @Override
@@ -72,6 +91,9 @@ public class ArticleDetailFragment extends Fragment {
 
         copyUrl = v.findViewById(R.id.copyUrl);
         collect = v.findViewById(R.id.collect);
+        collect.setLabelText(isCollect ? "取消收藏" : "收藏");
+        collect.setImageResource(isCollect ? R.drawable.ic_favorite_border_black_24dp : R.drawable.ic_favorite_black_24dp);
+
         readLater = v.findViewById(R.id.readLater);
         share = v.findViewById(R.id.share);
 
@@ -85,7 +107,12 @@ public class ArticleDetailFragment extends Fragment {
         collect.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                if (!isCollect) {
+                    mPresenter.setCollect(id);
+                    setCollect();
+                } else {
 
+                }
             }
         });
 
@@ -160,4 +187,25 @@ public class ArticleDetailFragment extends Fragment {
     }
 
 
+    @Override
+    public void setPresenter(ArticleDetailContract.Presenter presenter) {
+        mPresenter = presenter;
+    }
+
+    //设置collect的按钮和文字为收藏状态
+    @Override
+    public void setCollect() {
+        collect.setImageResource(R.drawable.ic_favorite_black_24dp);
+        collect.setLabelText("取消收藏");
+    }
+
+    @Override
+    public void cancelCollect() {
+
+    }
+
+    @Override
+    public void initView(View view) {
+
+    }
 }

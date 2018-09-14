@@ -2,6 +2,7 @@ package reply_1988.wanandroid.articleDetail;
 
 import reply_1988.wanandroid.BasePresenter;
 import reply_1988.wanandroid.BaseView;
+import reply_1988.wanandroid.data.model.ArticleDetailData;
 
 public interface ArticleDetailContract {
 
@@ -11,11 +12,18 @@ public interface ArticleDetailContract {
 
         void cancelCollect(int id);
 
-        void setReadLater(int id);
+        void setReadLater(ArticleDetailData detailData);
 
-        void cancelReadLAter(int id);
+        void cancelReadLater(int id);
     }
 
-    interface View extends BaseView<Presenter>{}
+    interface View extends BaseView<Presenter>{
+
+        void setPresenter(Presenter presenter);
+
+        void setCollect();
+
+        void cancelCollect();
+    }
 
 }

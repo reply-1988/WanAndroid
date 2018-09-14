@@ -8,6 +8,7 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import reply_1988.wanandroid.data.engine.FavoriteEngine;
 import reply_1988.wanandroid.data.engine.ReadLaterEngine;
+import reply_1988.wanandroid.data.model.ArticleDetailData;
 import reply_1988.wanandroid.data.model.FavoriteData;
 
 public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
@@ -46,7 +47,7 @@ public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
                     @Override
                     public void onNext(FavoriteData favoriteData) {
                         if (favoriteData.getErrorCode() == 0) {
-
+                            mView.setCollect();
                         } else {
 
                         }
@@ -67,16 +68,37 @@ public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
 
     @Override
     public void cancelCollect(int id) {
+        Disposable disposable = mFavoriteEngine.cancelFavorite(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<FavoriteData>() {
+                    @Override
+                    public void onNext(FavoriteData data ) {
+                        if (data.getErrorCode() == 0) {
+
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void setReadLater(ArticleDetailData detailData) {
 
     }
 
     @Override
-    public void setReadLater(int id) {
-
-    }
-
-    @Override
-    public void cancelReadLAter(int id) {
+    public void cancelReadLater(int id) {
 
     }
 }
