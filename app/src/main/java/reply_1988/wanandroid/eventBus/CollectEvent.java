@@ -1,6 +1,5 @@
 package reply_1988.wanandroid.eventBus;
 
-public class MessageEvent {
-
+public class CollectEvent {
 
 }

@@ -1,6 +1,12 @@
 package reply_1988.wanandroid.articleDetail;
 
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+
+import android.print.PrinterId;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,35 +15,41 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.FrameLayout;
 
+import com.github.clans.fab.FloatingActionButton;
 import com.just.agentweb.AgentWeb;
 
 import reply_1988.wanandroid.R;
 
 
 public class ArticleDetailFragment extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private static final String ARTICLE_URL = "url";
+    private static final String ARTICLE_TITLE = "title";
+    private static final String DIALOG_TITLE = "分享";
+
+    private String url;
+    private String title;
 
     private AgentWeb mAgentWeb;
     private FrameLayout webViewContainer;
+
+    private FloatingActionButton collect;
+    private FloatingActionButton readLater;
+    private FloatingActionButton copyUrl;
+    private FloatingActionButton share;
+
 
 
     public ArticleDetailFragment() {
         // Required empty public constructor
     }
 
-    // TODO: Rename and change types and number of parameters
-    public static ArticleDetailFragment newInstance(String param1, String param2) {
+
+    public static ArticleDetailFragment newInstance(String url, String title) {
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARTICLE_URL, url);
+        args.putString(ARTICLE_TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -46,25 +58,67 @@ public class ArticleDetailFragment extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            url = getArguments().getString(ARTICLE_URL);
+            title = getArguments().getString(ARTICLE_TITLE);
         }
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View v = inflater.inflate(R.layout.fragment_article_detail, container, false);
         webViewContainer = v.findViewById(R.id.webView_container);
-        openArticle(mParam1);
+
+        copyUrl = v.findViewById(R.id.copyUrl);
+        collect = v.findViewById(R.id.collect);
+        readLater = v.findViewById(R.id.readLater);
+        share = v.findViewById(R.id.share);
+
+        copyUrl.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                copyUrl();
+            }
+        });
+
+        collect.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_SEND);
+                intent.setType("text/plain");
+                intent.putExtra(Intent.EXTRA_TITLE, title);
+                intent.putExtra(Intent.EXTRA_TEXT, title + "\n" + url);
+
+                intent = Intent.createChooser(intent, DIALOG_TITLE);
+                startActivity(intent);
+
+            }
+        });
+
+        readLater.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
+        openArticle(url);
         return v;
     }
 
     private void openArticle(String url) {
 
         mAgentWeb = AgentWeb.with(this)
-                .setAgentWebParent((FrameLayout) webViewContainer, new FrameLayout.LayoutParams(-1, -1))
+                .setAgentWebParent(webViewContainer, new FrameLayout.LayoutParams(-1, -1))
                 .useDefaultIndicator()
                 .createAgentWeb()
                 .ready()
@@ -98,4 +152,12 @@ public class ArticleDetailFragment extends Fragment {
         mAgentWeb.getWebLifeCycle().onDestroy();
         super.onDestroyView();
     }
+
+    private void copyUrl() {
+        ClipboardManager clipboardManager = (ClipboardManager) getContext().getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clipData = ClipData.newPlainText("simpleText", url);
+        clipboardManager.setPrimaryClip(clipData);
+    }
+
+
 }

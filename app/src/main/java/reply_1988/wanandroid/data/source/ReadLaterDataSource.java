@@ -15,4 +15,6 @@ public interface ReadLaterDataSource {
 
     Observable cancelReadLater(int id);
 
+    void checkReadLater(ArticleDetailData detailData);
+
 }

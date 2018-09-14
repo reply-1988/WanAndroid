@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity implements LoginContract.Vi
         setPresenter(new LoginPresenter(this, new LoginEngine(mLoginRemoteSource, mLoginLocalSource)));
 
         setContentView(R.layout.activity_login);
-        setupActionBar();
+//        setupActionBar();
 
         resumeUserMsg();
 

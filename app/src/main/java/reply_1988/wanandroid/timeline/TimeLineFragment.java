@@ -29,11 +29,13 @@ import reply_1988.wanandroid.interfaces.OnCancelReadLaterClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnReadLaterClickedListener;
 
+import static reply_1988.wanandroid.articleDetail.ArticleDetailActivity.ARTICLE_TITLE;
+import static reply_1988.wanandroid.articleDetail.ArticleDetailActivity.ARTICLE_URL;
+
 public class TimeLineFragment extends Fragment implements TimeLineContract.View{
 
 
     private static final String ARG_COLUMN_COUNT = "column-count";
-    public static final String ARTICLE_URL = "articleUrl";
 
     private int mColumnCount = 1;
     private TimeLineContract.Presenter mPresenter;
@@ -103,63 +105,7 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
         } else {
             mAdapter = new TimerLineAdapter(detailDataList);
             //设置item被点击
-            mAdapter.setOnArticleClickedListener(new OnArticleClickedListener() {
-                @Override
-                public void onClick(int position) {
-                    Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
-                    String articleUrl = detailDataList.get(position).getLink();
-                    intent.putExtra(ARTICLE_URL, articleUrl);
-                    startActivity(intent);
-                }
-            });
-
-            //设置收藏按钮被点击
-            mAdapter.setOnCollectClickedListener(new OnCollectClickedListener() {
-                @Override
-                public void onClick(int position) {
-                    int id = detailDataList.get(position).getId();
-                    mPresenter.setFavorite(id);
-                    Log.d("修改图标", "修改11");
-                    detailDataList.get(position).setCollect(true);
-                    mAdapter.notifyItemChanged(position);
-                }
-            });
-            //收藏按钮再次点击取消
-            mAdapter.setOnCancelCollectClickedListener(new OnCancelCollectClickedListener() {
-                @Override
-                public void onClick(int position){
-
-                    int id = detailDataList.get(position).getId();
-                    mPresenter.cancelFavorite(id);
-                    detailDataList.get(position).setCollect(false);
-                    mAdapter.notifyItemChanged(position);
-                }
-            });
-
-            //设置稍后阅读
-            mAdapter.setOnReadLaterClickedListener(new OnReadLaterClickedListener() {
-                @Override
-                public void onClick(int position) {
-
-                    detailDataList.get(position).setReadLater(true);
-                    mPresenter.setReadLater(detailDataList.get(position));
-                    mAdapter.notifyItemChanged(position);
-
-                }
-            });
-
-            //设置取消稍后阅读
-            mAdapter.setOnCancelReadLaterClickedListener(new OnCancelReadLaterClickedListener() {
-                @Override
-                public void onClick(int position) {
-
-                    int id = detailDataList.get(position).getId();
-                    detailDataList.get(position).setReadLater(false);
-                    mPresenter.cancelReadLater(id);
-                    mAdapter.notifyItemChanged(position);
-
-                }
-            });
+            setOnClick(detailDataList);
 
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -191,9 +137,73 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
         }
     }
 
-    @Override
-    public void setFavoriteButton() {
+    private void setOnClick(final List<ArticleDetailData> detailDataList) {
+        mAdapter.setOnArticleClickedListener(new OnArticleClickedListener() {
+            @Override
+            public void onClick(int position) {
 
+                Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
+                String articleUrl = detailDataList.get(position).getLink();
+                String articleTitle = detailDataList.get(position).getTitle();
+                boolean articleCollect = detailDataList.get(position).isCollect();
+                boolean articleReadLater = detailDataList.get(position).isReadLater();
+
+                intent.putExtra(ARTICLE_URL, articleUrl);
+                intent.putExtra(ARTICLE_TITLE, articleTitle);
+                intent.putExtra(ArticleDetailActivity.ARTICLE_COLLECT, articleCollect);
+                intent.putExtra(ArticleDetailActivity.ARTICLE_READlATER, articleReadLater);
+
+                startActivity(intent);
+            }
+        });
+
+        //设置收藏按钮被点击
+        mAdapter.setOnCollectClickedListener(new OnCollectClickedListener() {
+            @Override
+            public void onClick(int position) {
+                int id = detailDataList.get(position).getId();
+                mPresenter.setFavorite(id);
+                Log.d("修改图标", "修改11");
+                detailDataList.get(position).setCollect(true);
+                mAdapter.notifyItemChanged(position);
+            }
+        });
+        //收藏按钮再次点击取消
+        mAdapter.setOnCancelCollectClickedListener(new OnCancelCollectClickedListener() {
+            @Override
+            public void onClick(int position){
+
+                int id = detailDataList.get(position).getId();
+                mPresenter.cancelFavorite(id);
+                detailDataList.get(position).setCollect(false);
+                mAdapter.notifyItemChanged(position);
+            }
+        });
+
+        //设置稍后阅读
+        mAdapter.setOnReadLaterClickedListener(new OnReadLaterClickedListener() {
+            @Override
+            public void onClick(int position) {
+
+                detailDataList.get(position).setReadLater(true);
+                mPresenter.setReadLater(detailDataList.get(position));
+                mAdapter.notifyItemChanged(position);
+
+            }
+        });
+
+        //设置取消稍后阅读
+        mAdapter.setOnCancelReadLaterClickedListener(new OnCancelReadLaterClickedListener() {
+            @Override
+            public void onClick(int position) {
+
+                int id = detailDataList.get(position).getId();
+                detailDataList.get(position).setReadLater(false);
+                mPresenter.cancelReadLater(id);
+                mAdapter.notifyItemChanged(position);
+
+            }
+        });
     }
 
     @Override

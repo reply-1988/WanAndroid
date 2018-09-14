@@ -84,6 +84,27 @@ public class ReadLaterLocalSource implements ReadLaterDataSource {
         });
     }
 
+    //检查拥有该id的文章是否在稍后阅读的数据库中
+    @Override
+    public void checkReadLater(final ArticleDetailData detailData) {
+
+
+                Realm realm = Realm.getInstance(RealmHelper.getConfiguration("readLater.realm"));
+                realm.executeTransaction(new Realm.Transaction() {
+                    @Override
+                    public void execute(Realm realm) {
+                        RealmResults<ArticleDetailData> realmResults = realm.where(ArticleDetailData.class)
+                                .equalTo("id", detailData.getId())
+                                .findAll();
+                        if (realmResults.size() == 0) {
+                            detailData.setReadLater(false);
+                        } else {
+                            detailData.setReadLater(true);
+                        }
+                    }
+                });
+            }
+
     private String formatDate(Date date) {
 
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);

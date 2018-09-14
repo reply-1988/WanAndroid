@@ -37,7 +37,7 @@ public class ReadLaterPresenter implements ReadLaterContract.Presenter {
         Disposable disposable = mReadLaterEngine.getReadLaterList()
                 .subscribeOn(io.reactivex.schedulers.Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                //使用subscribeOn返回当前订阅的观察者
+                //使用subscribeWith返回当前订阅的观察者
                 .subscribeWith(new DisposableObserver<List<ArticleDetailData>>() {
                     @Override
                     public void onNext(List<ArticleDetailData> articleDetailData) {

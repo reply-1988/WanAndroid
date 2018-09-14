@@ -23,12 +23,12 @@ public interface TimeLineContract {
 
         void cancelReadLater(int id);
 
+
     }
 
     interface View extends BaseView<Presenter> {
 
         void showArticles(List<ArticleDetailData> articleDetailDataList);
 
-        void setFavoriteButton();
     }
 }

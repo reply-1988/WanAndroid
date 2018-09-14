@@ -33,4 +33,10 @@ public class ReadLaterEngine implements ReadLaterDataSource {
 
         return mLocalSource.cancelReadLater(id);
     }
+
+    @Override
+    public void checkReadLater(ArticleDetailData detailData) {
+
+       mLocalSource.checkReadLater(detailData);
+    }
 }

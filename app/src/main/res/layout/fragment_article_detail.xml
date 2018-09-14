@@ -32,18 +32,23 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_favorite_black_24dp"
+            android:id="@+id/collect"
             app:fab_colorNormal="#94e4e4"
             app:fab_label="收藏"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            />
+            android:src="@drawable/ic_books"
+            android:id="@+id/readLater"
+            app:fab_colorNormal="#94e4e4"
+            app:fab_label="稍后阅读"/>
 
         <com.github.clans.fab.FloatingActionButton
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:src="@drawable/ic_content_copy_black_24dp"
+            android:id="@+id/copyUrl"
             app:fab_colorNormal="#94e4e4"
             app:fab_label="复制链接"/>
 
