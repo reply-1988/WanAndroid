@@ -1,6 +1,8 @@
 package reply_1988.wanandroid.articleDetail;
 
 
+import java.io.Serializable;
+
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -75,7 +77,7 @@ public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
                     @Override
                     public void onNext(FavoriteData data ) {
                         if (data.getErrorCode() == 0) {
-
+                            mView.cancelCollect();
                         }
                     }
 
@@ -94,11 +96,49 @@ public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
 
     @Override
     public void setReadLater(ArticleDetailData detailData) {
+        Disposable disposable = (Disposable) mReadLaterEngine.setReadLater(detailData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver() {
+                    @Override
+                    public void onNext(Object o) {
+                        mView.setReadLater();
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 
     @Override
     public void cancelReadLater(int id) {
+        Disposable disposable = (Disposable) mReadLaterEngine.cancelReadLater(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver() {
+                    @Override
+                    public void onNext(Object o) {
+                        mView.cancelReadLater();
+                    }
 
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeDisposable.add(disposable);
     }
 }

@@ -15,6 +15,7 @@ public interface ArticleDetailContract {
         void setReadLater(ArticleDetailData detailData);
 
         void cancelReadLater(int id);
+
     }
 
     interface View extends BaseView<Presenter>{
@@ -24,6 +25,10 @@ public interface ArticleDetailContract {
         void setCollect();
 
         void cancelCollect();
+
+        void setReadLater();
+
+        void cancelReadLater();
     }
 
 }

@@ -93,8 +93,6 @@ public class ArticleDetailData extends RealmObject implements Serializable{
 
     private String readLaterData;
 
-    private RealmList<ArticleDetailTagData> tags;
-
     public String getApkLink() {
         return apkLink;
     }
@@ -269,14 +267,6 @@ public class ArticleDetailData extends RealmObject implements Serializable{
 
     public void setZan(int zan) {
         this.zan = zan;
-    }
-
-    public RealmList<ArticleDetailTagData> getTags() {
-        return tags;
-    }
-
-    public void setTags(RealmList<ArticleDetailTagData> tags) {
-        this.tags = tags;
     }
 
     public boolean isReadLater() {

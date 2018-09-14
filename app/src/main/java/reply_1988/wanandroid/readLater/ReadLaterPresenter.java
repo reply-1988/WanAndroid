@@ -41,7 +41,7 @@ public class ReadLaterPresenter implements ReadLaterContract.Presenter {
                 .subscribeWith(new DisposableObserver<List<ArticleDetailData>>() {
                     @Override
                     public void onNext(List<ArticleDetailData> articleDetailData) {
-                        articleDetailData.get(0).setApkLink("www.baidu.com");
+
                         mView.showArticles(articleDetailData);
 
                     }
