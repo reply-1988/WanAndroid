@@ -70,7 +70,6 @@ public class MainActivity extends AppCompatActivity
         mViewPager.setAdapter(viewPagerAdapter);
 
         //设置缓存的视图数量为2
-        //mViewPager.setOffscreenPageLimit(2);
         mTabLayout.setupWithViewPager(mViewPager);
         //为tab设置自定义view
         mTabLayout.getTabAt(0).setCustomView(getTabView(0));
@@ -212,6 +211,8 @@ public class MainActivity extends AppCompatActivity
                 case 2:
                     mFragment = ReadLaterFragment.newInstance(1);
                     break;
+                default:
+                    break;
             }
             return mFragment;
 
@@ -237,6 +238,8 @@ public class MainActivity extends AppCompatActivity
                 case 2:
                     returnString = "稍后阅读";
                     break;
+                default:
+                    break;
             }
             return returnString;
         }
@@ -259,6 +262,8 @@ public class MainActivity extends AppCompatActivity
             case 2:
                 textView.setText("稍后阅读");
                 imageView.setImageResource(R.drawable.ic_readlater);
+                break;
+            default:
                 break;
         }
         return view;

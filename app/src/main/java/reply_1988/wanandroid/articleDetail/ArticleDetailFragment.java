@@ -26,12 +26,7 @@ import reply_1988.wanandroid.data.model.ArticleDetailData;
 
 public class ArticleDetailFragment extends Fragment implements ArticleDetailContract.View {
 
-    private static final String ARTICLE_URL = "url";
-    private static final String ARTICLE_TITLE = "title";
-    private static final String ARTICLE_COLLECT = "collect";
-    private static final String ARTICLE_READLATER = "readLater";
     private static final String DIALOG_TITLE = "分享";
-    private static final String ARTICLE_ID = "id";
 
     private String url;
     private String title;
@@ -59,11 +54,7 @@ public class ArticleDetailFragment extends Fragment implements ArticleDetailCont
     public static ArticleDetailFragment newInstance(ArticleDetailData detailData) {
         ArticleDetailFragment fragment = new ArticleDetailFragment();
         Bundle args = new Bundle();
-//        args.putString(ARTICLE_URL, url);
-//        args.putString(ARTICLE_TITLE, title);
-//        args.putBoolean(ARTICLE_COLLECT, collect);
-//        args.putBoolean(ARTICLE_READLATER, readLater);
-//        args.putInt(ARTICLE_ID, id);
+
         args.putSerializable("data", detailData);
         fragment.setArguments(args);
         return fragment;
@@ -80,10 +71,6 @@ public class ArticleDetailFragment extends Fragment implements ArticleDetailCont
             isCollect = mArticleDetailData.isCollect();
             isReadLater = mArticleDetailData.isReadLater();
             id = mArticleDetailData.getId();
-//            title = getArguments().getString(ARTICLE_TITLE);
-//            isCollect = getArguments().getBoolean(ARTICLE_COLLECT);
-//            isReadLater = getArguments().getBoolean(ARTICLE_READLATER);
-//            id = getArguments().getInt(ARTICLE_ID);
         }
         setPresenter(new ArticleDetailPresenter(this));
     }

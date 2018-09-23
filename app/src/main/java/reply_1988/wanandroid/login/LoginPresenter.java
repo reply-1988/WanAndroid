@@ -7,6 +7,8 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import reply_1988.wanandroid.data.engine.LoginEngine;
 import reply_1988.wanandroid.data.model.LoginData;
+import reply_1988.wanandroid.data.source.local.LoginLocalSource;
+import reply_1988.wanandroid.data.source.remote.LoginRemoteSource;
 
 public class LoginPresenter implements LoginContract.Presenter {
 
@@ -14,11 +16,11 @@ public class LoginPresenter implements LoginContract.Presenter {
     private LoginEngine mLoginEngine;
     private CompositeDisposable mCompositeDisposable;
 
-    public LoginPresenter(LoginContract.View view, LoginEngine loginEngine) {
+    public LoginPresenter(LoginContract.View view) {
 
         mView = view;
-        mLoginEngine = loginEngine;
-        this.mView.setPresenter(this);
+        mLoginEngine = new LoginEngine(LoginRemoteSource.getInstance(), LoginLocalSource.getInstance());
+        mView.setPresenter(this);
         mCompositeDisposable = new CompositeDisposable();
     }
 

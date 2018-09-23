@@ -25,5 +25,6 @@ public interface LoginContract {
         void getRequestResult(Boolean success);
 
         void resumeUserMsg();
+
     }
 }

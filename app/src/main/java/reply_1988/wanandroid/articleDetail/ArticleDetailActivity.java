@@ -14,9 +14,6 @@ public class ArticleDetailActivity extends AppCompatActivity {
 
     public static final String ARTICLE_URL = "articleUrl";
     public static final String ARTICLE_TITLE = "articleTitle";
-    public static final String ARTICLE_COLLECT = "articleCollect";
-    public static final String ARTICLE_READlATER = "articleReadLater";
-    public static final String ARTICLE_ID = "articleId";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -24,11 +21,7 @@ public class ArticleDetailActivity extends AppCompatActivity {
         setContentView(R.layout.activity_article_detail);
 
         Intent intent = getIntent();
-//        String articleUrl = intent.getStringExtra(ARTICLE_URL);
-//        String articleTitle = intent.getStringExtra(ARTICLE_TITLE);
-//        boolean collect = intent.getBooleanExtra(ARTICLE_COLLECT, false);
-//        boolean readLater = intent.getBooleanExtra(ARTICLE_READlATER, false);
-//        int id = intent.getIntExtra(ARTICLE_ID, -1);
+
         ArticleDetailData detailData = (ArticleDetailData) intent.getSerializableExtra("data");
 
         FragmentManager fm = getSupportFragmentManager();
