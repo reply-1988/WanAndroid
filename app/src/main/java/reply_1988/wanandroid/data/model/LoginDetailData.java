@@ -11,13 +11,13 @@ public class LoginDetailData extends RealmObject {
 
     /**
      * collectIds : [3290]
-     * email : diding1997@qq.com
+     * email :
      * icon :
      * id : 8575
-     * password : waz0612521
+     * password :
      * token :
      * type : 0
-     * username : WAZ-reply
+     * username :
      */
 
     private String email;

@@ -43,6 +43,8 @@ public class LoginRemoteSource implements LoginDataSource {
                         .create(WanAndroidService.class)
                         .getRegisterData(username, password, password);
                 break;
+            default:
+                break;
         }
 
         assert loginDataObservable != null;

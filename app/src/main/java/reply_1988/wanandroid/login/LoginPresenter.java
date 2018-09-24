@@ -51,10 +51,12 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                         if (loginData.getErrorCode() != 0) {
                             mView.showProgress(false);
-                            mView.showLoginError(loginData.getErrorMsg());
-
+                            mView.showError(loginData.getErrorMsg());
+                            mView.changeLoginState(false);
                         } else {
                             mView.saveUserMsg(loginData.getData());
+                            mView.showProgress(true);
+                            mView.changeLoginState(true);
                             mView.startMainActivity();
                         }
                     }
@@ -66,7 +68,6 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                     @Override
                     public void onComplete() {
-                        mView.showProgress(false);
 
                     }
                 });

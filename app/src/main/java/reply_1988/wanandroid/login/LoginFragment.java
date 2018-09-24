@@ -10,6 +10,8 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TextInputEditText;
+import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
 import android.text.TextUtils;
 import android.view.KeyEvent;
@@ -33,14 +35,18 @@ import reply_1988.wanandroid.data.model.LoginDetailData;
  * Time:2018/9/23 15:15
  * Description:This is LoginFragment
  */
-public class LoginFragment extends Fragment implements LoginContract.View{
+public class LoginFragment extends Fragment implements LoginContract.View, View.OnClickListener{
 
-    private AutoCompleteTextView mUsernameView;
-    private EditText mPasswordView;
+    private TextInputEditText mUsernameView;
+    private TextInputEditText mPasswordView;
+    private TextInputLayout mUsernameInputLayout;
+    private TextInputLayout mPasswordLayout;
     private View mProgressView;
     private View mLoginFormView;
     private CheckBox mCheckBoxPassword;
     private CheckBox mCheckBoxLogin;
+    private Button mLoginButton;
+    private Button mRegisterButton;
 
 
     private LoginContract.Presenter mLoginPresenter;
@@ -51,15 +57,32 @@ public class LoginFragment extends Fragment implements LoginContract.View{
     private String password;
     private Boolean directLogin;
     private Boolean rememberPassword;
+    private Boolean firstLogin;
+    private Boolean isLogin;
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
         setPresenter(new LoginPresenter(this));
-        initView(v);
         resumeUserMsg();
+        initView(v);
+
+        if (isLogin) {
+            startMainActivity();
+        }
         return v;
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        mLoginPresenter.unSubscribe();
+    }
+
+    public static LoginFragment getInstance() {
+
+        return new LoginFragment();
     }
 
     @Override
@@ -73,6 +96,15 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         mPasswordView = v.findViewById(R.id.password);
         mCheckBoxLogin = v.findViewById(R.id.direct_login);
         mCheckBoxPassword = v.findViewById(R.id.remember_password);
+        mLoginButton = v.findViewById(R.id.sign_in_button);
+        mLoginButton.setOnClickListener(this);
+
+        mRegisterButton = v.findViewById(R.id.register_button);
+        mRegisterButton.setOnClickListener(this);
+        mLoginFormView = v.findViewById(R.id.login_form);
+        mProgressView = v.findViewById(R.id.register_progress);
+        mUsernameInputLayout = v.findViewById(R.id.layout_user);
+        mPasswordLayout = v.findViewById(R.id.layout_password);
         mPasswordView.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView textView, int id, KeyEvent keyEvent) {
@@ -83,19 +115,16 @@ public class LoginFragment extends Fragment implements LoginContract.View{
                 return false;
             }
         });
-        resumeUserMsg();
-        mUsernameView.setText(username);
-        mPasswordView.setText(password);
 
-        Button mEmailSignInButton = v.findViewById(R.id.sign_in_button);
-        mEmailSignInButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                attemptLogin();
-            }
-        });
-        mLoginFormView = v.findViewById(R.id.login_form);
-        mProgressView = v.findViewById(R.id.login_progress);
+        if (rememberPassword) {
+            mPasswordView.setText(password);
+        }
+        mUsernameView.setText(username);
+        if (directLogin) {
+            attemptLogin();
+        }
+
+
     }
 
     /**
@@ -126,9 +155,12 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         });
     }
 
+    /**
+     * @param errorMsg 错误信息
+     * 显示登录错误
+     */
     @Override
-    public void showLoginError(String errorMsg) {
-
+    public void showError(String errorMsg) {
         Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
     }
 
@@ -144,6 +176,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         password = detailData.getPassword();
         rememberPassword = mCheckBoxPassword.isChecked();
         directLogin = mCheckBoxLogin.isChecked();
+        firstLogin = false;
 
         SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
         sp.edit().putInt("userID", userID).apply();
@@ -151,6 +184,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         sp.edit().putString("password", password).apply();
         sp.edit().putBoolean("directLogin", directLogin).apply();
         sp.edit().putBoolean("rememberPassword", rememberPassword).apply();
+        sp.edit().putBoolean("firstLogin", firstLogin).apply();
     }
 
     /**
@@ -164,6 +198,22 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         password = sp.getString("password", "");
         directLogin = sp.getBoolean("directLogin",false);
         rememberPassword = sp.getBoolean("rememberPassword", false);
+        firstLogin = sp.getBoolean("firstLogin", true);
+        isLogin = sp.getBoolean("isLogin", false);
+    }
+
+    /**
+     * @param isLogin 是否登陆成功
+     *  根据是否登陆状态在shared Preference中存储对应的值从而在其他Activity中使用
+     */
+    @Override
+    public void changeLoginState(Boolean isLogin) {
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (isLogin) {
+            sp.edit().putBoolean("isLogin", true).apply();
+        } else {
+            sp.edit().putBoolean("isLogin", false).apply();
+        }
     }
 
     /**
@@ -200,7 +250,7 @@ public class LoginFragment extends Fragment implements LoginContract.View{
 
         // Check for a valid password, if the user entered one.
         if (!TextUtils.isEmpty(password) && !isPasswordValid(password)) {
-            mPasswordView.setError(getString(R.string.error_invalid_password));
+            mPasswordLayout.setError(getString(R.string.error_invalid_password));
             focusView = mPasswordView;
             cancel = true;
         }
@@ -208,11 +258,11 @@ public class LoginFragment extends Fragment implements LoginContract.View{
         // Check for a valid username address.
 
         if (TextUtils.isEmpty(username)) {
-            mUsernameView.setError(getString(R.string.error_field_required));
+            mUsernameInputLayout.setError(getString(R.string.error_field_required));
             focusView = mUsernameView;
             cancel = true;
-        } else if (!isEmailValid(username)) {
-            mUsernameView.setError(getString(R.string.error_invalid_email));
+        } else if (!isUsernameValid(username)) {
+            mUsernameInputLayout.setError(getString(R.string.error_invalid_user));
             focusView = mUsernameView;
             cancel = true;
         }
@@ -233,8 +283,8 @@ public class LoginFragment extends Fragment implements LoginContract.View{
      * @param username 输入的用户名
      * @return 根据网站的API变化而变化
      */
-    private boolean isEmailValid(String username) {
-        return true;
+    private boolean isUsernameValid(String username) {
+        return checkLength(username) > 5;
     }
 
     /**
@@ -242,6 +292,46 @@ public class LoginFragment extends Fragment implements LoginContract.View{
      * @return  根据网站API变化而变化
      */
     private boolean isPasswordValid(String password) {
-        return true;
+        return checkLength(password) > 5;
+    }
+
+    /**
+     * 获取字符串的长度，如果有中文，则每个中文字符计为2位
+     * @param value 指定的字符串
+     * @return 字符串的长度
+     */
+    public static int checkLength(String value) {
+        int valueLength = 0;
+        String chinese = "[\u0391-\uFFE5]";
+        /* 获取字段值的长度，如果含中文字符，则每个中文字符长度为2，否则为1 */
+        for (int i = 0; i < value.length(); i++) {
+            /* 获取一个字符 */
+            String temp = value.substring(i, i + 1);
+            /* 判断是否为中文字符 */
+            if (temp.matches(chinese)) {
+                /* 中文字符长度为2 */
+                valueLength += 2;
+            } else {
+                /* 其他字符长度为1 */
+                valueLength += 1;
+            }
+        }
+        return valueLength;
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.sign_in_button:
+                attemptLogin();
+                break;
+            case R.id.register_button:
+                getActivity().getSupportFragmentManager().beginTransaction()
+                        .replace(R.id.fragment_container, RegisterFragment.getInstance())
+                        .commit();
+                break;
+            default:
+                break;
+        }
     }
 }

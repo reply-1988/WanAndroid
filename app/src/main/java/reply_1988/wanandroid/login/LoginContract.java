@@ -16,7 +16,7 @@ public interface LoginContract {
 
         void showProgress(Boolean show);
 
-        void showLoginError(String errorMsg);
+        void showError(String errorMsg);
 
         void saveUserMsg(LoginDetailData detailData);
 
@@ -25,6 +25,8 @@ public interface LoginContract {
         void getRequestResult(Boolean success);
 
         void resumeUserMsg();
+
+        void changeLoginState(Boolean isLogin);
 
     }
 }

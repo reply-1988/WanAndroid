@@ -5,7 +5,7 @@ import java.util.List;
 public class LoginData {
 
     /**
-     * data : {"collectIds":[3290],"email":"diding1997@qq.com","icon":"","id":8575,"password":"waz0612521","token":"","type":0,"username":"WAZ-reply"}
+     * data :
      * errorCode : 0
      * errorMsg :
      */
