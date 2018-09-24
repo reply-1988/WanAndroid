@@ -63,30 +63,6 @@ public class ArticlesRemoteSource implements ArticleDataSource {
                 });
     }
 
-//    @Override
-//    public Observable<List<ArticleDetailData>> getQueryArticles(String query, int page) {
-//
-//        //因为在WanAndroidService中返回的Articles数据都是同一种类型，所以代码与第一个方法一致。
-//
-//        return RetrofitClient.getInstance()
-//                .create(WanAndroidService.class)
-//                .getArticles(page, query)
-//                //获取成功返回的数据，其ErrorCode值为0
-//                .filter(new Predicate<ArticlesData>() {
-//                    @Override
-//                    public boolean test(ArticlesData articlesData) throws Exception {
-//                        return articlesData.getErrorCode() == 0;
-//                    }
-//                })
-//                //将Articles中的Article作为List取出来
-//                .concatMap(new Function<ArticlesData, ObservableSource<List<ArticleDetailData>>>() {
-//                    @Override
-//                    public ObservableSource<List<ArticleDetailData>> apply(ArticlesData articlesData) throws Exception {
-//                        return Observable.fromIterable(articlesData.getData().getDatas()).toList().toObservable();
-//                    }
-//                });
-//    }
-
     @Override
     public Observable<List<FavoriteDetailData>> getFavoriteArticles(boolean refresh, int page) {
 

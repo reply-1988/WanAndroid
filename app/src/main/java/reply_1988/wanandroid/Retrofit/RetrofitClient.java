@@ -15,7 +15,8 @@ public class RetrofitClient {
     private static class RetrofitBuilder{
 
         private static OkHttpClient sOkHttpClient = new OkHttpClient.Builder()
-                .cookieJar(new CookieManger(MyApplication.getContext()))
+                .addInterceptor(new AddCookiesInterceptor(MyApplication.getContext()))
+                .addInterceptor(new ReceivedCookiesInterceptor(MyApplication.getContext()))
                 .build();
 
         private static Retrofit sRetrofit = new Retrofit.Builder()
