@@ -5,32 +5,32 @@ public class Url {
     /**
      * Base Url
      */
-    public static final String baseUrl = "http://www.wanandroid.com/";
+    static final String baseUrl = "http://www.wanandroid.com/";
 
     /**
      * 首页上面文章列表
      */
-    public static final String MainArticlesList = "article/list/";
+    static final String MainArticlesList = "article/list/";
 
     /**
      * 热词
      */
-    public static final String HotKey = "hotkey/json";
+    static final String HotKey = "hotkey/json";
 
     /**
      * 搜索
      */
-    public static final String Search = "article/query/";
+    static final String Search = "article/query/";
 
     /**
      * 登陆
      */
-    public static final String Login = "user/login";
+    static final String Login = "user/login";
 
     /**
      * 注册
      */
-    public static final String register = "user/register";
+    static final String register = "user/register";
 
     /**
      * 注销
@@ -40,7 +40,7 @@ public class Url {
     /**
      * 获取收藏列表
      */
-    public static final String favorite = "lg/collect/list/";
+    static final String favorite = "lg/collect/list/";
 
     /**
      * 进行收藏操作
@@ -55,11 +55,13 @@ public class Url {
     /**
      * 从收藏列表取消收藏
      */
-    public static final String cancelFavoriteFromList = "lg/uncollect/";
+    static final String cancelFavoriteFromList = "lg/uncollect/";
 
     /**
      * 获取体系数据
      */
-    public static final String KS_DATA = "tree/json";
+    static final String KS_DATA = "tree/json";
+
+    static final String KS_DETAIL_DATA = "article/list/";
 
 }

@@ -2,5 +2,5 @@ package reply_1988.wanandroid.interfaces;
 
 public interface OnKSClickListener {
 
-    void onClick();
+    void onClick(int cid);
 }

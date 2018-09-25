@@ -19,7 +19,7 @@ public interface SearchContract {
 
         void getHotKey();
 
-
+        void getKSDetailData(int page, int cid, boolean loadMore);
     }
 
     interface View extends BaseView<Presenter>{
@@ -28,8 +28,6 @@ public interface SearchContract {
         void showArticles(List<SearchDetailData> detailDataList);
 
         void setFavoriteButton();
-
-        void setPresenter(SearchContract.Presenter presenter);
 
         void getHotKey(List<HotKeyDetailData> detailDataList);
 

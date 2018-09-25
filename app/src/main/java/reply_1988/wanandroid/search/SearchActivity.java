@@ -11,26 +11,29 @@ public class SearchActivity extends AppCompatActivity {
 
     private SearchFragment mSearchFragment;
 
-    public static final String SEARCH_CONTENT = "search_content";
+    public static final String ARG_SEARCH_CONTENT = "SEARCH_CONTENT";
+    public static final String ARG_CID = "ARG_CID";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_search);
         Intent intent = getIntent();
-        String searchContent = intent.getStringExtra(SEARCH_CONTENT);
+        String searchContent = intent.getStringExtra(SearchFragment.ARG_SEARCH_CONTENT);
+        int cid = intent.getIntExtra(ARG_CID, -1);
 
         if (savedInstanceState != null) {
             mSearchFragment = (SearchFragment) getSupportFragmentManager()
                     .getFragment(savedInstanceState, SearchFragment.class.getSimpleName());
         } else {
-            mSearchFragment = SearchFragment.newInstance(searchContent);
+            mSearchFragment = SearchFragment.newInstance(searchContent, cid);
         }
 
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.fragment_container, mSearchFragment)
                 .commit();
+        new SearchPresenter(mSearchFragment);
     }
 
     @Override

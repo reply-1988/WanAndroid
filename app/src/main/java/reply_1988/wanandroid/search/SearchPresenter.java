@@ -2,6 +2,7 @@ package reply_1988.wanandroid.search;
 
 import java.util.List;
 
+import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -23,10 +24,11 @@ public class SearchPresenter implements SearchContract.Presenter {
     private FavoriteEngine mFavoriteEngine;
     private HotKeyEngine mHotKeyEngine;
 
-    public  SearchPresenter(SearchContract.View view) {
+    SearchPresenter(SearchContract.View view) {
 
         this.mSearchEngine = new SearchEngine();
         this.mView = view;
+        mView.setPresenter(this);
         this.mFavoriteEngine = new FavoriteEngine();
         this.mHotKeyEngine = new HotKeyEngine();
         mCompositeDisposable = new CompositeDisposable();
@@ -54,12 +56,10 @@ public class SearchPresenter implements SearchContract.Presenter {
                     public void onNext(List<SearchDetailData> searchDetailData) {
                         if (searchDetailData.size() != 0) {
                             mView.showArticles(searchDetailData);
-
                             mView.showRecycleView();
                         } else {
                             mView.showNoData(true);
                         }
-
                     }
 
                     @Override
@@ -150,4 +150,37 @@ public class SearchPresenter implements SearchContract.Presenter {
                 });
         mCompositeDisposable.add(disposable);
     }
+
+    @Override
+    public void getKSDetailData(int page, int cid, boolean loadMore) {
+
+        Disposable disposable = mSearchEngine.getKSDetailData(page, cid, loadMore)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<List<SearchDetailData>>() {
+                    @Override
+                    public void onNext(List<SearchDetailData> searchDetailData) {
+                        if (searchDetailData.size() != 0) {
+                            mView.showArticles(searchDetailData);
+
+                            mView.showRecycleView();
+                        } else {
+                            mView.showNoData(true);
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+
 }

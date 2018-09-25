@@ -45,15 +45,19 @@ import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
  * create an instance of this fragment.
  */
 public class SearchFragment extends Fragment implements SearchContract.View{
-    private static final String ARG_SEARCH_CONTENT = "search_content";
+
+    public static final String ARG_SEARCH_CONTENT = "SEARCH_CONTENT";
+    public static final String ARG_CID = "ARG_CID";
     public static final String ARTICLE_URL = "articleUrl";
 
     private int mColumnCount = 1;
     private SearchContract.Presenter mPresenter;
     private SearchAdapter mAdapter;
-    private View mView;
     private int page = 0;
     private String searchContent = "";
+    private int cid = -1;
+
+    private View mView;
     private SearchAdapter mSearchAdapter;
     private RecyclerView mRecyclerView;
     private TagFlowLayout mTagFlowLayout;
@@ -69,10 +73,11 @@ public class SearchFragment extends Fragment implements SearchContract.View{
     public SearchFragment() {
     }
 
-    public static SearchFragment newInstance(String searchContent) {
+    public static SearchFragment newInstance(String searchContent, int cid) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putString(ARG_SEARCH_CONTENT, searchContent);
+        args.putInt(ARG_CID, cid);
         fragment.setArguments(args);
         return fragment;
     }
@@ -83,8 +88,8 @@ public class SearchFragment extends Fragment implements SearchContract.View{
 
         if (getArguments() != null) {
             searchContent = getArguments().getString(ARG_SEARCH_CONTENT);
+            cid = getArguments().getInt(ARG_CID);
         }
-        mPresenter = new SearchPresenter(this);
         mSearchAdapter = new SearchAdapter(new ArrayList<SearchDetailData>(0));
         setHasOptionsMenu(true);
     }
@@ -115,7 +120,11 @@ public class SearchFragment extends Fragment implements SearchContract.View{
         mTagFlowLayout = mView.findViewById(R.id.tag_flowLayout);
         mFrameLayout = mView.findViewById(R.id.NoDataLayout);
 
-        mPresenter.getQueryData(0, searchContent, false);
+        if (cid == -1) {
+            mPresenter.getQueryData(0, searchContent, false);
+        } else {
+            mPresenter.getKSDetailData(0, cid, false);
+        }
 
         mRecyclerView.setAdapter(mSearchAdapter);
         return mView;
@@ -298,7 +307,8 @@ public class SearchFragment extends Fragment implements SearchContract.View{
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
-
+            default:
+                break;
         }
         return super.onOptionsItemSelected(item);
     }

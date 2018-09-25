@@ -1,19 +1,18 @@
 package reply_1988.wanandroid.knowledgesystem;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-import com.scwang.smartrefresh.layout.api.RefreshLayout;
-
 import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.data.model.KnowledgeSystemData;
 import reply_1988.wanandroid.interfaces.OnKSClickListener;
+import reply_1988.wanandroid.search.SearchActivity;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -88,8 +87,10 @@ public class KSFragment extends Fragment implements KSContract.View{
             mKSAdapter = new KSAdapter(knowledgeSystemData);
             mKSAdapter.setOnKSClickListener(new OnKSClickListener() {
                 @Override
-                public void onClick() {
-
+                public void onClick(int cid) {
+                    Intent intent = new Intent(getActivity(), SearchActivity.class);
+                    intent.putExtra(SearchActivity.ARG_CID, cid);
+                    startActivity(intent);
                 }
             });
         } else {

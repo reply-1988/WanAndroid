@@ -13,6 +13,7 @@ import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.POST;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface WanAndroidService {
 
@@ -40,7 +41,7 @@ public interface WanAndroidService {
      * 参数：页码：拼接在链接上，从0开始,k ： 搜索关键词
      * @param page 页数
      * @param SearchContent 搜索内容
-     * @return
+     * @return 搜索的文章数据
      */
     @FormUrlEncoded
     @POST(Url.Search + "{page}/json")
@@ -114,6 +115,19 @@ public interface WanAndroidService {
     @POST(Url.cancelFavoriteFromList + "{id}/json")
     Observable<FavoriteData> cancelFavoriteFromList(@Path("id") int id, @Field("originId") int originId);
 
+    /**
+     * 获取知识体系分类
+     * @return 体系数据
+     */
     @GET(Url.KS_DATA)
     Observable<KnowledgeSystemData> getKSData();
+
+    /**
+     * 获取某分类体系下的文章列表数据
+     * @param page 页码：拼接在链接上，从0开始
+     * @param cid  分类的id，二级目录的id
+     * @return 文章数据
+     */
+    @GET(Url.KS_DETAIL_DATA + "{page}/json")
+    Observable<SearchData> getKSDetailData(@Path("page") int page, @Query("cid") int cid);
 }

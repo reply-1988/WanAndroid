@@ -72,6 +72,51 @@ public class SearchEngine implements SearchDataSource {
                 });
     }
 
+    @Override
+    public Observable<List<SearchDetailData>> getKSDetailData(int page, int cid, boolean loadMore) {
+        if (page != 0 && loadMore) {
+            Observable<List<SearchDetailData>> listBefore = Observable
+                    .fromIterable(new ArrayList<>(searchDataCache.values()))
+                    .toSortedList(new Comparator<SearchDetailData>() {
+                        @Override
+                        public int compare(SearchDetailData o1, SearchDetailData o2) {
+                            if (o1.getPublishTime() > o2.getPublishTime()) {
+
+                                return -1;
+                            } else {
+                                return 1;
+                            }
+                        }
+                    }).toObservable();
+
+            Observable<List<SearchDetailData>> listAfter = mQueryRemoteSource.getKSDetailData(page, cid, loadMore);
+
+            Observable<List<SearchDetailData>> list = Observable
+                    .concat(listBefore, listAfter)
+                    .collect(new Callable<List<SearchDetailData>>() {
+                        @Override
+                        public List<SearchDetailData> call() throws Exception {
+                            return new ArrayList<>();
+                        }
+                    }, new BiConsumer<List<SearchDetailData>, List<SearchDetailData>>() {
+                        @Override
+                        public void accept(List<SearchDetailData> searchDetailData, List<SearchDetailData> searchDetailData2) throws Exception {
+                            searchDetailData.addAll(searchDetailData2);
+                            addToCache(searchDetailData, true);
+                        }
+                    }).toObservable();
+            return list;
+
+        }
+        return mQueryRemoteSource.getKSDetailData(page, cid, false)
+                .doOnNext(new Consumer<List<SearchDetailData>>() {
+                    @Override
+                    public void accept(List<SearchDetailData> searchDetailData) throws Exception {
+                        addToCache(searchDetailData, false);
+                    }
+                });
+    }
+
     private void addToCache(List<SearchDetailData> detailsData, boolean clearCache) {
 
         if (searchDataCache == null) {

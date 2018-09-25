@@ -27,7 +27,7 @@ public class KSAdapter extends RecyclerView.Adapter<KSAdapter.ViewHolder> {
 
     private OnKSClickListener mKSClickListener;
 
-    public KSAdapter(KnowledgeSystemData knowledgeSystemData) {
+    KSAdapter(KnowledgeSystemData knowledgeSystemData) {
         mKnowledgeSystemData = knowledgeSystemData;
     }
 
@@ -42,7 +42,7 @@ public class KSAdapter extends RecyclerView.Adapter<KSAdapter.ViewHolder> {
     @Override
     public void onBindViewHolder(@NonNull KSAdapter.ViewHolder holder, int position) {
         holder.mTextView.setText(mKnowledgeSystemData.getData().get(position).getName());
-        List<KSDetailData> childrenBeanList = mKnowledgeSystemData.getData().get(position).getChildren();
+        final List<KSDetailData> childrenBeanList = mKnowledgeSystemData.getData().get(position).getChildren();
 
         holder.mFlowLayout.setAdapter(new TagAdapter<KSDetailData>(childrenBeanList) {
             @Override
@@ -52,6 +52,13 @@ public class KSAdapter extends RecyclerView.Adapter<KSAdapter.ViewHolder> {
                         .inflate(R.layout.text_ks_item, parent, false);
                 textView.setText(detailData.getName());
                 return textView;
+            }
+        });
+        holder.mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
+            @Override
+            public boolean onTagClick(View view, int position, FlowLayout parent) {
+                mKSClickListener.onClick(childrenBeanList.get(position).getId());
+                return true;
             }
         });
     }
@@ -66,34 +73,27 @@ public class KSAdapter extends RecyclerView.Adapter<KSAdapter.ViewHolder> {
      * 更新体系数据
      * @param knowledgeSystemData 从服务器获取的最新体系数据
      */
-    public void update(KnowledgeSystemData knowledgeSystemData) {
+    void update(KnowledgeSystemData knowledgeSystemData) {
         mKnowledgeSystemData.getData().clear();
         mKnowledgeSystemData.getData().addAll(knowledgeSystemData.getData());
         notifyDataSetChanged();
         notifyItemRemoved(mKnowledgeSystemData.getData().size());
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    class ViewHolder extends RecyclerView.ViewHolder{
 
-        public TextView mTextView;
-        public TagFlowLayout mFlowLayout;
+        TextView mTextView;
+        TagFlowLayout mFlowLayout;
 
-        public ViewHolder(View itemView) {
+        ViewHolder(View itemView) {
 
             super(itemView);
             mTextView = itemView.findViewById(R.id.text_category);
             mFlowLayout = itemView.findViewById(R.id.flowLayout_category);
-            mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
-                @Override
-                public boolean onTagClick(View view, int position, FlowLayout parent) {
-                    mKSClickListener.onClick();
-                    return true;
-                }
-            });
         }
     }
 
-    public void setOnKSClickListener(OnKSClickListener clickListener) {
+    void setOnKSClickListener(OnKSClickListener clickListener) {
 
         mKSClickListener = clickListener;
     }
