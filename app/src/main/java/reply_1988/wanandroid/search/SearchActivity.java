@@ -31,8 +31,6 @@ public class SearchActivity extends AppCompatActivity {
                 .beginTransaction()
                 .replace(R.id.fragment_container, mSearchFragment)
                 .commit();
-
-
     }
 
     @Override

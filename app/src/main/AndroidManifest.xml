@@ -39,7 +39,9 @@
         <activity
             android:name=".search.SearchActivity"
             android:parentActivityName=".MainActivity" />
-        <activity android:name=".knowledgesystem.KSActivity"></activity>
+        <activity
+            android:name=".knowledgesystem.KSActivity"
+            android:parentActivityName=".MainActivity"/>
     </application>
 
 </manifest>

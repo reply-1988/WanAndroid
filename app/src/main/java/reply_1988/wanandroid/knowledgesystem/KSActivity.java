@@ -16,6 +16,7 @@ public class KSActivity extends AppCompatActivity {
         setContentView(R.layout.activity_ks);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FragmentManager fm = getSupportFragmentManager();
         KSFragment ksFragment = (KSFragment) fm.findFragmentById(R.id.fragment_container);
 

@@ -139,7 +139,7 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         if (id == R.id.ks) {
-            // Handle the camera action
+
             Intent intent = new Intent(this, KSActivity.class);
             startActivity(intent);
         } else if (id == R.id.nav_share) {
