@@ -143,7 +143,6 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
                 public void onRefresh(@NonNull RefreshLayout refreshLayout) {
                     page = 0;
                     mPresenter.getArticles(page, false);
-
                     refreshLayout.finishRefresh();
                 }
             });

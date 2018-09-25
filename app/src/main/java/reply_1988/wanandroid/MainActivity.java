@@ -27,6 +27,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import reply_1988.wanandroid.favorite.FavoriteFragment;
+import reply_1988.wanandroid.knowledgesystem.KSActivity;
 import reply_1988.wanandroid.login.LoginActivity;
 import reply_1988.wanandroid.login.LoginPresenter;
 import reply_1988.wanandroid.readLater.ReadLaterFragment;
@@ -137,16 +138,10 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.ks) {
             // Handle the camera action
-            Intent intent = new Intent(this, LoginActivity.class);
+            Intent intent = new Intent(this, KSActivity.class);
             startActivity(intent);
-        } else if (id == R.id.nav_gallery) {
-
-        } else if (id == R.id.nav_slideshow) {
-
-        } else if (id == R.id.nav_manage) {
-
         } else if (id == R.id.nav_share) {
 
         } else if (id == R.id.nav_send) {

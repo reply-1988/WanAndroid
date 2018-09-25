@@ -128,33 +128,6 @@ public class SearchFragment extends Fragment implements SearchContract.View{
         } else {
             mAdapter = new SearchAdapter(detailDataList);
             setClickListener(mAdapter, detailDataList);
-            //设置item被点击
-
-
-            //设置稍后阅读
-//            mAdapter.setOnReadLaterClickedListener(new OnReadLaterClickedListener() {
-//                @Override
-//                public void onClick(int position) {
-//
-//                    detailDataList.get(position).setReadLater(true);
-//                    mPresenter.setReadLater(detailDataList.get(position));
-//                    mAdapter.notifyItemChanged(position);
-//
-//                }
-//            });
-
-            //设置取消稍后阅读
-//            mAdapter.setOnCancelReadLaterClickedListener(new OnCancelReadLaterClickedListener() {
-//                @Override
-//                public void onClick(int position) {
-//
-//                    int id = detailDataList.get(position).getId();
-//                    detailDataList.get(position).setReadLater(false);
-//                    mPresenter.cancelReadLater(id);
-//                    mAdapter.notifyItemChanged(position);
-//
-//                }
-//            });
 
             mRecyclerView.setAdapter(mAdapter);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));

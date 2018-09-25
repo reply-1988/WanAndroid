@@ -5,6 +5,7 @@ import io.reactivex.Observable;
 import reply_1988.wanandroid.data.model.ArticlesData;
 import reply_1988.wanandroid.data.model.FavoriteData;
 import reply_1988.wanandroid.data.model.HotKeyData;
+import reply_1988.wanandroid.data.model.KnowledgeSystemData;
 import reply_1988.wanandroid.data.model.LoginData;
 import reply_1988.wanandroid.data.model.SearchData;
 import retrofit2.http.Field;
@@ -112,4 +113,7 @@ public interface WanAndroidService {
     @FormUrlEncoded
     @POST(Url.cancelFavoriteFromList + "{id}/json")
     Observable<FavoriteData> cancelFavoriteFromList(@Path("id") int id, @Field("originId") int originId);
+
+    @GET(Url.KS_DATA)
+    Observable<KnowledgeSystemData> getKSData();
 }
