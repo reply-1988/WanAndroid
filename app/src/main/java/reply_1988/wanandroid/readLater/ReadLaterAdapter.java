@@ -125,7 +125,11 @@ public class ReadLaterAdapter extends RecyclerView.Adapter<ReadLaterAdapter.View
                         mOnReadLaterClickedListener.onClick(getAdapterPosition());
                     }
                     break;
-
+                case R.id.btn_category:
+                    mOnCategoryClickedListener.onClick(getAdapterPosition());
+                    break;
+                default:
+                    break;
             }
         }
     }

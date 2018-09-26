@@ -62,6 +62,13 @@ public class Url {
      */
     static final String KS_DATA = "tree/json";
 
+    /**
+     * 获取某一体系类别下的文章列表数据
+     */
     static final String KS_DETAIL_DATA = "article/list/";
 
+    /**
+     * 获取某一项目分类下的文章列表数据
+     */
+    static final String CATEGORY_DATA = "project/list";
 }

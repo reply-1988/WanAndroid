@@ -15,6 +15,9 @@ import retrofit2.http.POST;
 import retrofit2.http.Path;
 import retrofit2.http.Query;
 
+/**
+ *
+ */
 public interface WanAndroidService {
 
 
@@ -130,4 +133,13 @@ public interface WanAndroidService {
      */
     @GET(Url.KS_DETAIL_DATA + "{page}/json")
     Observable<SearchData> getKSDetailData(@Path("page") int page, @Query("cid") int cid);
+
+    /**
+     * 获取某一类别下的文章列表数据
+     * @param page 页码：拼接在链接上，从0开始
+     * @param cid   分类的id，二级目录的id
+     * @return 文章数据
+     */
+    @GET(Url.CATEGORY_DATA + "{page}/json")
+    Observable<SearchData> getCatagoryData(@Path("page") int page, @Query("cid") int cid);
 }

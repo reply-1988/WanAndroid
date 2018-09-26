@@ -104,6 +104,9 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
                         mOnCollectClickedListener.onClick(getAdapterPosition());
                     }
                     break;
+                case R.id.btn_category:
+                    mOnCategoryClickedListener.onClick(getAdapterPosition());
+                    break;
                 default:
                     break;
             }

@@ -40,5 +40,7 @@ public interface SearchContract {
         void setSearchContent(String searchContent);
 
         void setClickListener(SearchAdapter searchAdapter, List<SearchDetailData> detailDataList);
+
+        void checkParameter(int page, boolean loadMore);
     }
 }

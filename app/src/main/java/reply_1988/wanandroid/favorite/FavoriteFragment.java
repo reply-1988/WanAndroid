@@ -26,7 +26,9 @@ import reply_1988.wanandroid.data.source.remote.ArticlesRemoteSource;
 
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
+import reply_1988.wanandroid.interfaces.OnCategoryClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
+import reply_1988.wanandroid.search.SearchActivity;
 
 public class FavoriteFragment extends Fragment implements FavoriteContract.View  {
 
@@ -129,6 +131,17 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
                     mPresenter.cancelFavorite(id, originId);
                     detailDataList.get(position).setCollect(false);
                     mAdapter.notifyItemChanged(position);
+                }
+            });
+
+            //设置分类点击
+            mAdapter.setOnCategoryClickedListener(new OnCategoryClickedListener() {
+                @Override
+                public void onClick(int position) {
+                    int cid = detailDataList.get(position).getChapterId();
+                    Intent intent = new Intent(getActivity(), SearchActivity.class);
+                    intent.putExtra(SearchActivity.ARG_CATEGORY_CID, cid);
+                    startActivity(intent);
                 }
             });
 

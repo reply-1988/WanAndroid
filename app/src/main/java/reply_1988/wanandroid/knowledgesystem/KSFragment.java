@@ -89,7 +89,7 @@ public class KSFragment extends Fragment implements KSContract.View{
                 @Override
                 public void onClick(int cid) {
                     Intent intent = new Intent(getActivity(), SearchActivity.class);
-                    intent.putExtra(SearchActivity.ARG_CID, cid);
+                    intent.putExtra(SearchActivity.ARG_KS_CID, cid);
                     startActivity(intent);
                 }
             });

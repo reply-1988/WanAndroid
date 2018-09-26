@@ -26,8 +26,10 @@ import reply_1988.wanandroid.data.source.remote.ArticlesRemoteSource;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelReadLaterClickedListener;
+import reply_1988.wanandroid.interfaces.OnCategoryClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnReadLaterClickedListener;
+import reply_1988.wanandroid.search.SearchActivity;
 
 import static reply_1988.wanandroid.articleDetail.ArticleDetailActivity.ARTICLE_TITLE;
 import static reply_1988.wanandroid.articleDetail.ArticleDetailActivity.ARTICLE_URL;
@@ -144,12 +146,6 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
 
                 Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
                 ArticleDetailData detailData = detailDataList.get(position);
-                String articleUrl = detailDataList.get(position).getLink();
-                String articleTitle = detailDataList.get(position).getTitle();
-                boolean articleCollect = detailDataList.get(position).isCollect();
-                boolean articleReadLater = detailDataList.get(position).isReadLater();
-                int articleId = detailDataList.get(position).getId();
-
                 intent.putExtra("data", detailData);
 
                 startActivity(intent);
@@ -201,6 +197,17 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
                 mPresenter.cancelReadLater(id);
                 mAdapter.notifyItemChanged(position);
 
+            }
+        });
+
+        //设置分类点击
+        mAdapter.setOnCategoryClickedListener(new OnCategoryClickedListener() {
+            @Override
+            public void onClick(int position) {
+                int cid = detailDataList.get(position).getChapterId();
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                intent.putExtra(SearchActivity.ARG_CATEGORY_CID, cid);
+                startActivity(intent);
             }
         });
     }
