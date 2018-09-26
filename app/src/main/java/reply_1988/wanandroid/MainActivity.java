@@ -48,6 +48,7 @@ public class MainActivity extends AppCompatActivity
     private SharedPreferences mPreferences;
     private ImageView mHeadImageView;
     private TextView mHeadTextView;
+    private TextView mImageTextView;
     private View mHeadView;
 
     @Override
@@ -60,6 +61,10 @@ public class MainActivity extends AppCompatActivity
         if (mPreferences.getInt("userID", -1) != -1) {
             String username = mPreferences.getString("username", "登录");
             mHeadTextView.setText(username);
+            mImageTextView.setText(username.substring(0, 1).toUpperCase());
+        } else {
+            mHeadTextView.setText(null);
+            mImageTextView.setText("登陆");
         }
     }
 
@@ -268,6 +273,7 @@ public class MainActivity extends AppCompatActivity
         });
         //获取headView中的文字
         mHeadTextView = mHeadView.findViewById(R.id.textView);
+        mImageTextView = mHeadView.findViewById(R.id.imageText);
     }
 
 }
