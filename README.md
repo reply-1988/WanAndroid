@@ -18,8 +18,6 @@ This app is designed with Material Design style and use MVP(Model-View-present) 
  + Support mark the articles so you can read it later.
  
  ### Screenhots
- <div><img src=https://raw.githubusercontent.com/reply-1988/img/master/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180926175840.jpg height = 30% width = 30%></div>
- <div><img src=https://raw.githubusercontent.com/reply-1988/img/master/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180926175852.jpg height = 30% width = 30%></div>
-
-
-
+![](https://raw.githubusercontent.com/reply-1988/img/master/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180926175840.jpg)
+![](https://raw.githubusercontent.com/reply-1988/img/master/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180926175846.jpg)
+![](https://raw.githubusercontent.com/reply-1988/img/master/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180926175852.jpg)
