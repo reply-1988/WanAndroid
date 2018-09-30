@@ -9,6 +9,11 @@
             android:icon="@drawable/ic_ks"
             android:title="@string/knowledgeSystem" />
 
+        <item
+            android:id="@+id/about"
+            android:icon="@drawable/ic_about"
+            android:title="@string/about" />
+
     </group>
 
     <item android:title="Communicate">

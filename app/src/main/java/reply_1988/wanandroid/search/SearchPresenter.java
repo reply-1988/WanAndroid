@@ -2,7 +2,6 @@ package reply_1988.wanandroid.search;
 
 import java.util.List;
 
-import io.reactivex.Scheduler;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.disposables.CompositeDisposable;
 import io.reactivex.disposables.Disposable;
@@ -10,10 +9,11 @@ import io.reactivex.observers.DisposableObserver;
 import io.reactivex.schedulers.Schedulers;
 import reply_1988.wanandroid.data.engine.FavoriteEngine;
 import reply_1988.wanandroid.data.engine.HotKeyEngine;
+import reply_1988.wanandroid.data.engine.ReadLaterEngine;
 import reply_1988.wanandroid.data.engine.SearchEngine;
+import reply_1988.wanandroid.data.model.ArticleDetailData;
 import reply_1988.wanandroid.data.model.FavoriteData;
 import reply_1988.wanandroid.data.model.HotKeyDetailData;
-import reply_1988.wanandroid.data.model.SearchDetailData;
 
 public class SearchPresenter implements SearchContract.Presenter {
 
@@ -22,15 +22,17 @@ public class SearchPresenter implements SearchContract.Presenter {
     private SearchContract.View mView;
     private CompositeDisposable mCompositeDisposable;
     private FavoriteEngine mFavoriteEngine;
+    private ReadLaterEngine mReadLaterEngine;
     private HotKeyEngine mHotKeyEngine;
 
     SearchPresenter(SearchContract.View view) {
 
-        this.mSearchEngine = new SearchEngine();
-        this.mView = view;
+        mSearchEngine = new SearchEngine();
+        mView = view;
         mView.setPresenter(this);
-        this.mFavoriteEngine = new FavoriteEngine();
-        this.mHotKeyEngine = new HotKeyEngine();
+        mFavoriteEngine = new FavoriteEngine();
+        mHotKeyEngine = new HotKeyEngine();
+        mReadLaterEngine = new ReadLaterEngine();
         mCompositeDisposable = new CompositeDisposable();
     }
 
@@ -50,11 +52,15 @@ public class SearchPresenter implements SearchContract.Presenter {
         Disposable disposable = mSearchEngine.getQueryData(page, searchContent, loadMore)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<List<SearchDetailData>>() {
+                .subscribeWith(new DisposableObserver<List<ArticleDetailData>>() {
 
                     @Override
-                    public void onNext(List<SearchDetailData> searchDetailData) {
+                    public void onNext(List<ArticleDetailData> searchDetailData) {
                         if (searchDetailData.size() != 0) {
+                            for (ArticleDetailData detailData:
+                                 searchDetailData) {
+                                mReadLaterEngine.checkReadLater(detailData);
+                            }
                             mView.showArticles(searchDetailData);
                             mView.showRecycleView();
                         } else {
@@ -157,16 +163,70 @@ public class SearchPresenter implements SearchContract.Presenter {
         Disposable disposable = mSearchEngine.getKSDetailData(page, cid, loadMore)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribeWith(new DisposableObserver<List<SearchDetailData>>() {
+                .subscribeWith(new DisposableObserver<List<ArticleDetailData>>() {
                     @Override
-                    public void onNext(List<SearchDetailData> searchDetailData) {
+                    public void onNext(List<ArticleDetailData> searchDetailData) {
                         if (searchDetailData.size() != 0) {
+                            for (ArticleDetailData detailData:
+                                 searchDetailData) {
+                                mReadLaterEngine.checkReadLater(detailData);
+                            }
                             mView.showArticles(searchDetailData);
 
                             mView.showRecycleView();
                         } else {
                             mView.showNoData(true);
                         }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void setReadLater(ArticleDetailData detailData) {
+
+        Disposable disposable = (Disposable) mReadLaterEngine.setReadLater(detailData)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver() {
+                    @Override
+                    public void onNext(Object o) {
+
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
+    @Override
+    public void cancelReadLater(int id) {
+
+        Disposable disposable = (Disposable) mReadLaterEngine.cancelReadLater(id)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver() {
+                    @Override
+                    public void onNext(Object o) {
+
                     }
 
                     @Override

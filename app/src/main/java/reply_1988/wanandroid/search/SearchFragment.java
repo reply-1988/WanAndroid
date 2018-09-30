@@ -31,11 +31,14 @@ import java.util.List;
 
 import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
+import reply_1988.wanandroid.data.model.ArticleDetailData;
 import reply_1988.wanandroid.data.model.HotKeyDetailData;
-import reply_1988.wanandroid.data.model.SearchDetailData;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
+import reply_1988.wanandroid.interfaces.OnCancelReadLaterClickedListener;
+import reply_1988.wanandroid.interfaces.OnCategoryClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
+import reply_1988.wanandroid.interfaces.OnReadLaterClickedListener;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -45,7 +48,7 @@ import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
  */
 public class SearchFragment extends Fragment implements SearchContract.View{
 
-    public static final String ARTICLE_URL = "articleUrl";
+    public static final String ARTICLE_DATA = "data";
 
     private int mColumnCount = 1;
     private SearchContract.Presenter mPresenter;
@@ -90,7 +93,7 @@ public class SearchFragment extends Fragment implements SearchContract.View{
             ks_cid = getArguments().getInt(SearchActivity.ARG_KS_CID, -1);
             cat_cid = getArguments().getInt(SearchActivity.ARG_CATEGORY_CID, -1);
         }
-        mSearchAdapter = new SearchAdapter(new ArrayList<SearchDetailData>(0));
+        mSearchAdapter = new SearchAdapter(new ArrayList<ArticleDetailData>(0));
         setHasOptionsMenu(true);
     }
 
@@ -133,7 +136,7 @@ public class SearchFragment extends Fragment implements SearchContract.View{
     }
 
     @Override
-    public void showArticles(final List<SearchDetailData> detailDataList) {
+    public void showArticles(final List<ArticleDetailData> detailDataList) {
         if (mAdapter != null) {
             mAdapter.updateAdapter(detailDataList);
         } else {
@@ -235,13 +238,14 @@ public class SearchFragment extends Fragment implements SearchContract.View{
     }
 
     @Override
-    public void setClickListener(SearchAdapter searchAdapter, final List<SearchDetailData> detailDataList) {
+    public void setClickListener(SearchAdapter searchAdapter, final List<ArticleDetailData> detailDataList) {
+
         searchAdapter.setOnArticleClickedListener(new OnArticleClickedListener() {
             @Override
             public void onClick(int position) {
                 Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
-                String articleUrl = detailDataList.get(position).getLink();
-                intent.putExtra(ARTICLE_URL, articleUrl);
+                ArticleDetailData detailData = detailDataList.get(position);
+                intent.putExtra(ARTICLE_DATA, detailData);
                 startActivity(intent);
             }
         });
@@ -266,6 +270,41 @@ public class SearchFragment extends Fragment implements SearchContract.View{
                 mPresenter.cancelCollect(id);
                 detailDataList.get(position).setCollect(false);
                 mAdapter.notifyItemChanged(position);
+            }
+        });
+        //设置稍后阅读
+        mAdapter.setOnReadLaterClickedListener(new OnReadLaterClickedListener() {
+            @Override
+            public void onClick(int position) {
+
+                detailDataList.get(position).setReadLater(true);
+                mPresenter.setReadLater(detailDataList.get(position));
+                mAdapter.notifyItemChanged(position);
+
+            }
+        });
+
+        //设置取消稍后阅读
+        mAdapter.setOnCancelReadLaterClickedListener(new OnCancelReadLaterClickedListener() {
+            @Override
+            public void onClick(int position) {
+
+                int id = detailDataList.get(position).getId();
+                detailDataList.get(position).setReadLater(false);
+                mPresenter.cancelReadLater(id);
+                mAdapter.notifyItemChanged(position);
+
+            }
+        });
+
+        //设置分类点击
+        mAdapter.setOnCategoryClickedListener(new OnCategoryClickedListener() {
+            @Override
+            public void onClick(int position) {
+                int cid = detailDataList.get(position).getChapterId();
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                intent.putExtra(SearchActivity.ARG_CATEGORY_CID, cid);
+                startActivity(intent);
             }
         });
     }

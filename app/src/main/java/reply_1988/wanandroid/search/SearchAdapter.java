@@ -14,6 +14,7 @@ import android.widget.TextView;
 import java.util.List;
 
 import reply_1988.wanandroid.R;
+import reply_1988.wanandroid.data.model.ArticleDetailData;
 import reply_1988.wanandroid.data.model.SearchDetailData;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
@@ -26,7 +27,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     private final String ARTICLE_URL = "articleUrl";
 
-    private final List<SearchDetailData> mValues;
+    private final List<ArticleDetailData> mValues;
 
     private OnArticleClickedListener mOnArticleClickedListener;
     private OnCategoryClickedListener mOnCategoryClickedListener;
@@ -37,7 +38,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
 
 
-    public SearchAdapter(List<SearchDetailData> items) {
+    public SearchAdapter(List<ArticleDetailData> items) {
         mValues = items;
     }
 
@@ -60,6 +61,11 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         } else {
             holder.collect.setImageResource(R.drawable.ic_uncollect);
         }
+        if (mValues.get(position).isReadLater()) {
+            holder.readLater.setImageResource(R.drawable.ic_readlater);
+        } else {
+            holder.readLater.setImageResource(R.drawable.ic_unreadlater);
+        }
 
     }
 
@@ -75,7 +81,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         public AppCompatButton category;
         public AppCompatTextView author;
         public AppCompatTextView time;
-        public SearchDetailData mItem;
+        public ArticleDetailData mItem;
         public ImageButton collect;
         public ImageButton readLater;
 
@@ -111,6 +117,8 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                         mOnCollectClickedListener.onClick(getAdapterPosition());
                     }
                     break;
+                default:
+                    break;
             }
         }
     }
@@ -135,6 +143,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
     public void setOnReadLaterClickedListener(OnReadLaterClickedListener onReadLaterClickedListener) {
 
+
         mOnReadLaterClickedListener = onReadLaterClickedListener;
     }
 
@@ -144,7 +153,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
 
-    public void updateAdapter(List<SearchDetailData> detailDataList) {
+    public void updateAdapter(List<ArticleDetailData> detailDataList) {
 
         mValues.clear();
         mValues.addAll(detailDataList);

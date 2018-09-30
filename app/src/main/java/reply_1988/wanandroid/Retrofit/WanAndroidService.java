@@ -48,7 +48,7 @@ public interface WanAndroidService {
      */
     @FormUrlEncoded
     @POST(Url.Search + "{page}/json")
-    Observable<SearchData> getSearchArticles(@Path("page") int page, @Field("k") String SearchContent);
+    Observable<ArticlesData> getSearchArticles(@Path("page") int page, @Field("k") String SearchContent);
 
     /**
      * 登录http://www.wanandroid.com/user/login
@@ -132,7 +132,7 @@ public interface WanAndroidService {
      * @return 文章数据
      */
     @GET(Url.KS_DETAIL_DATA + "{page}/json")
-    Observable<SearchData> getKSDetailData(@Path("page") int page, @Query("cid") int cid);
+    Observable<ArticlesData> getKSDetailData(@Path("page") int page, @Query("cid") int cid);
 
     /**
      * 获取某一类别下的文章列表数据
@@ -141,5 +141,5 @@ public interface WanAndroidService {
      * @return 文章数据
      */
     @GET(Url.CATEGORY_DATA + "{page}/json")
-    Observable<SearchData> getCatagoryData(@Path("page") int page, @Query("cid") int cid);
+    Observable<ArticlesData> getCatagoryData(@Path("page") int page, @Query("cid") int cid);
 }

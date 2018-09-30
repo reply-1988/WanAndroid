@@ -158,7 +158,6 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
             public void onClick(int position) {
                 int id = detailDataList.get(position).getId();
                 mPresenter.setFavorite(id);
-                Log.d("修改图标", "修改11");
                 detailDataList.get(position).setCollect(true);
                 mAdapter.notifyItemChanged(position);
             }

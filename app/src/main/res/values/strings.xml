@@ -33,4 +33,7 @@
     <string name="password_different">两次输入的密码应该一致</string>
     <string name="action_register">注册</string>
     <string name="knowledgeSystem">知识体系</string>
+    <string name="about">关于</string>
+    <string name="title_activity_about">AboutActivity</string>
+    <string name="version">版本</string>
 </resources>

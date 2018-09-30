@@ -10,7 +10,7 @@ import java.util.concurrent.Callable;
 import io.reactivex.Observable;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
-import reply_1988.wanandroid.data.model.SearchDetailData;
+import reply_1988.wanandroid.data.model.ArticleDetailData;
 import reply_1988.wanandroid.data.source.SearchDataSource;
 import reply_1988.wanandroid.data.source.remote.SearchRemoteSource;
 
@@ -18,7 +18,7 @@ public class SearchEngine implements SearchDataSource {
 
     private SearchRemoteSource mQueryRemoteSource;
 
-    private Map<Integer, SearchDetailData> searchDataCache;
+    private Map<Integer, ArticleDetailData> searchDataCache;
 
     public SearchEngine() {
 
@@ -27,14 +27,14 @@ public class SearchEngine implements SearchDataSource {
     }
 
     @Override
-    public Observable<List<SearchDetailData>> getQueryData(int page, String searchContent, boolean loadMore) {
+    public Observable<List<ArticleDetailData>> getQueryData(int page, String searchContent, boolean loadMore) {
 
         if (page != 0 && loadMore) {
-            Observable<List<SearchDetailData>> listBefore = Observable
+            Observable<List<ArticleDetailData>> listBefore = Observable
                     .fromIterable(new ArrayList<>(searchDataCache.values()))
-                    .toSortedList(new Comparator<SearchDetailData>() {
+                    .toSortedList(new Comparator<ArticleDetailData>() {
                         @Override
-                        public int compare(SearchDetailData o1, SearchDetailData o2) {
+                        public int compare(ArticleDetailData o1, ArticleDetailData o2) {
                             if (o1.getPublishTime() > o2.getPublishTime()) {
 
                                 return -1;
@@ -44,18 +44,18 @@ public class SearchEngine implements SearchDataSource {
                         }
                     }).toObservable();
 
-            Observable<List<SearchDetailData>> listAfter = mQueryRemoteSource.getQueryData(page, searchContent, loadMore);
+            Observable<List<ArticleDetailData>> listAfter = mQueryRemoteSource.getQueryData(page, searchContent, loadMore);
 
-            Observable<List<SearchDetailData>> list = Observable
+            Observable<List<ArticleDetailData>> list = Observable
                     .concat(listBefore, listAfter)
-                    .collect(new Callable<List<SearchDetailData>>() {
+                    .collect(new Callable<List<ArticleDetailData>>() {
                         @Override
-                        public List<SearchDetailData> call() throws Exception {
+                        public List<ArticleDetailData> call() throws Exception {
                             return new ArrayList<>();
                         }
-                    }, new BiConsumer<List<SearchDetailData>, List<SearchDetailData>>() {
+                    }, new BiConsumer<List<ArticleDetailData>, List<ArticleDetailData>>() {
                         @Override
-                        public void accept(List<SearchDetailData> searchDetailData, List<SearchDetailData> searchDetailData2) throws Exception {
+                        public void accept(List<ArticleDetailData> searchDetailData, List<ArticleDetailData> searchDetailData2) throws Exception {
                             searchDetailData.addAll(searchDetailData2);
                             addToCache(searchDetailData, true);
                         }
@@ -64,22 +64,22 @@ public class SearchEngine implements SearchDataSource {
 
         }
         return mQueryRemoteSource.getQueryData(page, searchContent, false)
-                .doOnNext(new Consumer<List<SearchDetailData>>() {
+                .doOnNext(new Consumer<List<ArticleDetailData>>() {
                     @Override
-                    public void accept(List<SearchDetailData> searchDetailData) throws Exception {
+                    public void accept(List<ArticleDetailData> searchDetailData) throws Exception {
                         addToCache(searchDetailData, false);
                     }
                 });
     }
 
     @Override
-    public Observable<List<SearchDetailData>> getKSDetailData(int page, int cid, boolean loadMore) {
+    public Observable<List<ArticleDetailData>> getKSDetailData(int page, int cid, boolean loadMore) {
         if (page != 0 && loadMore) {
-            Observable<List<SearchDetailData>> listBefore = Observable
+            Observable<List<ArticleDetailData>> listBefore = Observable
                     .fromIterable(new ArrayList<>(searchDataCache.values()))
-                    .toSortedList(new Comparator<SearchDetailData>() {
+                    .toSortedList(new Comparator<ArticleDetailData>() {
                         @Override
-                        public int compare(SearchDetailData o1, SearchDetailData o2) {
+                        public int compare(ArticleDetailData o1, ArticleDetailData o2) {
                             if (o1.getPublishTime() > o2.getPublishTime()) {
 
                                 return -1;
@@ -89,18 +89,18 @@ public class SearchEngine implements SearchDataSource {
                         }
                     }).toObservable();
 
-            Observable<List<SearchDetailData>> listAfter = mQueryRemoteSource.getKSDetailData(page, cid, loadMore);
+            Observable<List<ArticleDetailData>> listAfter = mQueryRemoteSource.getKSDetailData(page, cid, loadMore);
 
-            Observable<List<SearchDetailData>> list = Observable
+            Observable<List<ArticleDetailData>> list = Observable
                     .concat(listBefore, listAfter)
-                    .collect(new Callable<List<SearchDetailData>>() {
+                    .collect(new Callable<List<ArticleDetailData>>() {
                         @Override
-                        public List<SearchDetailData> call() throws Exception {
+                        public List<ArticleDetailData> call() throws Exception {
                             return new ArrayList<>();
                         }
-                    }, new BiConsumer<List<SearchDetailData>, List<SearchDetailData>>() {
+                    }, new BiConsumer<List<ArticleDetailData>, List<ArticleDetailData>>() {
                         @Override
-                        public void accept(List<SearchDetailData> searchDetailData, List<SearchDetailData> searchDetailData2) throws Exception {
+                        public void accept(List<ArticleDetailData> searchDetailData, List<ArticleDetailData> searchDetailData2) throws Exception {
                             searchDetailData.addAll(searchDetailData2);
                             addToCache(searchDetailData, true);
                         }
@@ -109,15 +109,15 @@ public class SearchEngine implements SearchDataSource {
 
         }
         return mQueryRemoteSource.getKSDetailData(page, cid, false)
-                .doOnNext(new Consumer<List<SearchDetailData>>() {
+                .doOnNext(new Consumer<List<ArticleDetailData>>() {
                     @Override
-                    public void accept(List<SearchDetailData> searchDetailData) throws Exception {
+                    public void accept(List<ArticleDetailData> searchDetailData) throws Exception {
                         addToCache(searchDetailData, false);
                     }
                 });
     }
 
-    private void addToCache(List<SearchDetailData> detailsData, boolean clearCache) {
+    private void addToCache(List<ArticleDetailData> detailsData, boolean clearCache) {
 
         if (searchDataCache == null) {
             searchDataCache = new LinkedHashMap<>();
@@ -127,7 +127,7 @@ public class SearchEngine implements SearchDataSource {
             searchDataCache.clear();
         }
 
-        for (SearchDetailData detailData :
+        for (ArticleDetailData detailData :
                 detailsData) {
             searchDataCache.put(detailData.getId(), detailData);
         }

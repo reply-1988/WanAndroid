@@ -87,8 +87,7 @@ public class ReadLaterLocalSource implements ReadLaterDataSource {
     //检查拥有该id的文章是否在稍后阅读的数据库中
     @Override
     public void checkReadLater(final ArticleDetailData detailData) {
-
-
+        
                 Realm realm = Realm.getInstance(RealmHelper.getConfiguration("readLater.realm"));
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override

@@ -143,15 +143,19 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
 
-        if (id == R.id.ks) {
-
-            Intent intent = new Intent(this, KSActivity.class);
-            startActivity(intent);
-        } else if (id == R.id.nav_share) {
-
-        } else if (id == R.id.nav_send) {
-
+        switch (id) {
+            case R.id.ks:
+                Intent intent = new Intent(this, KSActivity.class);
+                startActivity(intent);
+                break;
+            case R.id.about:
+                Intent intent1 = new Intent(this, AboutActivity.class);
+                startActivity(intent1);
+                break;
+            default:
+                break;
         }
+
         mDrawerLayout.closeDrawer(GravityCompat.START);
         return true;
     }
