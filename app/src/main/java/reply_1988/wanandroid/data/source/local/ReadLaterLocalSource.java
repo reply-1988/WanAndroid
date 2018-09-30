@@ -51,7 +51,7 @@ public class ReadLaterLocalSource implements ReadLaterDataSource {
             public void subscribe(ObservableEmitter emitter) throws Exception {
 
                 articleDetailData.setReadLaterData(formatDate(new Date()));
-
+                articleDetailData.setReadLater(true);
                 Realm realm = Realm.getInstance(RealmHelper.getConfiguration("readLater.realm"));
                 realm.executeTransaction(new Realm.Transaction() {
                     @Override
