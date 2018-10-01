@@ -26,9 +26,9 @@ import com.zhy.view.flowlayout.FlowLayout;
 import com.zhy.view.flowlayout.TagAdapter;
 import com.zhy.view.flowlayout.TagFlowLayout;
 
-import java.util.ArrayList;
 import java.util.List;
 
+import reply_1988.wanandroid.CommonAdapter;
 import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
@@ -52,14 +52,14 @@ public class SearchFragment extends Fragment implements SearchContract.View{
 
     private int mColumnCount = 1;
     private SearchContract.Presenter mPresenter;
-    private SearchAdapter mAdapter;
     private int page = 0;
-    private String searchContent = "";
-    private int ks_cid = -1;
-    private int cat_cid = -1;
+    private String searchContent;
+    private String title;
+    private int ksCid = -1;
+    private int catCid = -1;
 
     private View mView;
-    private SearchAdapter mSearchAdapter;
+    private CommonAdapter mSearchAdapter;
     private RecyclerView mRecyclerView;
     private TagFlowLayout mTagFlowLayout;
     private FrameLayout mFrameLayout;
@@ -74,12 +74,13 @@ public class SearchFragment extends Fragment implements SearchContract.View{
     public SearchFragment() {
     }
 
-    public static SearchFragment newInstance(String searchContent, int ks_cid, int cat_cid) {
+    public static SearchFragment newInstance(String searchContent, String title, int ksCid, int catCid) {
         SearchFragment fragment = new SearchFragment();
         Bundle args = new Bundle();
         args.putString(SearchActivity.ARG_SEARCH_CONTENT, searchContent);
-        args.putInt(SearchActivity.ARG_KS_CID, ks_cid);
-        args.putInt(SearchActivity.ARG_CATEGORY_CID, cat_cid);
+        args.putInt(SearchActivity.ARG_KS_CID, ksCid);
+        args.putInt(SearchActivity.ARG_CATEGORY_CID, catCid);
+        args.putString(SearchActivity.ARG_TITLE, title);
         fragment.setArguments(args);
         return fragment;
     }
@@ -89,11 +90,11 @@ public class SearchFragment extends Fragment implements SearchContract.View{
         super.onCreate(savedInstanceState);
 
         if (getArguments() != null) {
-            searchContent = getArguments().getString(SearchActivity.ARG_SEARCH_CONTENT);
-            ks_cid = getArguments().getInt(SearchActivity.ARG_KS_CID, -1);
-            cat_cid = getArguments().getInt(SearchActivity.ARG_CATEGORY_CID, -1);
+            searchContent = getArguments().getString(SearchActivity.ARG_SEARCH_CONTENT, "");
+            title = getArguments().getString(SearchActivity.ARG_TITLE, "WanAndroid");
+            ksCid = getArguments().getInt(SearchActivity.ARG_KS_CID, -1);
+            catCid = getArguments().getInt(SearchActivity.ARG_CATEGORY_CID, -1);
         }
-        mSearchAdapter = new SearchAdapter(new ArrayList<ArticleDetailData>(0));
         setHasOptionsMenu(true);
     }
 
@@ -115,20 +116,24 @@ public class SearchFragment extends Fragment implements SearchContract.View{
             return mView;
         }
         mView = inflater.inflate(R.layout.fragment_search, container, false);
+
         mToolbar = mView.findViewById(R.id.toolBar);
+        mToolbar.setTitle(title);
         ((AppCompatActivity) getActivity()).setSupportActionBar(mToolbar);
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setHasOptionsMenu(true);
+
+
         mRecyclerView = mView.findViewById(R.id.list);
         mTagFlowLayout = mView.findViewById(R.id.tag_flowLayout);
         mFrameLayout = mView.findViewById(R.id.NoDataLayout);
 
-        if (ks_cid == -1 && cat_cid == -1) {
+        if (ksCid == -1 && catCid == -1) {
             mPresenter.getQueryData(0, searchContent, false);
-        } else if(ks_cid != -1 && cat_cid == -1){
-            mPresenter.getKSDetailData(0, ks_cid, false);
+        } else if(ksCid != -1 && catCid == -1){
+            mPresenter.getKSDetailData(0, ksCid, false);
         } else {
-            mPresenter.getKSDetailData(0, cat_cid, false);
+            mPresenter.getKSDetailData(0, catCid, false);
         }
 
         mRecyclerView.setAdapter(mSearchAdapter);
@@ -137,13 +142,13 @@ public class SearchFragment extends Fragment implements SearchContract.View{
 
     @Override
     public void showArticles(final List<ArticleDetailData> detailDataList) {
-        if (mAdapter != null) {
-            mAdapter.updateAdapter(detailDataList);
+        if (mSearchAdapter != null) {
+            mSearchAdapter.updateAdapter(detailDataList);
         } else {
-            mAdapter = new SearchAdapter(detailDataList);
-            setClickListener(mAdapter, detailDataList);
+            mSearchAdapter = new CommonAdapter(detailDataList);
+            setClickListener(mSearchAdapter, detailDataList);
 
-            mRecyclerView.setAdapter(mAdapter);
+            mRecyclerView.setAdapter(mSearchAdapter);
             mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
             searchContent = mSearchView.getQuery().toString();
@@ -238,7 +243,7 @@ public class SearchFragment extends Fragment implements SearchContract.View{
     }
 
     @Override
-    public void setClickListener(SearchAdapter searchAdapter, final List<ArticleDetailData> detailDataList) {
+    public void setClickListener(final CommonAdapter searchAdapter, final List<ArticleDetailData> detailDataList) {
 
         searchAdapter.setOnArticleClickedListener(new OnArticleClickedListener() {
             @Override
@@ -258,7 +263,7 @@ public class SearchFragment extends Fragment implements SearchContract.View{
                 mPresenter.setCollect(id);
                 Log.d("修改图标", "修改11");
                 detailDataList.get(position).setCollect(true);
-                mAdapter.notifyItemChanged(position);
+                searchAdapter.notifyItemChanged(position);
             }
         });
         //收藏按钮再次点击取消
@@ -269,41 +274,43 @@ public class SearchFragment extends Fragment implements SearchContract.View{
                 int id = detailDataList.get(position).getId();
                 mPresenter.cancelCollect(id);
                 detailDataList.get(position).setCollect(false);
-                mAdapter.notifyItemChanged(position);
+                searchAdapter.notifyItemChanged(position);
             }
         });
         //设置稍后阅读
-        mAdapter.setOnReadLaterClickedListener(new OnReadLaterClickedListener() {
+        searchAdapter.setOnReadLaterClickedListener(new OnReadLaterClickedListener() {
             @Override
             public void onClick(int position) {
 
                 detailDataList.get(position).setReadLater(true);
                 mPresenter.setReadLater(detailDataList.get(position));
-                mAdapter.notifyItemChanged(position);
+                searchAdapter.notifyItemChanged(position);
 
             }
         });
 
         //设置取消稍后阅读
-        mAdapter.setOnCancelReadLaterClickedListener(new OnCancelReadLaterClickedListener() {
+        searchAdapter.setOnCancelReadLaterClickedListener(new OnCancelReadLaterClickedListener() {
             @Override
             public void onClick(int position) {
 
                 int id = detailDataList.get(position).getId();
                 detailDataList.get(position).setReadLater(false);
                 mPresenter.cancelReadLater(id);
-                mAdapter.notifyItemChanged(position);
+                searchAdapter.notifyItemChanged(position);
 
             }
         });
 
         //设置分类点击
-        mAdapter.setOnCategoryClickedListener(new OnCategoryClickedListener() {
+        searchAdapter.setOnCategoryClickedListener(new OnCategoryClickedListener() {
             @Override
             public void onClick(int position) {
                 int cid = detailDataList.get(position).getChapterId();
+                String title = detailDataList.get(position).getChapterName();
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                 intent.putExtra(SearchActivity.ARG_CATEGORY_CID, cid);
+                intent.putExtra(SearchActivity.ARG_TITLE, title);
                 startActivity(intent);
             }
         });
@@ -311,12 +318,12 @@ public class SearchFragment extends Fragment implements SearchContract.View{
 
     @Override
     public void checkParameter(int page, boolean loadMore) {
-        if (ks_cid == -1 && cat_cid == -1) {
+        if (ksCid == -1 && catCid == -1) {
             mPresenter.getQueryData(page, searchContent, loadMore);
-        } else if(ks_cid != -1 && cat_cid == -1){
-            mPresenter.getKSDetailData(page, ks_cid, loadMore);
+        } else if(ksCid != -1 && catCid == -1){
+            mPresenter.getKSDetailData(page, ksCid, loadMore);
         } else {
-            mPresenter.getKSDetailData(page, cat_cid, loadMore);
+            mPresenter.getKSDetailData(page, catCid, loadMore);
         }
     }
 

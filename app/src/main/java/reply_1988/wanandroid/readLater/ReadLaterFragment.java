@@ -18,6 +18,7 @@ import com.scwang.smartrefresh.layout.listener.OnRefreshListener;
 import java.util.ArrayList;
 import java.util.List;
 
+import reply_1988.wanandroid.CommonAdapter;
 import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
@@ -37,7 +38,7 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
 
     private int mColumnCount = 1;
     private ReadLaterContract.Presenter mPresenter;
-    private ReadLaterAdapter mAdapter;
+    private CommonAdapter mAdapter;
     private View mView;
     private int page = 0;
 
@@ -103,7 +104,7 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
         if (mAdapter != null) {
             mAdapter.updateAdapter(detailDataList);
         } else {
-            mAdapter = new ReadLaterAdapter(detailDataList);
+            mAdapter = new CommonAdapter(detailDataList);
             //设置item被点击
             mAdapter.setOnArticleClickedListener(new OnArticleClickedListener() {
                 @Override
@@ -167,8 +168,10 @@ public class ReadLaterFragment extends Fragment implements ReadLaterContract.Vie
                 @Override
                 public void onClick(int position) {
                     int cid = detailDataList.get(position).getChapterId();
+                    String title = detailDataList.get(position).getChapterName();
                     Intent intent = new Intent(getActivity(), SearchActivity.class);
                     intent.putExtra(SearchActivity.ARG_CATEGORY_CID, cid);
+                    intent.putExtra(SearchActivity.ARG_TITLE, title);
                     startActivity(intent);
                 }
             });

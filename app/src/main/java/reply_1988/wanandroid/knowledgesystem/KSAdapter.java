@@ -57,7 +57,9 @@ public class KSAdapter extends RecyclerView.Adapter<KSAdapter.ViewHolder> {
         holder.mFlowLayout.setOnTagClickListener(new TagFlowLayout.OnTagClickListener() {
             @Override
             public boolean onTagClick(View view, int position, FlowLayout parent) {
-                mKSClickListener.onClick(childrenBeanList.get(position).getId());
+                int id = childrenBeanList.get(position).getId();
+                String title = childrenBeanList.get(position).getName();
+                mKSClickListener.onClick(id, title);
                 return true;
             }
         });

@@ -1,4 +1,4 @@
-package reply_1988.wanandroid.search;
+package reply_1988.wanandroid;
 
 import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
@@ -11,11 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
 
-import java.util.List;
-
-import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
-import reply_1988.wanandroid.data.model.SearchDetailData;
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelReadLaterClickedListener;
@@ -23,7 +19,9 @@ import reply_1988.wanandroid.interfaces.OnCategoryClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnReadLaterClickedListener;
 
-public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder> {
+import java.util.List;
+
+public class CommonAdapter extends RecyclerView.Adapter<CommonAdapter.ViewHolder> {
 
     private final String ARTICLE_URL = "articleUrl";
 
@@ -38,7 +36,7 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
 
 
 
-    public SearchAdapter(List<ArticleDetailData> items) {
+    public CommonAdapter(List<ArticleDetailData> items) {
         mValues = items;
     }
 
@@ -46,15 +44,15 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.timeline_item, parent, false);
-        return new SearchAdapter.ViewHolder(view);
+        return new ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull final SearchAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull final ViewHolder holder, int position) {
         holder.mItem = mValues.get(position);
         holder.time.setText(holder.mItem.getNiceDate());
         holder.author.setText(holder.mItem.getAuthor());
-        holder.category.setText(String.format("%s", holder.mItem.getChapterName()));
+        holder.category.setText(String.format("%s/%s", holder.mItem.getSuperChapterName(), holder.mItem.getChapterName()));
         holder.title.setText(holder.mItem.getTitle());
         if (mValues.get(position).isCollect()) {
             holder.collect.setImageResource(R.drawable.ic_collect);
@@ -66,7 +64,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
         } else {
             holder.readLater.setImageResource(R.drawable.ic_unreadlater);
         }
-
     }
 
     @Override
@@ -117,6 +114,16 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
                         mOnCollectClickedListener.onClick(getAdapterPosition());
                     }
                     break;
+                case R.id.readLater:
+                    if (mValues.get(getAdapterPosition()).isReadLater()) {
+                        mOnCancelReadLaterClickedListener.onClick(getAdapterPosition());
+                    } else {
+                        mOnReadLaterClickedListener.onClick(getAdapterPosition());
+                    }
+                    break;
+                case R.id.btn_category:
+                    mOnCategoryClickedListener.onClick(getAdapterPosition());
+                    break;
                 default:
                     break;
             }
@@ -142,7 +149,6 @@ public class SearchAdapter extends RecyclerView.Adapter<SearchAdapter.ViewHolder
     }
 
     public void setOnReadLaterClickedListener(OnReadLaterClickedListener onReadLaterClickedListener) {
-
 
         mOnReadLaterClickedListener = onReadLaterClickedListener;
     }

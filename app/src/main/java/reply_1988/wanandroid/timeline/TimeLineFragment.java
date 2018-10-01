@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import reply_1988.wanandroid.R;
+import reply_1988.wanandroid.CommonAdapter;
 import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
 import reply_1988.wanandroid.data.engine.ArticleEngine;
 import reply_1988.wanandroid.data.model.ArticleDetailData;
@@ -31,9 +32,6 @@ import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnReadLaterClickedListener;
 import reply_1988.wanandroid.search.SearchActivity;
 
-import static reply_1988.wanandroid.articleDetail.ArticleDetailActivity.ARTICLE_TITLE;
-import static reply_1988.wanandroid.articleDetail.ArticleDetailActivity.ARTICLE_URL;
-
 public class TimeLineFragment extends Fragment implements TimeLineContract.View{
 
 
@@ -41,10 +39,10 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
 
     private int mColumnCount = 1;
     private TimeLineContract.Presenter mPresenter;
-    private TimerLineAdapter mAdapter;
+    private CommonAdapter mAdapter;
     private View mView;
     private int page = 0;
-    private TimerLineAdapter mTimerLineAdapter;
+    private CommonAdapter mCommonAdapter;
     private RecyclerView mRecyclerView;
 
     /**
@@ -70,7 +68,7 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
             mColumnCount = getArguments().getInt(ARG_COLUMN_COUNT);
         }
         mPresenter = new TimerLinerPresenter(this, ArticleEngine.getArticleEngine(ArticlesRemoteSource.getArticlesRemoteSource()));
-        mTimerLineAdapter = new TimerLineAdapter(new ArrayList<ArticleDetailData>(0));
+        mCommonAdapter = new CommonAdapter(new ArrayList<ArticleDetailData>(0));
     }
 
     @Override
@@ -96,7 +94,7 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
         mPresenter.getArticles(0, false);
 
         Log.d("测试！！！", "TimeLineFragment");
-        mRecyclerView.setAdapter(mTimerLineAdapter);
+        mRecyclerView.setAdapter(mCommonAdapter);
         return mView;
     }
 
@@ -105,7 +103,7 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
         if (mAdapter != null) {
             mAdapter.updateAdapter(detailDataList);
         } else {
-            mAdapter = new TimerLineAdapter(detailDataList);
+            mAdapter = new CommonAdapter(detailDataList);
             //设置item被点击
             setOnClick(detailDataList);
 
@@ -204,8 +202,10 @@ public class TimeLineFragment extends Fragment implements TimeLineContract.View{
             @Override
             public void onClick(int position) {
                 int cid = detailDataList.get(position).getChapterId();
+                String title = detailDataList.get(position).getChapterName();
                 Intent intent = new Intent(getActivity(), SearchActivity.class);
                 intent.putExtra(SearchActivity.ARG_CATEGORY_CID, cid);
+                intent.putExtra(SearchActivity.ARG_TITLE, title);
                 startActivity(intent);
             }
         });

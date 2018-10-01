@@ -15,13 +15,14 @@ public class KSActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ks);
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        toolbar.setTitle("知识体系");
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         FragmentManager fm = getSupportFragmentManager();
         KSFragment ksFragment = (KSFragment) fm.findFragmentById(R.id.fragment_container);
 
         if (ksFragment == null) {
-            ksFragment = KSFragment.newInstance("1","1");
+            ksFragment = KSFragment.newInstance();
             fm.beginTransaction()
                     .replace(R.id.fragment_container, ksFragment)
                     .commit();

@@ -98,52 +98,8 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
             mAdapter.updateAdapter(detailDataList);
         } else {
             mAdapter = new FavoriteAdapter(detailDataList);
-            //设置item被点击
-            mAdapter.setOnArticleClickedListener(new OnArticleClickedListener() {
-                @Override
-                public void onClick(int position) {
-                    Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
-                    String articleUrl = detailDataList.get(position).getLink();
-                    intent.putExtra(ARTICLE_URL, articleUrl);
-                    startActivity(intent);
-                }
-            });
+            setOnClickListener(detailDataList);
 
-            //收藏
-            mAdapter.setOnCollectClickedListener(new OnCollectClickedListener() {
-                @Override
-                public void onClick(int position) {
-
-                    int originId = detailDataList.get(position).getOriginId();
-                    mPresenter.setFavorite(originId);
-                    Log.d("修改图标", "修改11");
-                    detailDataList.get(position).setCollect(true);
-                    mAdapter.notifyItemChanged(position);
-                }
-            });
-            //取消收藏
-            mAdapter.setOnCancelCollectClickedListener(new OnCancelCollectClickedListener() {
-                @Override
-                public void onClick(int position){
-
-                    int id = detailDataList.get(position).getId();
-                    int originId = detailDataList.get(position).getOriginId();
-                    mPresenter.cancelFavorite(id, originId);
-                    detailDataList.get(position).setCollect(false);
-                    mAdapter.notifyItemChanged(position);
-                }
-            });
-
-            //设置分类点击
-            mAdapter.setOnCategoryClickedListener(new OnCategoryClickedListener() {
-                @Override
-                public void onClick(int position) {
-                    int cid = detailDataList.get(position).getChapterId();
-                    Intent intent = new Intent(getActivity(), SearchActivity.class);
-                    intent.putExtra(SearchActivity.ARG_CATEGORY_CID, cid);
-                    startActivity(intent);
-                }
-            });
 
             recyclerView.setAdapter(mAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
@@ -174,6 +130,56 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         }
     }
 
+    private void setOnClickListener(final List<FavoriteDetailData> detailDataList) {
+        //设置item被点击
+        mAdapter.setOnArticleClickedListener(new OnArticleClickedListener() {
+            @Override
+            public void onClick(int position) {
+                Intent intent = new Intent(getContext(), ArticleDetailActivity.class);
+                String articleUrl = detailDataList.get(position).getLink();
+                intent.putExtra(ARTICLE_URL, articleUrl);
+                startActivity(intent);
+            }
+        });
+
+        //收藏
+        mAdapter.setOnCollectClickedListener(new OnCollectClickedListener() {
+            @Override
+            public void onClick(int position) {
+
+                int originId = detailDataList.get(position).getOriginId();
+                mPresenter.setFavorite(originId);
+                Log.d("修改图标", "修改11");
+                detailDataList.get(position).setCollect(true);
+                mAdapter.notifyItemChanged(position);
+            }
+        });
+        //取消收藏
+        mAdapter.setOnCancelCollectClickedListener(new OnCancelCollectClickedListener() {
+            @Override
+            public void onClick(int position){
+
+                int id = detailDataList.get(position).getId();
+                int originId = detailDataList.get(position).getOriginId();
+                mPresenter.cancelFavorite(id, originId);
+                detailDataList.get(position).setCollect(false);
+                mAdapter.notifyItemChanged(position);
+            }
+        });
+
+        //设置分类点击
+        mAdapter.setOnCategoryClickedListener(new OnCategoryClickedListener() {
+            @Override
+            public void onClick(int position) {
+                int cid = detailDataList.get(position).getChapterId();
+                String title = detailDataList.get(position).getChapterName();
+                Intent intent = new Intent(getActivity(), SearchActivity.class);
+                intent.putExtra(SearchActivity.ARG_CATEGORY_CID, cid);
+                intent.putExtra(SearchActivity.ARG_TITLE, title);
+                startActivity(intent);
+            }
+        });
+    }
 
     @Override
     public void setPresenter(FavoriteContract.Presenter presenter) {

@@ -21,12 +21,6 @@ import reply_1988.wanandroid.search.SearchActivity;
  */
 public class KSFragment extends Fragment implements KSContract.View{
 
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-
-    private String mParam1;
-    private String mParam2;
-
     private RecyclerView mRecyclerView;
 
     private KSAdapter mKSAdapter;
@@ -36,30 +30,13 @@ public class KSFragment extends Fragment implements KSContract.View{
         // Required empty public constructor
     }
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment KSFragment.
-     */
-    public static KSFragment newInstance(String param1, String param2) {
-        KSFragment fragment = new KSFragment();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
+    public static KSFragment newInstance() {
+        return new KSFragment();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
     }
 
     @Override
@@ -87,9 +64,10 @@ public class KSFragment extends Fragment implements KSContract.View{
             mKSAdapter = new KSAdapter(knowledgeSystemData);
             mKSAdapter.setOnKSClickListener(new OnKSClickListener() {
                 @Override
-                public void onClick(int cid) {
+                public void onClick(int cid, String title) {
                     Intent intent = new Intent(getActivity(), SearchActivity.class);
                     intent.putExtra(SearchActivity.ARG_KS_CID, cid);
+                    intent.putExtra(SearchActivity.ARG_TITLE, title);
                     startActivity(intent);
                 }
             });
