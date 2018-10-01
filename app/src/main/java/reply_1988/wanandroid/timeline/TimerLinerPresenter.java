@@ -175,7 +175,6 @@ public class TimerLinerPresenter implements TimeLineContract.Presenter {
     @Override
     public void subscribe() {
         getArticles(-1, false);
-        Log.d("恢复！！！", "huifu1!!!!!");
     }
 
     @Override

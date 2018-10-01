@@ -45,7 +45,7 @@ public class FavoritePresenter implements FavoriteContract.Presenter{
 
                     @Override
                     public void onError(Throwable e) {
-                        Log.d("测试", e.toString());
+
                     }
 
                     @Override

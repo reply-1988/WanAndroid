@@ -230,11 +230,21 @@ public class ArticleDetailData extends RealmObject implements Serializable{
     }
 
     public String getTitle() {
-        return title;
+        return title.replaceAll("</?[^>]+>","")
+                .replace("&nbsp;","")
+                .replace(".","")
+                .replace("\"","‘")
+                .replace("'","‘");
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        //剔出了<html>的标签
+        String noHtml = title.replaceAll("</?[^>]+>","")
+                .replace("&nbsp;","")
+                .replace(".","")
+                .replace("\"","‘")
+                .replace("'","‘");
+        this.title = noHtml;
     }
 
     public int getType() {

@@ -167,8 +167,7 @@ public class SearchPresenter implements SearchContract.Presenter {
                     @Override
                     public void onNext(List<ArticleDetailData> searchDetailData) {
                         if (searchDetailData.size() != 0) {
-                            for (ArticleDetailData detailData:
-                                 searchDetailData) {
+                            for (ArticleDetailData detailData: searchDetailData) {
                                 mReadLaterEngine.checkReadLater(detailData);
                             }
                             mView.showArticles(searchDetailData);
