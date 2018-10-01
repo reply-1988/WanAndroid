@@ -140,29 +140,31 @@ public class ArticleDetailFragment extends Fragment implements ArticleDetailCont
     //设置collect的按钮和文字为收藏状态
     @Override
     public void setCollect() {
+
+        mFloatingActionMenu.close(true);
         collect.setImageResource(R.drawable.ic_favorite_black_24dp);
         collect.setLabelText("取消收藏");
-        mFloatingActionMenu.close(false);
     }
 
     //设置collect的按钮和文字为未收藏状态
     @Override
     public void cancelCollect() {
+
+        mFloatingActionMenu.close(true);
         collect.setImageResource(R.drawable.ic_favorite_border_black_24dp);
         collect.setLabelText("收藏");
-        mFloatingActionMenu.close(false);
     }
 
     @Override
     public void setReadLater() {
         readLater.setLabelText("从稍后阅读中删除");
-        mFloatingActionMenu.close(false);
+        mFloatingActionMenu.close(true);
     }
 
     @Override
     public void cancelReadLater() {
         readLater.setLabelText("添加到稍后阅读");
-        mFloatingActionMenu.close(false);
+        mFloatingActionMenu.close(true);
     }
 
     //对view进行相应的初始化及onClick处理
@@ -184,7 +186,7 @@ public class ArticleDetailFragment extends Fragment implements ArticleDetailCont
             @Override
             public void onClick(View v) {
                 copyUrl();
-                mFloatingActionMenu.close(false);
+                mFloatingActionMenu.close(true);
                 Snackbar.make(mFloatingActionMenu, "已经把网址复制到剪切板了", Snackbar.LENGTH_SHORT).show();
             }
         });
@@ -194,12 +196,12 @@ public class ArticleDetailFragment extends Fragment implements ArticleDetailCont
             public void onClick(View v) {
                 if (!isCollect) {
                     mPresenter.setCollect(id);
-                    setCollect();
+//                    setCollect();
                     isCollect = !isCollect;
                     Snackbar.make(mFloatingActionMenu, "已经成功收藏", Snackbar.LENGTH_SHORT).show();
                 } else {
                     mPresenter.cancelCollect(id);
-                    cancelCollect();
+//                    cancelCollect();
                     isCollect = !isCollect;
                     Snackbar.make(mFloatingActionMenu, "已经成功取消收藏", Snackbar.LENGTH_SHORT).show();
                 }
@@ -217,7 +219,7 @@ public class ArticleDetailFragment extends Fragment implements ArticleDetailCont
 
                 intent = Intent.createChooser(intent, DIALOG_TITLE);
                 startActivity(intent);
-                mFloatingActionMenu.close(false);
+                mFloatingActionMenu.close(true);
             }
         });
 
@@ -227,11 +229,11 @@ public class ArticleDetailFragment extends Fragment implements ArticleDetailCont
                 if (isReadLater) {
                     mPresenter.cancelReadLater(id);
                     isReadLater = !isReadLater;
-                    Snackbar.make(mFloatingActionMenu, "已经把添加到稍后阅读了", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(mFloatingActionMenu, "已经从稍后阅读删除了", Snackbar.LENGTH_SHORT).show();
                 } else {
                     mPresenter.setReadLater(mArticleDetailData);
                     isReadLater = !isReadLater;
-                    Snackbar.make(mFloatingActionMenu, "已经从稍后阅读删除了", Snackbar.LENGTH_SHORT).show();
+                    Snackbar.make(mFloatingActionMenu, "已经把添加到稍后阅读了", Snackbar.LENGTH_SHORT).show();
                 }
             }
         });

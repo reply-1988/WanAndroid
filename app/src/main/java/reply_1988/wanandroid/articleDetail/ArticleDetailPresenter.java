@@ -102,7 +102,7 @@ public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
                 .subscribeWith(new DisposableObserver() {
                     @Override
                     public void onNext(Object o) {
-                        mView.setReadLater();
+
                     }
 
                     @Override
@@ -116,6 +116,7 @@ public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
                     }
                 });
         mCompositeDisposable.add(disposable);
+        mView.setReadLater();
     }
 
     @Override
@@ -126,7 +127,7 @@ public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
                 .subscribeWith(new DisposableObserver() {
                     @Override
                     public void onNext(Object o) {
-                        mView.cancelReadLater();
+
                     }
 
                     @Override
@@ -140,5 +141,6 @@ public class ArticleDetailPresenter implements ArticleDetailContract.Presenter {
                     }
                 });
         mCompositeDisposable.add(disposable);
+        mView.cancelReadLater();
     }
 }
