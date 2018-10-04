@@ -50,6 +50,41 @@ public class LoginPresenter implements LoginContract.Presenter {
         mReadLaterEngine.clearCache();
     }
 
+    @Override
+    public void register(String username, String password) {
+
+        Disposable disposable = mLoginEngine.getRemoteLoginData(username, password, "register")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribeWith(new DisposableObserver<LoginData>() {
+                    @Override
+                    public void onNext(LoginData loginData) {
+                        if (loginData.getErrorCode() !=0) {
+                            mView.showProgress(false);
+                            mView.showMessage(loginData.getErrorMsg());
+                            mView.changeLoginState(false);
+                        } else {
+                            mView.saveUserMsg(loginData.getData());
+                            mView.showMessage("成功注册WanAndroid帐号！！！");
+                            mView.showProgress(true);
+                            mView.changeLoginState(true);
+                            mView.startMainActivity();
+                        }
+                    }
+
+                    @Override
+                    public void onError(Throwable e) {
+
+                    }
+
+                    @Override
+                    public void onComplete() {
+
+                    }
+                });
+        mCompositeDisposable.add(disposable);
+    }
+
     private void getLoginData(String username, String password, String type) {
 
         Disposable disposable = mLoginEngine.getRemoteLoginData(username, password, type)
@@ -62,7 +97,7 @@ public class LoginPresenter implements LoginContract.Presenter {
 
                         if (loginData.getErrorCode() != 0) {
                             mView.showProgress(false);
-                            mView.showError(loginData.getErrorMsg());
+                            mView.showMessage(loginData.getErrorMsg());
                             mView.changeLoginState(false);
                         } else {
                             mView.saveUserMsg(loginData.getData());

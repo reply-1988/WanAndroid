@@ -7,6 +7,7 @@ package reply_1988.wanandroid.login;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -23,6 +24,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import reply_1988.wanandroid.MainActivity;
 import reply_1988.wanandroid.R;
 import reply_1988.wanandroid.data.model.LoginDetailData;
 
@@ -92,12 +94,12 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
     }
 
     /**
-     * @param errorMsg 注册错误信息
-     * 显示注册错误信息
+     * @param msg 显示相关信息
+     * 显示信息
      */
     @Override
-    public void showError(String errorMsg) {
-        Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
+    public void showMessage(String msg) {
+        Toast.makeText(getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     /**
@@ -127,9 +129,9 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
      */
     @Override
     public void startMainActivity() {
-        getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, LoginFragment.getInstance(false))
-        .commit();
+        Intent intent = new Intent(getContext(), MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
     }
 
     @Override
@@ -144,7 +146,12 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
 
     @Override
     public void changeLoginState(Boolean isLogin) {
-
+        SharedPreferences sp = PreferenceManager.getDefaultSharedPreferences(getContext());
+        if (isLogin) {
+            sp.edit().putBoolean("isLogin", true).apply();
+        } else {
+            sp.edit().putBoolean("isLogin", false).apply();
+        }
     }
 
     @Override
@@ -166,6 +173,8 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
         mUsernameLayout = view.findViewById(R.id.layout_user);
         mPasswordLayout = view.findViewById(R.id.layout_password);
         mRePasswordLayout = view.findViewById(R.id.layout_rePassword);
+
+        mRegisterButton.setOnClickListener(this);
     }
 
     @Override
@@ -173,6 +182,7 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
         switch (v.getId()) {
             case R.id.register_button:
                 attemptRegister();
+                break;
             default:
                 break;
         }
@@ -186,7 +196,7 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
         mUsernameView.setError(null);
         mPasswordView.setError(null);
 
-        // Store values at the time of the login attempt.
+        // Store values at the time of the register attempt.
         String username = mUsernameView.getText().toString();
         String password = mPasswordView.getText().toString();
         String rePassword = mRePasswordView.getText().toString();
@@ -212,7 +222,7 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
             cancel = true;
         }
 
-        if (!username.equals(rePassword)) {
+        if (!password.equals(rePassword)) {
             mRePasswordLayout.setError(getString(R.string.password_different));
             focusView = mRePasswordView;
             cancel = true;
@@ -226,7 +236,7 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
             // Show a progress spinner, and kick off a background task to
             // perform the user login attempt.
             showProgress(true);
-            mRegisterPresenter.login(username, password, "register");
+            mRegisterPresenter.register(username, password);
         }
     }
 
@@ -235,7 +245,7 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
     }
 
     private boolean isPasswordValid(String password) {
-        return checkLength(username) >=6;
+        return checkLength(password) >=6;
     }
 
     /**

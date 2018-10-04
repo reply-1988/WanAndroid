@@ -173,7 +173,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
      * 显示登录错误
      */
     @Override
-    public void showError(String errorMsg) {
+    public void showMessage(String errorMsg) {
         Toast.makeText(getContext(), errorMsg, Toast.LENGTH_SHORT).show();
     }
 

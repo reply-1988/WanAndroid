@@ -12,4 +12,5 @@ public interface LoginDataSource {
     Observable<LoginData> getRemoteLoginData(String username, String password, String type);
 
     void clearCache(Context context);
+
 }

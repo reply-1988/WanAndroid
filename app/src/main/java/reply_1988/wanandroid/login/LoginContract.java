@@ -14,13 +14,14 @@ public interface LoginContract {
 
         void clearCache(Context context);
 
+        void register(String username, String password);
     }
 
     interface View extends BaseView<Presenter>{
 
         void showProgress(Boolean show);
 
-        void showError(String errorMsg);
+        void showMessage(String msg);
 
         void saveUserMsg(LoginDetailData detailData);
 
