@@ -50,6 +50,8 @@ public class MainActivity extends AppCompatActivity
     private TextView mImageTextView;
     private View mHeadView;
 
+    private MenuItem logout;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -61,9 +63,11 @@ public class MainActivity extends AppCompatActivity
             String username = mPreferences.getString("username", "登录");
             mHeadTextView.setText(username);
             mImageTextView.setText(username.substring(0, 1).toUpperCase());
+            logout.setVisible(true);
         } else {
             mHeadTextView.setText(null);
             mImageTextView.setText("登陆");
+            logout.setVisible(false);
         }
     }
 
@@ -155,6 +159,7 @@ public class MainActivity extends AppCompatActivity
                 Intent intent2 = new Intent(this, LoginActivity.class);
                 intent2.putExtra(LoginActivity.IS_LOGOUT, true);
                 startActivity(intent2);
+                finish();
                 break;
             default:
                 break;
@@ -270,6 +275,7 @@ public class MainActivity extends AppCompatActivity
 
         //获取navigationView的headView
         mHeadView = mNavigationView.getHeaderView(0);
+
         //获取headView中的图片
         mHeadImageView = mHeadView.findViewById(R.id.imageView);
         mHeadImageView.setOnClickListener(new View.OnClickListener() {
@@ -282,6 +288,8 @@ public class MainActivity extends AppCompatActivity
         //获取headView中的文字
         mHeadTextView = mHeadView.findViewById(R.id.textView);
         mImageTextView = mHeadView.findViewById(R.id.imageText);
+
+        logout = mNavigationView.getMenu().findItem(R.id.log_out);
     }
 
 }
