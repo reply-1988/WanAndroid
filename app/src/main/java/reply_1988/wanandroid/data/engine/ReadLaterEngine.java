@@ -39,4 +39,9 @@ public class ReadLaterEngine implements ReadLaterDataSource {
 
        mLocalSource.checkReadLater(detailData);
     }
+
+    @Override
+    public void clearCache() {
+        mLocalSource.clearCache();
+    }
 }

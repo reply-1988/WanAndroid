@@ -123,7 +123,6 @@ public class SearchFragment extends Fragment implements SearchContract.View{
         ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setHasOptionsMenu(true);
 
-
         mRecyclerView = mView.findViewById(R.id.list);
         mTagFlowLayout = mView.findViewById(R.id.tag_flowLayout);
         mFrameLayout = mView.findViewById(R.id.NoDataLayout);

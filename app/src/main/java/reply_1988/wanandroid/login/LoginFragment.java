@@ -59,14 +59,26 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     private Boolean rememberPassword;
     private Boolean firstLogin;
     private Boolean isLogin;
+    private Boolean isLogout;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            isLogout = getArguments().getBoolean(LoginActivity.IS_LOGOUT, false);
+        }
+        if (isLogout) {
+            mLoginPresenter.clearCache(getContext());
+        }
+    }
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
+
         resumeUserMsg();
         initView(v);
-
         if (isLogin) {
             startMainActivity();
         }
@@ -79,9 +91,13 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
         mLoginPresenter.unSubscribe();
     }
 
-    public static LoginFragment getInstance() {
+    public static LoginFragment getInstance(Boolean isLogout) {
 
-        return new LoginFragment();
+        LoginFragment fragment = new LoginFragment();
+        Bundle args = new Bundle();
+        args.putBoolean(LoginActivity.IS_LOGOUT, isLogout);
+        fragment.setArguments(args);
+        return fragment;
     }
 
     @Override
@@ -122,8 +138,6 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
         if (directLogin) {
             attemptLogin();
         }
-
-
     }
 
     /**

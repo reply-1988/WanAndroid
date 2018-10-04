@@ -1,5 +1,7 @@
 package reply_1988.wanandroid.login;
 
+import android.content.Context;
+
 import reply_1988.wanandroid.BasePresenter;
 import reply_1988.wanandroid.BaseView;
 import reply_1988.wanandroid.data.model.LoginDetailData;
@@ -9,6 +11,8 @@ public interface LoginContract {
     interface Presenter extends BasePresenter{
 
         void login(String username, String password, String type);
+
+        void clearCache(Context context);
 
     }
 

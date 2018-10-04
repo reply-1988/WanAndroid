@@ -17,4 +17,5 @@ public interface ReadLaterDataSource {
 
     void checkReadLater(ArticleDetailData detailData);
 
+    void clearCache();
 }

@@ -29,7 +29,6 @@ import android.widget.TextView;
 import reply_1988.wanandroid.favorite.FavoriteFragment;
 import reply_1988.wanandroid.knowledgesystem.KSActivity;
 import reply_1988.wanandroid.login.LoginActivity;
-import reply_1988.wanandroid.login.LoginPresenter;
 import reply_1988.wanandroid.readLater.ReadLaterFragment;
 import reply_1988.wanandroid.search.SearchActivity;
 import reply_1988.wanandroid.timeline.TimeLineFragment;
@@ -151,6 +150,11 @@ public class MainActivity extends AppCompatActivity
             case R.id.about:
                 Intent intent1 = new Intent(this, AboutActivity.class);
                 startActivity(intent1);
+                break;
+            case R.id.log_out:
+                Intent intent2 = new Intent(this, LoginActivity.class);
+                intent2.putExtra(LoginActivity.IS_LOGOUT, true);
+                startActivity(intent2);
                 break;
             default:
                 break;

@@ -1,5 +1,7 @@
 package reply_1988.wanandroid.data.engine;
 
+import android.content.Context;
+
 import io.reactivex.Observable;
 import reply_1988.wanandroid.data.model.LoginData;
 import reply_1988.wanandroid.data.model.LoginDetailData;
@@ -24,7 +26,7 @@ public class LoginEngine implements LoginDataSource{
     }
 
     @Override
-    public Observable<LoginDetailData> getLocalLoginData(int id) {
-        return mLoginLocalSource.getLocalLoginData(id);
+    public void clearCache(Context context) {
+        mLoginLocalSource.clearCache(context);
     }
 }

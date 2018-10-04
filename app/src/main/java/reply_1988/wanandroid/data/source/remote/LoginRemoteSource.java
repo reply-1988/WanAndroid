@@ -1,5 +1,9 @@
 package reply_1988.wanandroid.data.source.remote;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
+
 import io.reactivex.Observable;
 import io.reactivex.functions.Consumer;
 import io.reactivex.schedulers.Schedulers;
@@ -12,6 +16,11 @@ import reply_1988.wanandroid.data.model.LoginData;
 import reply_1988.wanandroid.data.model.LoginDetailData;
 import reply_1988.wanandroid.data.source.LoginDataSource;
 
+import static reply_1988.wanandroid.MyApplication.getContext;
+
+/**
+ *
+ */
 public class LoginRemoteSource implements LoginDataSource {
 
     private static LoginRemoteSource sLoginRemoteSource;
@@ -49,27 +58,13 @@ public class LoginRemoteSource implements LoginDataSource {
 
         assert loginDataObservable != null;
         return loginDataObservable
-                .subscribeOn(Schedulers.io())
-                .doOnNext(new Consumer<LoginData>() {
-                    @Override
-                    public void accept(LoginData loginData) throws Exception {
-                        //saveToRealm(loginData.getData());
-                    }
-                });
+                .subscribeOn(Schedulers.io());
     }
 
     @Override
-    public Observable<LoginDetailData> getLocalLoginData(int id) {
-        //local有独立的类进行获取
-        return null;
+    public void clearCache(Context context) {
+
     }
 
-    private void saveToRealm(LoginDetailData detailData) {
 
-        Realm realm = Realm.getDefaultInstance();
-        realm.beginTransaction();
-        realm.copyToRealmOrUpdate(detailData);
-        realm.commitTransaction();
-        realm.close();
-    }
 }

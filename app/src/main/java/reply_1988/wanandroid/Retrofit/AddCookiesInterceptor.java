@@ -30,7 +30,6 @@ public class AddCookiesInterceptor implements Interceptor {
                 .getStringSet(PREF_COOKIES, new HashSet<String>());
         for (String cookie : preferences) {
             builder.addHeader("Cookie", cookie);
-            Log.v("OkHttp", "Adding Header: " + cookie);
         }
 
         return chain.proceed(builder.build());

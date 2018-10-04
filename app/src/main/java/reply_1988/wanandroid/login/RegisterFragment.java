@@ -128,7 +128,7 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
     @Override
     public void startMainActivity() {
         getActivity().getSupportFragmentManager().beginTransaction()
-                .replace(R.id.fragment_container, LoginFragment.getInstance())
+                .replace(R.id.fragment_container, LoginFragment.getInstance(false))
         .commit();
     }
 

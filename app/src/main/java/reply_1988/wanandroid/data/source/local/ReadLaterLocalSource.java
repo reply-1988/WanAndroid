@@ -1,13 +1,10 @@
 package reply_1988.wanandroid.data.source.local;
 
-import android.os.Build;
+
 import android.support.annotation.NonNull;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Date;
 import java.util.Locale;
@@ -26,8 +23,6 @@ import reply_1988.wanandroid.realm.RealmHelper;
 
 public class ReadLaterLocalSource implements ReadLaterDataSource {
 
-
-
     @Override
     public Observable<List<ArticleDetailData>> getReadLaterList() {
 
@@ -44,7 +39,6 @@ public class ReadLaterLocalSource implements ReadLaterDataSource {
 
     @Override
     public Observable setReadLater(final ArticleDetailData articleDetailData) {
-
 
         return Observable.create(new ObservableOnSubscribe() {
             @Override
@@ -84,7 +78,10 @@ public class ReadLaterLocalSource implements ReadLaterDataSource {
         });
     }
 
-    //检查拥有该id的文章是否在稍后阅读的数据库中
+    /**
+     * 检查该文章在本地的稍后阅读数据库中是否存在，存在则修改文章数据中的readLater为true。
+     * @param detailData 需要进行对比的文章数据
+     */
     @Override
     public void checkReadLater(final ArticleDetailData detailData) {
         
@@ -104,8 +101,27 @@ public class ReadLaterLocalSource implements ReadLaterDataSource {
                 });
             }
 
-    private String formatDate(Date date) {
+    /**
+     * 清除本地稍后阅读数据库
+     */
+    @Override
+    public void clearCache() {
+        Realm realm = Realm.getInstance(RealmHelper.getConfiguration("readLater.realm"));
+        final RealmResults<ArticleDetailData> results = realm.where(ArticleDetailData.class).findAll();
+        realm.executeTransaction(new Realm.Transaction() {
+            @Override
+            public void execute(Realm realm) {
+                results.deleteAllFromRealm();
+            }
+        });
+    }
 
+    /**
+     * 对添加日期进行格式化处理，以便于显示
+     * @param date 添加到稍后阅读的日期
+     * @return 规范化日期
+     */
+    private String formatDate(Date date) {
         DateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.CHINA);
         return format.format(date);
     }
