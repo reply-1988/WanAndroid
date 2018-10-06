@@ -46,7 +46,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     private CheckBox mCheckBoxPassword;
     private CheckBox mCheckBoxLogin;
     private Button mLoginButton;
-    private Button mRegisterButton;
+    private TextView mRegisterView;
 
 
     private LoginContract.Presenter mLoginPresenter;
@@ -114,8 +114,8 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
         mLoginButton = v.findViewById(R.id.sign_in_button);
         mLoginButton.setOnClickListener(this);
 
-        mRegisterButton = v.findViewById(R.id.register_button);
-        mRegisterButton.setOnClickListener(this);
+        mRegisterView = v.findViewById(R.id.register);
+        mRegisterView.setOnClickListener(this);
         mLoginFormView = v.findViewById(R.id.login_form);
         mProgressView = v.findViewById(R.id.register_progress);
         mUsernameInputLayout = v.findViewById(R.id.layout_user);
@@ -339,7 +339,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
             case R.id.sign_in_button:
                 attemptLogin();
                 break;
-            case R.id.register_button:
+            case R.id.register:
                 getActivity().getSupportFragmentManager().beginTransaction()
                         .replace(R.id.fragment_container, RegisterFragment.getInstance())
                         .commit();

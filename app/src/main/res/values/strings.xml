@@ -38,4 +38,6 @@
     <string name="version">版本</string>
     <string name="logout">登出</string>
     <string name="register">注册</string>
+    <string name="noaccount">没有账户？请注册</string>
+    <string name="copyright">Photo by Colin Moldenhauer on Unsplash</string>
 </resources>

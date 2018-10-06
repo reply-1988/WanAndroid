@@ -1,15 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:gravity="center_horizontal"
     android:orientation="vertical"
     android:paddingBottom="@dimen/activity_vertical_margin"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@drawable/best"
     tools:context=".login.LoginActivity">
 
     <!-- Login progress -->
@@ -24,13 +26,22 @@
     <LinearLayout
         android:id="@+id/login_form"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="match_parent"
         android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:src="@drawable/wanandroid"
+            android:scaleType="centerInside"
+            android:layout_gravity="center"/>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/layout_user"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_width="250dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:passwordToggleEnabled="true">
 
             <android.support.design.widget.TextInputEditText
                 android:id="@+id/username"
@@ -39,14 +50,17 @@
                 android:hint="@string/prompt_username"
                 android:inputType="textPersonName"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:textColor="@color/white"
+                android:layout_gravity="center"/>
 
         </android.support.design.widget.TextInputLayout>
 
         <android.support.design.widget.TextInputLayout
             android:id="@+id/layout_password"
-            android:layout_width="match_parent"
+            android:layout_width="250dp"
             android:layout_height="wrap_content"
+            android:layout_gravity="center"
             app:passwordToggleEnabled="true">
 
             <android.support.design.widget.TextInputEditText
@@ -65,7 +79,7 @@
 
         <LinearLayout
             android:layout_width="wrap_content"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_gravity="center">
@@ -77,6 +91,9 @@
                 android:layout_weight="1"
                 android:layout_gravity="center"
                 android:text="@string/checkbox__remember"
+                android:textColor="#FFC4B8B8"
+                android:shadowColor="#FFC4B8B8"
+                android:buttonTint="#FFC4B8B8"
                 android:padding="20dp"/>
 
             <CheckBox
@@ -85,26 +102,39 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:text="@string/checkbox_login"
+                android:textColor="#FFC4B8B8"
+                android:shadowColor="#FFC4B8B8"
+                android:buttonTint="#FFC4B8B8"
                 android:padding="20dp"/>
         </LinearLayout>
 
         <Button
             android:id="@+id/sign_in_button"
             style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
+            android:layout_width="200dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            android:background="#4F7F97"
             android:text="@string/action_sign_in"
-            android:textStyle="bold" />
+            android:textStyle="bold"
+            android:layout_gravity="center"/>
 
-        <Button
-            android:id="@+id/register_button"
-            style="?android:textAppearanceSmall"
-            android:layout_width="match_parent"
+        <TextView
+            android:id="@+id/register"
+            android:layout_marginTop="40dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
-            android:text="@string/action_register"
-            android:textStyle="bold" />
+            android:text="@string/noaccount"
+            android:textColor="#FFC4B8B8"
+            android:layout_gravity="center"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/copyright"
+            android:textColor="#FFC4B8B8"
+            android:layout_marginTop="140dp"
+            android:layout_gravity="center"/>
 
     </LinearLayout>
 </LinearLayout>
