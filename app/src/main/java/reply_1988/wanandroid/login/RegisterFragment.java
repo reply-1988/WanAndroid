@@ -16,12 +16,15 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import reply_1988.wanandroid.MainActivity;
@@ -33,9 +36,12 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
     private TextInputEditText mUsernameView;
     private TextInputEditText mPasswordView;
     private TextInputEditText mRePasswordView;
+
     private View mProgressView;
     private View mRegisterFormView;
     private Button mRegisterButton;
+    private TextView mHasAccount;
+
     private TextInputLayout mUsernameLayout;
     private TextInputLayout mPasswordLayout;
     private TextInputLayout mRePasswordLayout;
@@ -174,8 +180,10 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
         mUsernameLayout = view.findViewById(R.id.layout_user);
         mPasswordLayout = view.findViewById(R.id.layout_password);
         mRePasswordLayout = view.findViewById(R.id.layout_rePassword);
+        mHasAccount = view.findViewById(R.id.login);
 
         mRegisterButton.setOnClickListener(this);
+        mHasAccount.setOnClickListener(this);
     }
 
     @Override
@@ -183,6 +191,9 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
         switch (v.getId()) {
             case R.id.register_button:
                 attemptRegister();
+                break;
+            case R.id.login:
+                login();
                 break;
             default:
                 break;
@@ -271,5 +282,13 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
             }
         }
         return valueLength;
+    }
+
+    private void login() {
+        FragmentManager fm = getActivity().getSupportFragmentManager();
+        fm.beginTransaction()
+                .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+                .replace(R.id.fragment_container, LoginFragment.getInstance(false))
+                .commit();
     }
 }

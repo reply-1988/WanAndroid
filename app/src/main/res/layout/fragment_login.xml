@@ -52,7 +52,9 @@
                 android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="@color/white"
-                android:layout_gravity="center"/>
+                android:layout_gravity="center"
+                android:drawableStart="@drawable/ic_user"
+                android:drawablePadding="10dp"/>
 
         </android.support.design.widget.TextInputLayout>
 
@@ -73,7 +75,9 @@
                 android:imeOptions="actionUnspecified"
                 android:inputType="textPassword"
                 android:maxLines="1"
-                android:singleLine="true" />
+                android:singleLine="true"
+                android:drawableStart="@drawable/ic_password"
+                android:drawablePadding="10dp"/>
 
         </android.support.design.widget.TextInputLayout>
 

@@ -13,6 +13,7 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TextInputEditText;
 import android.support.design.widget.TextInputLayout;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -341,6 +342,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
                 break;
             case R.id.register:
                 getActivity().getSupportFragmentManager().beginTransaction()
+                        .setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
                         .replace(R.id.fragment_container, RegisterFragment.getInstance())
                         .commit();
                 break;
