@@ -48,7 +48,6 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
 
     private LoginContract.Presenter mRegisterPresenter;
 
-    private boolean mSuccess = false;
     private int userID;
     private String username;
     private String password;
@@ -139,11 +138,6 @@ public class RegisterFragment extends Fragment implements LoginContract.View, Vi
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         getActivity().finish();
-    }
-
-    @Override
-    public void getRequestResult(Boolean success) {
-
     }
 
     @Override

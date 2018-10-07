@@ -5,8 +5,8 @@
         <!-- Customize your theme here. -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">#FFC4B8B8</item>
-        <item name="android:textColorHint">#FFC4B8B8</item>
+        <item name="preferenceTheme">@style/MaterialPreferenceTheme</item>
+
     </style>
 
     <style name="AppTheme.NoActionBar">
@@ -28,6 +28,24 @@
 
     <style name="FullscreenActionBarStyle" parent="Widget.AppCompat.ActionBar">
         <item name="android:background">@color/black_overlay</item>
+    </style>
+
+    <style name="myLoginStyle" parent="AppTheme">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/transparent_black</item>
+        <item name="colorAccent">#FFC4B8B8</item>
+        <item name="android:textColorHint">#FFC4B8B8</item>
+
+    </style>
+
+    <style name="MaterialPreferenceTheme" parent="PreferenceThemeOverlay.v14.Material">
+        <item name="android:fadeScrollbars">true</item>
+        <item name="android:scrollbars">vertical</item>
+        <item name="android:scrollbarFadeDuration">1</item>
+        <item name="android:background">@color/layout_background</item>
+        <item name="android:textColorPrimary">@color/colorPrimaryText</item>
+        <item name="android:textColorSecondary">@color/colorSecondaryText</item>
+        <item name="android:colorAccent">@color/colorPrimary</item>
     </style>
 
 </resources>

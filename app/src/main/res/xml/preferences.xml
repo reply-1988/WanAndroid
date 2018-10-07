@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="关于">
+
+        <Preference
+            android:title="版本"
+            app:key="version"
+            android:summary="1.0" />
+        <Preference
+            android:title="WanAndroid 介绍"
+            app:key="Introduction"
+            android:summary="@string/introduction" />
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="致谢">
+
+        <Preference
+            android:title="Tonny"
+            app:key="thanks1"
+            android:summary="https://tonnyl.io/" />
+
+        <Preference
+            android:title="鸿洋"
+            app:key="thanks2"
+            android:summary="https://blog.csdn.net/lmj623565791" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="支持">
+
+        <Preference
+            android:title="源码"
+            app:key="Source code"
+            android:summary="https://github.com/reply-1988/WanAndroid" />
+
+        <Preference
+            android:title="API"
+            app:key="api"
+            android:summary="http://www.wanandroid.com/blog/show/2" />
+
+        <Preference
+            android:title="联系作者"
+            app:key="contact"
+            android:summary="diding1997@qq.com" />
+    </PreferenceCategory>
+
+</PreferenceScreen>

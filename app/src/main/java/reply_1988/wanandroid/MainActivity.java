@@ -26,6 +26,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import reply_1988.wanandroid.about.AboutActivity;
 import reply_1988.wanandroid.favorite.FavoriteFragment;
 import reply_1988.wanandroid.knowledgesystem.KSActivity;
 import reply_1988.wanandroid.login.LoginActivity;

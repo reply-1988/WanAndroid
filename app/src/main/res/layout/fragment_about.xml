@@ -1,32 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="match_parent"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
-    tools:context=".AboutFragment">
+    android:layout_width="match_parent"
+    android:layout_gravity="center">
 
     <TextView
-        android:id="@+id/version"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/version"
-        android:textSize="18sp" />
-
-    <TextView
-        android:id="@+id/version_number"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="1.0"
-        app:layout_constraintTop_toBottomOf="@id/version"/>
-
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="2dp"
-        android:background="@color/black"
-        app:layout_constraintTop_toBottomOf="@id/version_number"/>
-
-
-
-</android.support.constraint.ConstraintLayout>
+        android:text="1111111111"
+        android:layout_gravity="center"/>
+</FrameLayout>

@@ -27,8 +27,6 @@ public interface LoginContract {
 
         void startMainActivity();
 
-        void getRequestResult(Boolean success);
-
         void resumeUserMsg();
 
         void changeLoginState(Boolean isLogin);

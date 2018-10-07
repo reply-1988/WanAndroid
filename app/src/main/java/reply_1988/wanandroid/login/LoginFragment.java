@@ -52,7 +52,6 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
 
     private LoginContract.Presenter mLoginPresenter;
 
-    private boolean mSuccess = false;
     private int userID;
     private String username;
     private String password;
@@ -77,7 +76,7 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_login, container, false);
-
+        setPresenter(new LoginPresenter(this));
         resumeUserMsg();
         initView(v);
         if (isLogin) {
@@ -239,12 +238,6 @@ public class LoginFragment extends Fragment implements LoginContract.View, View.
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         startActivity(intent);
         getActivity().finish();
-    }
-
-
-    @Override
-    public  void getRequestResult(Boolean success) {
-        mSuccess = success;
     }
 
     /**
