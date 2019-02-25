@@ -21,6 +21,7 @@ This app is designed with Material Design style and use MVP(Model-View-present) 
 ![](https://raw.githubusercontent.com/reply-1988/img/master/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180926175840.jpg)
 ![](https://raw.githubusercontent.com/reply-1988/img/master/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180926175846.jpg)
 ![](https://raw.githubusercontent.com/reply-1988/img/master/img/%E5%BE%AE%E4%BF%A1%E5%9B%BE%E7%89%87_20180926175852.jpg)
+![](https://raw.githubusercontent.com/reply-1988/img/master/img/1111.jpg)
 
 
 >Notice: If you want to review a different branch, replace the `master` with the name you want to checkout (if it does exist). Finally open the `WanAndroid/` directory in Android Studio.
@@ -38,3 +39,7 @@ This app is designed with Material Design style and use MVP(Model-View-present) 
 |[CircleImageView](https://github.com/hdodenhof/CircleImageView)|A circular ImageView for Android|
 |[FloatingActionButton](https://github.com/Clans/FloatingActionButton)|  Android Floating Action Button based on Material Design specification|
 |[SmartRefreshLayout](https://github.com/scwang90/SmartRefreshLayout)|a "smart" or "intelligent" pull-down refresh layout|
+
+### Thanks
+Thanks [HongYangAndroid](https://github.com/hongyangAndroid) provides the WanAndroid APIs.His blog also help me a lot.
+Thanks [Li Zhao Tai Lang](https://github.com/TonnyL). From his source code, i learn the right useage of MVP.
