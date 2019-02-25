@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
+import android.support.v4.app.DialogFragment;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
@@ -26,6 +27,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import reply_1988.wanandroid.LogoutDialog.LogoutDialog;
 import reply_1988.wanandroid.about.AboutActivity;
 import reply_1988.wanandroid.favorite.FavoriteFragment;
 import reply_1988.wanandroid.knowledgesystem.KSActivity;
@@ -58,18 +60,7 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         initView();
-        //获取保存登录信息的SharedPreferences对象
-        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        if (mPreferences.getInt("userID", -1) != -1) {
-            String username = mPreferences.getString("username", "登录");
-            mHeadTextView.setText(username);
-            mImageTextView.setText(username.substring(0, 1).toUpperCase());
-            logout.setVisible(true);
-        } else {
-            mHeadTextView.setText(null);
-            mImageTextView.setText("登陆");
-            logout.setVisible(false);
-        }
+
     }
 
     @Override
@@ -89,6 +80,18 @@ public class MainActivity extends AppCompatActivity
         }
         if (mDrawerLayout.isDrawerOpen(GravityCompat.START)) {
             mDrawerLayout.closeDrawer(GravityCompat.START);
+        }
+        //获取保存登录信息的SharedPreferences对象
+        mPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        if (mPreferences.getInt("userID", -1) != -1) {
+            String username = mPreferences.getString("username", "登录");
+            mHeadTextView.setText(username);
+            mImageTextView.setText(username.substring(0, 1).toUpperCase());
+            logout.setVisible(true);
+        } else {
+            mHeadTextView.setText(null);
+            mImageTextView.setText("登陆");
+            logout.setVisible(false);
         }
     }
 
@@ -157,10 +160,8 @@ public class MainActivity extends AppCompatActivity
                 startActivity(intent1);
                 break;
             case R.id.log_out:
-                Intent intent2 = new Intent(this, LoginActivity.class);
-                intent2.putExtra(LoginActivity.IS_LOGOUT, true);
-                startActivity(intent2);
-                finish();
+                LogoutDialog logoutDialog = new LogoutDialog();
+                logoutDialog.show(getSupportFragmentManager(), "logoutDialog");
                 break;
             default:
                 break;
