@@ -1,11 +1,7 @@
 package reply_1988.wanandroid.data.model;
 
-import com.google.gson.annotations.Expose;
-import com.google.gson.annotations.SerializedName;
-
 import java.io.Serializable;
 
-import io.realm.RealmList;
 import io.realm.RealmObject;
 import io.realm.annotations.Ignore;
 import io.realm.annotations.PrimaryKey;
@@ -233,18 +229,23 @@ public class ArticleDetailData extends RealmObject implements Serializable{
         return title.replaceAll("</?[^>]+>","")
                 .replace("&nbsp;","")
                 .replace(".","")
+                .replace("&ldquo;", "")
                 .replace("\"","‘")
+                .replace("&mdash;", "")
+                .replace("&rdquo;", "")
                 .replace("'","‘");
     }
 
     public void setTitle(String title) {
         //剔出了<html>的标签
-        String noHtml = title.replaceAll("</?[^>]+>","")
+        this.title = title.replaceAll("</?[^>]+>", "")
                 .replace("&nbsp;","")
                 .replace(".","")
+                .replace("&ldquo;", "")
                 .replace("\"","‘")
+                .replace("&rdquo;", "")
+                .replace("&mdash;", "")
                 .replace("'","‘");
-        this.title = noHtml;
     }
 
     public int getType() {

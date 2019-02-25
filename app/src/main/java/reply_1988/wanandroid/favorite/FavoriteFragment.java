@@ -3,7 +3,6 @@ package reply_1988.wanandroid.favorite;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -23,14 +22,13 @@ import reply_1988.wanandroid.articleDetail.ArticleDetailActivity;
 import reply_1988.wanandroid.data.engine.ArticleEngine;
 import reply_1988.wanandroid.data.model.FavoriteDetailData;
 import reply_1988.wanandroid.data.source.remote.ArticlesRemoteSource;
-
 import reply_1988.wanandroid.interfaces.OnArticleClickedListener;
 import reply_1988.wanandroid.interfaces.OnCancelCollectClickedListener;
 import reply_1988.wanandroid.interfaces.OnCategoryClickedListener;
 import reply_1988.wanandroid.interfaces.OnCollectClickedListener;
 import reply_1988.wanandroid.search.SearchActivity;
 
-public class FavoriteFragment extends Fragment implements FavoriteContract.View  {
+public class FavoriteFragment extends Fragment implements FavoriteContract.View {
 
     private static final String ARG_COLUMN_COUNT = "column-count";
     public static final String ARTICLE_URL = "articleUrl";
@@ -99,8 +97,6 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         } else {
             mAdapter = new FavoriteAdapter(detailDataList);
             setOnClickListener(detailDataList);
-
-
             recyclerView.setAdapter(mAdapter);
             recyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -123,7 +119,6 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
                     page++;
                     Log.d("当前的页数", String.valueOf(page));
                     mPresenter.getArticles(page, true);
-
                     refreshLayout.finishLoadMore();
                 }
             });
@@ -157,7 +152,7 @@ public class FavoriteFragment extends Fragment implements FavoriteContract.View 
         //取消收藏
         mAdapter.setOnCancelCollectClickedListener(new OnCancelCollectClickedListener() {
             @Override
-            public void onClick(int position){
+            public void onClick(int position) {
 
                 int id = detailDataList.get(position).getId();
                 int originId = detailDataList.get(position).getOriginId();

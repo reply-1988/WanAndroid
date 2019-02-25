@@ -57,6 +57,7 @@ public class ArticlesRemoteSource implements ArticleDataSource {
                     @Override
                     public void accept(List<ArticleDetailData> articleDetailData) throws Exception {
                         for (ArticleDetailData item : articleDetailData) {
+
                             saveToRealm(item);
                         }
                     }
